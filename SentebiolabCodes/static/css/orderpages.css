@@ -1,0 +1,85 @@
+html {
+    width: 100vw;
+}
+
+.below_navbar{
+	padding-top:4em;
+}
+
+.cntr {
+	padding-right: 7%;
+
+}
+
+.fixeddiv{
+	position: fixed !important;
+    float: left;
+    width: inherit;
+	margin-top: 4em;
+}
+
+.vertpad{
+	padding-top: 1%;
+	padding-bottom: 1%;
+}
+
+.itempadding{
+	padding-top: 1%;
+	padding-bottom: 5%;
+}
+
+.mainseg {
+	min-height: 80vh;
+}
+
+.orderBtn {
+	margin-bottom: 10px !important;
+}
+
+textarea {
+    resize: none;
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    overflow-wrap: unset;
+    white-space: pre;
+}
+
+.ui.dropdown .menu>.disabled.item {
+    display: none;
+}
+
+.centertext {
+	text-align: center;
+}
+
+.vcenter {
+	display: flex;
+	align-items: center;
+}
+
+.ui.form .field .prompt.label {
+	position: absolute;
+	z-index: 1;
+	display: block !important;
+}
+
+.segments.form.error{
+	/*border-color: red;*/
+}
+
+.hover-div { /*for testing purp.*/
+    position: fixed;
+    top: 50%;
+	right: 2%;
+    margin: -30px 130px 0px 0px;
+    height: 60px;
+}
+
+.noscroll::-webkit-scrollbar {
+   display: none;
+ }
+ 
+ .wsnormal{
+	white-space:normal;
+ }

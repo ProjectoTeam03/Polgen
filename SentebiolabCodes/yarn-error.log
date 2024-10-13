@@ -1,0 +1,65 @@
+Arguments: 
+  /usr/bin/node /usr/local/bin/yarn
+
+PATH: 
+  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+Yarn version: 
+  1.22.18
+
+Node version: 
+  12.22.9
+
+Platform: 
+  linux x64
+
+Trace: 
+  SyntaxError: /home/sentebiolab/package.json: Unexpected end of JSON input
+      at JSON.parse (<anonymous>)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "sentebiolab",
+    "version": "1.0.0",
+    "description": "Sentebiolab order management system",
+    "main": "authserver.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "node authserver.js"
+    },
+    "author": "acmus",
+    "license": "ISC",
+    "dependencies": {
+      "acl": "^0.4.11",
+      "acl-sequelize": "^0.2.1",
+      "body-parser": "^1.18.3",
+      "exceljs": "^1.6.3",
+      "express": "^4.16.4",
+      "express-fileupload": "^1.1.7-alpha.3",
+      "http": "0.0.0",
+      "https": "^1.0.0",
+      "jwt-simple": "^0.5.5",
+      "mime": "^2.4.0",
+      "multer": "^1.4.1",
+      "nodemailer": "^6.7.3",
+      "passport": "^0.4.0",
+      "passport-jwt": "^4.0.0",
+      "pg": "^7.7.1",
+      "pg-hstore": "^2.3.4",
+      "request": "^2.88.0",
+      "sequelize": "^4.44.4",
+      "sequelize-cli": "^5.4.0",
+      "socket.io": "^2.2.0",
+      "xlsx-populate": "^1.20.1"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

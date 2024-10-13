@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Standard Meta -->
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="shortcut icon" type="image/png" href="assets/images/fav.png"/>
+	<!-- Site Properties -->
+	<title>Yeni Sekanslama</title>
+
+	<link rel="stylesheet" href="./jquery/jquery-plugins/css/jquery-ui.css">
+	<link rel="stylesheet" href="./semanticui/semantic.min.css">
+	<link rel="stylesheet" href="./datatables/datatables.min.css">
+	<link rel="stylesheet" type="text/css" href="css/orderpages.css">
+	
+	<script src="./jquery/jquery-3.3.1.js"></script>
+	<script src="./jquery/jquery-plugins/js/jquery.cookie-1.4.1.js"></script>
+	<script src="./jquery/jquery-plugins/js/jquery-ui.js"></script>
+	<script src="./semanticui/semantic.custom.js"></script>
+	<script src="./datatables/datatables.min.js"></script>
+
+	<script src="acm/acm-ui-auth.js" ></script>
+	<script src="acm/acm-data-handler.js"></script>
+	<script src="acm/acm-page-handler.js"></script>
+	<script src="acm/acm-dialog.js"></script>
+	<script src="acm/acm-form.js"></script>
+	<script src="acm/acm-input.js"></script>
+	<script src="acm/acm-textarea.js"></script>
+	<script src="acm/acm-table.js"></script>
+	<script src="acm/acm-container.js"></script>
+	<script src="acm/acm-img.js"></script>
+	<script src="acm/acm-link.js"></script>
+	<script src="acm/acm-dropdown.js"></script>
+	<script src="acm/acm-cbox.js"></script>
+	<script src="acm/acm-list.js"></script>
+	<script src="acm/acm-modal.js"></script>
+	<script src="acm/acm-modal.js"></script>
+	<script src="acm/acm-dataholder.js"></script>
+	<script src="acm/acm-display.js"></script>
+	<script src="acm/acm-prompt.js"></script>
+	<script src="acm/acm-msgdiv.js"></script>
+
+	<script src="./js/moment-with-locales.js"></script>
+	<script src="./acm/acm-xlsx.js"></script>
+	<!--<script src="./js-xlsx/shim.js"></script>-->
+	<script src="./js-xlsx/xlsx.full.min.js"></script>
+	<script src="./js/FileSaver.js"></script>
+	
+</head>
+<body>
+	<acmus id="navbarcontainer"></acmus>
+	<acmus id="sequencepagecontainer"></acmus>
+</body>
+<script>
+
+var seqtypeService = {
+	source : "static",
+	data : [
+		{id:0,val:"Sekanslama Türü"},
+		{id:1,val:"Sanger - PCR"},
+		{id:2,val:"Sanger - Plazmit"},
+		{id:3,val:"NextGen - Amplikon"},
+		{id:4,val:"NextGen - DeNovo"},
+	]
+}
+
+var orderService = {
+	source: "ajax",
+	url: "insertSeq"
+}
+
+var	tableService = {
+	source: "ajax",
+	url: "table"
+}
+
+$.Widget.registerService("seqtypeService",seqtypeService);
+$.Widget.registerService("tableService",tableService);
+$.Widget.registerService("orderService",orderService);
+
+function order() {
+	$.formAction({seqs : "seqlist"},"orderService",function(res){
+		//console.log(res);
+		if (res.ok == "ok") {
+			window.location.href = "/confirmsequence.html";
+		}
+	})
+}
+
+var seqformchangefunc = function(x){
+	var self = this;
+		
+	if (x.extractedId == "fasta") {
+		self.childrenWidget["bp"].set(
+			{
+				html : x.get().length + "bp"
+			}
+		);
+	} else if(x.extractedId == "seqtype") {
+		if(x.get() == 0) {
+			$(self.element).find('div#seq1').hide();
+			$(self.element).find('div#seq2').hide();
+			$(self.element).find('div#seq3').hide();
+			
+			self.childrenWidget["costval"].set(0)
+			self.childrenWidget["cost"].set({
+				html : "0 €"
+			})
+			updatecost();
+		} else if(x.get() == 1) {
+			$(self.element).find('div#seq1').show();
+			$(self.element).find('div#size').show();
+			
+			$(self.element).find('div#seq2').show();
+			$(self.element).find('div#puri').show();
+			
+			$(self.element).find('div#seq3').hide();
+			
+			if(self.childrenWidget["puri"].get() == true) {
+				self.childrenWidget["costval"].set(12.99)
+				self.childrenWidget["cost"].set({
+					html : "12.99 €"
+				})
+				updatecost();
+			} else {
+				self.childrenWidget["costval"].set(11.99)
+				self.childrenWidget["cost"].set({
+					html : "11.99 €"
+				})
+				updatecost();
+			}
+			
+		} else if(x.get() == 2) {
+			$(self.element).find('div#seq1').show();
+			$(self.element).find('div#size').hide();
+			
+			$(self.element).find('div#seq2').show();
+			$(self.element).find('div#puri').hide();
+			
+			$(self.element).find('div#seq3').hide();
+			
+			self.childrenWidget["costval"].set(11.99)
+			self.childrenWidget["cost"].set({
+				html : "11.99 €"
+			})
+			updatecost();
+		} else if(x.get() == 3) {
+			$(self.element).find('div#seq1').show();
+			$(self.element).find('div#size').show();
+			
+			$(self.element).find('div#seq2').hide();
+			$(self.element).find('div#seq3').show();
+			
+			self.childrenWidget["costval"].set(25)
+			self.childrenWidget["cost"].set({
+				html : "25 €"
+			})
+			updatecost();
+		} else if(x.get() == 4) {
+			$(self.element).find('div#seq1').show();
+			$(self.element).find('div#size').show();
+			
+			$(self.element).find('div#seq2').hide();
+			$(self.element).find('div#seq3').show();
+			
+			self.childrenWidget["costval"].set(250)
+			self.childrenWidget["cost"].set({
+				html : "250 €"
+			})
+			updatecost();
+		}
+		
+		$.each(self.childrenWidget, function(i, v) { // disable invisible widgets for form validation
+			if($(v.element).is(":visible") == false) {
+				if (v.disablewidget) {
+					v.disablewidget(true);
+				}
+			} else {
+				if (v.disablewidget) {
+					v.disablewidget(false);
+				}
+			}
+		});
+		
+		
+	} else if(x.extractedId == "puri"){
+		console.log("puri changed");
+		if(self.childrenWidget["seqtype"].get() == 1) {
+			if(x.get() == true) {
+				self.childrenWidget["costval"].set(12.99)
+				self.childrenWidget["cost"].set({
+					html : "12.99 €"
+				})
+				updatecost();
+			} else {
+				self.childrenWidget["costval"].set(11.99)
+				self.childrenWidget["cost"].set({
+					html : "11.99 €"
+				})
+				updatecost();
+			}
+		}
+	}
+	
+}
+
+var seqforminit = function(x) {
+
+	if (x.childrenWidget["seqtype"].get() == 0) {
+		$(x.element).find('div#seq1').hide();
+		$(x.element).find('div#seq2').hide();
+		$(x.element).find('div#seq3').hide();
+	}
+	
+	if (x.childrenWidget["seqtype"].get() == 1 && x.childrenWidget["puri"].get() === true) {
+		x.childrenWidget["costval"].set(12.99)
+		x.childrenWidget["cost"].set({
+			html : "12.99 €"
+		})
+		updatecost();
+	}
+	
+	$.each(x.childrenWidget, function(i, v) {
+		if($(v.element).is(":visible") == false) {
+			if (v.disablewidget) {
+				v.disablewidget(true);
+			}
+		} else {
+			if (v.disablewidget) {
+				v.disablewidget(false);
+			}
+		}
+	});
+	
+	x.semantic("validate form");
+}
+
+var seqonchange = function(widg) {
+	var tempseq = widg.get().replace(/\s+/g, '').toUpperCase();
+	if (widg.get() != tempseq) widg.set(tempseq);
+}
+
+var seqformtemplate = {
+	type: "widgetform",
+	options: {
+		div: "ui segments form",
+		childfunc: seqformchangefunc,
+		initfunc: seqforminit,
+		structure: [
+			{div: "ui secondary segment grid", structure: [
+				{div: "one wide column #pcbox", template:"cboxtemp"},
+				{div: "one wide column #pnum", template:"pnum"},
+				{div: "field four wide column #name", template:"nametemp"},
+				{div: "field one wide fluid centertext column #cost", template:"cost"},
+				{div: "field five wide fluid column #seqtype", template:"seqtype"},
+				//{div: "field four wide column #sample",template:"sample"}
+			]},//checkbox
+			{div: "ui segment", structure: [
+				{div: "ui grid #seq1",structure:[
+					{div: "field eight wide column #cons", template: "cons"},
+					{div: "field eight wide column #size", template: "size"}
+				]},
+				{div: "ui grid #seq2",structure:[
+					{div: "field six wide column #pname", template: "pname"},
+					{div: "field five wide column #pcons", template: "pcons"},
+					{div: "field five wide column #puri", template: "puri"},
+				]},
+				{div: "ui grid #seq3",structure:[
+					{div: "two wide column",structure:[
+						{div: "",html:"FASTA"},
+						{div: " #bp", template:"bp"}
+					]},
+					{div: "field fourteen wide column #fasta", template: "fasta"}
+				]},
+			]},
+			{div: " #costval", template:"costval"},
+		],
+		templates: {
+			seqtype: {
+				type: "ddown",
+				formchange: true,
+				options: {
+					oncreate: true,
+					name:"seqtype",
+					datasource:"seqtypeService",
+					div: "ui labeled selection fluid upward dropdown icon",
+					header: [
+						{span:"text"},
+						{icon: "dropdown icon"}
+					],
+					semanticOptions : {
+						direction: 'upward'
+					},
+					selected: "0"
+				}
+			},
+			cboxtemp: {
+				type: "cbox",
+				options: {
+					div: "",
+					//label: ""
+				}
+			},
+			nametemp: {
+				type: "input",
+				options:{
+					div: "small ui fluid input",
+					type: "text",
+					name: "name"
+				}
+			},
+			cost: {
+				type: "link",
+				options:{
+					div: "",
+					html: "0 €",
+					src : ""
+				}
+			},
+			costval: {
+				type: "dataholder",
+				options: {
+					div: "hidden",
+					defdata: 0
+				}
+			},
+			fasta: {
+				type: "textarea",
+				formchange: true,
+				options: {
+					div: "ui left icon fluid input",
+					rows: 1,
+					name: "fasta",
+					placeholder: "Fasta",
+					onchange: seqonchange,
+				}
+			},
+			puri: {
+				type: "cbox",
+				formchange: true,
+				options: {
+					div: "ui input",
+					name : "puri",
+					label: "Saflaş. yapılsın mı"
+				}
+			},
+			pcons: {
+				type: "input",
+				options:{
+					div: "mini ui left labeled input",
+					type: "number",
+					name: "pcons",
+					label: {html: "Primer Kons.",label: "ui label"},
+					span: {span: "vcenter", html: "μM"},
+					placeholder: "10-100",
+					min : 10,
+					max : 100,
+					width: "80px"
+				}
+			},
+			pname: {
+				type: "input",
+				options:{
+					div: "mini ui fluid left labeled input",
+					type: "text",
+					name: "pname",
+					label: {html: "Primer Adı",label: "ui label"},
+					placeholder: "Primer adı",
+					min : 5,
+					max : 10,
+					//width: "80px"
+				}
+			},
+			cons: {
+				type: "input",
+				options:{
+					div: "mini ui left labeled input",
+					type: "number",
+					name : "cons",
+					label: {html: "Örnek Kons.",label: "ui label"},
+					span: {span: "vcenter", html: "ng/μL"},
+					placeholder: "10-500",
+					min : 10,
+					max : 500,
+					width: "85px"
+				}
+			},
+			size: {
+				type: "input",
+				options:{
+					div: "mini ui left labeled input",
+					type: "number",
+					name: "size",
+					label: {html: "Örnek Boyu",label: "ui label"},
+					span: {span: "vcenter", html: "bp"},
+					placeholder: "50-2000",
+					min : 50,
+					max : 2000,
+					width: "90px"
+				}
+			},
+			bp: {
+				type: "link",
+				options:{
+					div: "",
+					html: "0bp",
+					src : ""
+				}
+			},
+			pnum: {
+				type: "display",
+				selector: "#pnum",
+				options: {
+					valelem: "span",
+					defval: "0",
+					label: {
+						label: "",
+						html: ""
+					}
+				}		
+			}/*,
+			sample: {
+				type: "display",
+				options: {
+					valelem: "span",
+					defval: "",
+					label: {
+						label: "",
+						html: "<form action='/upload' method='post' encType='multipart/form-data'><input type='file' name='sampleFile' onchange=\"herpderp(this.closest('form'))\"/></form>"
+					}
+				}
+			},*/
+		},
+		rules: {
+			inline: true,
+			on: 'change',
+			fields: {
+				name: {
+					identifier : 'name',
+					rules: [
+						{
+							type : 'minLength[1]',
+							prompt : 'Sekanslama adı en az 3 karakter'
+						},
+						{
+							type : 'maxLength[40]',
+							prompt : 'Sekanslama adı en fazla 40 karakter'
+						}
+					]
+				},
+				cons: {
+					identifier : "cons",
+					rules: [
+						{
+							type   : 'nummin[10]',
+							prompt : 'Konsantrasyon minimum 10ng/μL olabilir'
+						},
+						{
+							type   : 'nummax[500]',
+							prompt : 'Konsantrasyon maximum 500ng/μL olabilir'
+						}
+					]
+				},
+				seqtype: {
+					identifier : "seqtype",
+					rules: [
+						{
+							type : 'not[0]',
+							prompt : 'Sekanslama türünü seçiniz'
+						}
+					]
+				},
+				size: {
+					identifier : "size",
+					rules: [
+						{
+							type : 'integer[50..2000]',
+							prompt : 'Konsantrasyon 200-2000bp değerleri arası olmalı'
+						}
+					]
+				},
+				pname : {
+					identifier : "pname",
+					rules: [
+						{
+							type : 'empty',
+							prompt : 'Primer adı giriniz'
+						}
+					]
+				},
+				pcons : {
+					identifier : "pcons",
+					rules : [
+						{
+							type   : 'nummin[10]',
+							prompt : 'Primer Konsan. minimum 10μM olabilir'
+						},
+						{
+							type   : 'nummax[100]',
+							prompt : 'Primer Konsan. maximum 100μM olabilir'
+						}
+					]
+				},
+				fasta : {
+					identifier : "fasta",
+					rules: [
+						{
+							type : 'minLength[2]',
+							dontrim : true,
+							prompt : 'Sekans en az 2bp'
+						},
+						{
+							type: "regExp[/^[ACGTRYMKSWHBVDNI]{2,250}$/]",
+							dontrim : true,
+							prompt: "Hatalı sekans"
+						}
+					]
+				}
+			}
+		}	
+	}
+};
+
+$.fn.form.settings.rules.nummin = function (input,min) {
+	return (Number(input) >= Number(min));
+}
+
+$.fn.form.settings.rules.nummax = function (input,max) {
+	return (Number(max) >= Number(input));
+}
+
+
+var sequencepage= {
+		container: {
+			type: "container",
+			selector: "#sequencepagecontainer",
+			options: {
+				div: "below_navbar ui container",
+				structure: [
+					{div:"ui grid", structure:[
+						{div:"twelve wide column",structure:[
+							{div:"ui segments",structure: [
+								{div:"ui secondary segment",structure: [
+									{p:"noclass",html:"Sekanslama"}
+								]},
+								{div:"ui segment mainseg",structure: [
+									{div:"vertpad ui input cntr #probeCntr", structure:[]},
+									{label:"mini basic ui button", attr:{"for":"excelupload"}, structure: [
+										{icon: "noclass", i:"ui upload icon"},
+										{span: "noclass",html:"Excel Yükle"},
+										{input: "#excelupload", attr:{"type":"file","style":"display: none"}}
+									]},/*
+									{div:"mini basic ui button #exceldownload", structure: [										
+										{icon: "noclass", i:"ui download icon"},
+										{span: "noclass",html:"Excel İndir"}
+									]},*/
+									{a:"mini basic ui button", attr: {"href":"/files/Sentebiolab-Sekans-siparis-formu.xlsx","download":"Sentebiolab-Sekans-siparis-formu-3.xlsx"}, structure: [
+										{icon: "noclass", i:"ui download icon"},
+										{span: "noclass",html:"Excel İndir"}
+									]},
+									{hr:"noclass",structure: []},
+									{div:"vertpad ui input #mastercbox", structure:[]},
+									//{div:"mini ui blue button #cboxmodify",structure:[],html: "Değiştir"},
+									{div:"mini ui red button #cboxdelete",structure:[
+										{icon: "noclass", i:"ui trash alternate icon"},
+										{span: "noclass",html:"Sil"}
+									]},
+									{hr:"noclass",structure: []},
+									{div:"row pad #listwidgetid",structure:[]}
+								]}
+							]}
+						]},
+						{div:"four wide column", structure:[
+							{div:"fixeddiv", structure: [
+								{div:"fluid ui green big button orderBtn #orderBtn" ,structure:[
+									{icon: "noclass", i:"ui cart icon"},
+									{span: "noclass",html:"Sipariş Et"}
+								]},
+								{div: "ui segment", structure:[
+									{div: "div #pamount"},
+									{div: "div #totalcost"}
+								]},
+								{div:"vertpad #seqerr"},
+							]}
+						]}
+					]},
+					/*
+					{div: "#mod2", structure:[
+						{div:"header", html:"Toplu Değiştir"},
+						{div:"content", structure:[
+							{div:"ui grid", structure:[
+
+							]}
+						]},
+						{div:"actions", structure:[
+							{div: "ui green button #modal2btnaccept",html:"Tamam"},
+							{div: "ui red button #modal2btncancel",html:"İptal"},
+						]}
+					]},*/
+					{div: "hidden #priceholder"},
+					{div: "hidden #tmodholder"},
+					{div: "mini #prompt"},
+					{div: "#userholder"},
+				]
+			}
+		},
+		counter : {
+			type: "input",
+			selector: "#probeCntr",
+			options:{
+				div: "mini ui left labeled action input",
+				type: "number",
+				label: {html: "Miktar :",label: "ui label"},
+				button: {html: "Yükle", button: "mini basic ui button", id:"loadamount"},
+				placeholder: "0",
+				min : 0,
+				width: "65px"
+			}
+		},	
+		mod2 : {
+			type: "ACMmodal",
+			selector: "#mod2",
+			options: {
+				semanticOptions : {
+					closable: true
+				}
+			}
+		},
+		mastercbox : {
+			type: "cbox",
+			selector: "#mastercbox",
+			options: {
+				div: ""
+			}
+		},
+		seqlist : {
+			type: "widgetlist",
+			selector: "#listwidgetid",
+			options: {
+				div: "",
+				itemdiv: "itempadding",
+				item : seqformtemplate,
+				listCbox: "pcbox",
+				listnumber: "pnum"
+			}
+		},
+		prompt: {
+			type: "prompt",
+			selector: "#prompt",
+			options: {
+				semanticOptions : {
+				}
+			}
+		},
+		pamount: {
+			type: "display",
+			selector: "#pamount",
+			options: {
+				valelem: "span",
+				defval: "0",
+				label: {
+					label: "",
+					html: "Toplam ürün sayısı: "
+				}
+			}
+		},
+		totalcost: {
+			type: "display",
+			selector: "#totalcost",
+			options: {
+				valelem: "span",
+				defval: "0 €",
+				label: {
+					label: "",
+					html: "Toplam Tutar: "
+				}
+			}		
+		},
+		seqerr: {
+			type: "msgdiv",
+			selector: "#seqerr",
+			options: {
+				closable: true,
+				div: "negative hidden",
+				header: "Hata:",
+				msglist: [],
+				fadeout: 5000,
+			}
+		},
+		userholder: {
+			type: "dataholder",
+			selector: "#userholder",
+			options: {
+				oncreate: true,
+				datasource:"tableService",
+				fetchparams:{
+					table: "acm_users",
+					columns: ["id"],
+					join: [
+						{ table: "users", foreign: "id" ,target: "userid"},
+					],
+				},
+				div: "hidden"
+			}
+		},
+	};
+
+	$(document).on("pagecreated",function() {
+		$.removeCookie("fatura");
+		$.removeCookie("adres");
+		$.removeCookie("proje");
+		$.removeCookie("daire");
+		$.removeCookie("numara");
+	});
+
+	$.createWidgets(sequencepage);
+
+	$("#loadamount").click(function(){
+	
+		let cur = $.getWidget("seqlist").getItemAmount()
+		var cntr = $.getWidget("counter").get()
+		
+		if(cntr < 0) cntr = 0;
+	
+		if(cur > cntr) {
+			$.getWidget("prompt").fire("Silme uyarısı !","Son " + (cur-cntr) + " sekanslama silinsin mi?", 
+				function(){
+					$.getWidget("seqlist").setItemAmount(cntr);
+					updatepamount();
+					updatecost();
+				}
+			)
+		} else {
+			$.getWidget("seqlist").setItemAmount(cntr);
+			updatepamount();
+			updatecost();
+		}
+	});
+	
+	////////// Checkbox Delete Update
+	
+	var mastercboxfunc = function(b){
+		$.getWidget("seqlist").setAllCbox(b.get());
+	}
+	
+	$.getWidget("mastercbox").setonchange(mastercboxfunc);
+	
+	$("#cboxdelete").click(function(){
+				
+		$.getWidget("prompt").fire("Silme uyarısı !","Seçili sekanslamalar silinsinmi ?", 
+			function(){
+				$.getWidget("seqlist").remSelected();
+				$.getWidget("mastercbox").set(false);
+				updatepamount();
+				updatecost();
+			}
+		)
+		
+	});
+	
+	////////// Sequence Info Side Panel
+	
+	var updatepamount = function() {
+		let n = $.getWidget("seqlist").getItemAmount();
+		$.getWidget("pamount").set(n);
+	}
+		
+	var updatecost = function() {
+		let pArr = $.getWidget("seqlist").get();
+		var ret = 0;
+		$.each(pArr,function(i,v){
+			ret += Number(v["costval"]);
+		})
+		ret = Number.parseFloat(ret).toFixed(2);
+		$.getWidget("totalcost").set(ret + " €");
+	}
+	
+	$("#orderBtn").click(function(){
+		let validatearr = $.getWidget("seqlist").semantic("validate form");
+		$.getWidget("seqerr").set();
+		
+		if(validatearr.length == 0) {
+			$.getWidget("seqerr").addmsg("Lütfen sekanslama ekleyin!");
+			$.getWidget("seqerr").show();
+			return;
+		}
+		var valid = true;
+		for(i in validatearr) {
+			if(validatearr[i] == false) {
+				$.getWidget("seqerr").addmsg( (Number(i)+1) + " nolu sekanslama hatalı!");
+				valid = false;
+			}
+		}
+		if(valid) {
+			$.getWidget("seqerr").hide();
+			$.getWidget("seqerr").set();
+			order();
+		} else {
+			$.getWidget("seqerr").show();
+		}
+	});
+	
+	$('#excelupload').xlsx({
+		fileupload: true,
+		map: [
+			{
+			},
+			{
+				'dtOrigin': 'A7',
+				'dtTitleRow': ['A20', 'B20', 'C20', 'D20', 'E20', 'F20','G20']
+			}
+		],
+		uploadfunc : function(inp) {
+			console.log(inp)
+			$.cookie("fatura", inp[7][5]);
+			$.cookie("adres", inp[9][1]);
+			$.cookie("proje", inp[9][5]);
+
+			if(typeof(inp[5][5]) == "string") {
+				var taxarr = inp[5][5].split("-");
+				if(taxarr.length == 2) {
+					$.cookie("daire", taxarr[0]);
+					$.cookie("numara", taxarr[1]);
+				} else {
+					$.cookie("daire", inp[5][5]);
+					$.cookie("numara", "");
+				}
+			}
+
+			var arr = [];
+			$.each(inp,function(i,v){
+				if (i<14) return;
+				if(v[0] == undefined) {
+					return false;
+				}
+				else {						
+					var temparr = Object.create(null);
+					temparr["name"] = v[0];
+					temparr["cons"] = v[1];
+					temparr["seqtype"] = v[2];
+					temparr["size"] = v[3];
+					temparr["pname"] = v[4];
+					temparr["pcons"] = v[5];
+					temparr["puri"] = null;
+					if (v[6] == "Yapılsın") temparr["puri"] = true;
+					else if (v[6] == "Yapılmasın") temparr["puri"] = false;
+					arr.push(temparr);
+				}	
+			})
+			
+			$.getWidget("seqlist").empty();
+			$.getWidget("seqlist").addItems(arr.length,arr);
+			updatepamount();
+		}
+	});
+	/*
+	$('#exceldownload').on("click", function (e) {
+	  
+	  let plist = $.getWidget("seqlist");
+	  let elemList = plist.elemList;
+	  
+	  var table_data = [];
+	  var instance = null;
+	  
+	  for (it = 0; it< elemList.length;it++){
+	  
+		let tempobj = [];
+		instance = elemList[it].widgetform("instance");
+		tempobj[0] = instance.childrenWidget["name"].get();
+		tempobj[1] = instance.childrenWidget["cons"].get();
+		if (instance.childrenWidget["seqtype"].get() != 0) tempobj[2] = instance.childrenWidget["seqtype"].semantic("get text");
+		else tempobj[2] = "";
+		tempobj[3] = instance.childrenWidget["size"].get();
+		tempobj[4] = instance.childrenWidget["pname"].get();
+		tempobj[5] = instance.childrenWidget["pcons"].get();
+		if (instance.childrenWidget["puri"].get() === true) tempobj[6] = "Yapılsın";
+		else tempobj[6] = "Yapılmasın";
+		
+		table_data.push(tempobj);
+	  }
+	  	  	  
+      var range2 = rangeBuilder(21, 3, 20 + 231, 3);  // B21:BXX
+      var range3 = rangeBuilder(21, 7, 20 + 231, 7);  // D21:DXX
+	  var imgrange = rangeBuilder(1,1,5,4);
+
+      var data = {
+		templateid : 5,
+        sheets: [
+          {
+            id: 1,
+            'name': 'Siparis Talimatları',
+            pageSetup: { paperSize: 9, orientation: 'landscape', fitToPage: true },
+            columns: [{ width: 36 }],
+            properties: { defaultRowHeight: 16, showGridLines: false }
+          },
+          {
+            id: 2,
+            'name': 'Sekans Sipariş Formu',
+			image: true,
+			imageRange: imgrange,
+            cells: {
+              'B9': [
+                [],
+                ['<date>'],
+                ['<name>'],
+                ['<curator>'],
+                ['<corporation>'],
+                ['<division>'],
+                ['<room>'],
+                ['<address>'],
+                [],
+                ['<phone>'],
+                ['<email>']
+              ],
+              'F9': [ //E9
+                [],
+                ['<order_no>'],
+                [],
+                ['<vergi_dairesi ve no>'],
+                [],
+                ['<billing_address>'],
+                [],
+                ['<project_no>']
+              ],
+              'A21': table_data
+            },
+            validations: [
+              {
+                target: [range2],
+                validation: {
+                  type: 'list',
+                  allowBlank: false,
+				  formulae: ['"'+ "Sanger - PCR" + "," + "Sanger - Plazmit" + "," + "NextGen - Amplikon" + "," + "NextGen - DeNovo" + "," +'"']
+                }
+              },
+              {
+                target: [range3],
+                validation: {
+                  type: 'list',
+                  allowBlank: false,
+                  formulae: ['"'+ "Yapılsın" + "," + "Yapılmasın" +'"']
+                }
+              },
+            ]
+          }
+        ],
+        excel_entries: {
+			'<date>' : moment().format('YYYY-MM-DD HH:mm:ss')
+		}
+      };
+
+	  var userholder = $.getWidget("userholder").get();
+	  if (userholder && userholder.length > 0 && userholder[0].user ) {
+	    data.excel_entries['<name>'] = userholder[0].user.name;
+		data.excel_entries['<address>'] = userholder[0].user.address;
+		data.excel_entries['<corporation>'] = userholder[0].user.company;
+		data.excel_entries['<division>'] = userholder[0].user.department;
+		data.excel_entries['<room>'] = userholder[0].user.door;
+		data.excel_entries['<phone>'] = userholder[0].user.phone;
+		data.excel_entries['<email>'] = userholder[0].user.mail;
+	  }
+
+      var xhr = new XMLHttpRequest();
+
+      // Define what happens on successful data submission
+      xhr.addEventListener('load', function (event) {
+        var blob = xhr.response;
+        saveAs(blob, "sekans_siparis.xlsx");
+      });
+
+      // Define what happens in case of error
+      xhr.addEventListener('error', function (event) {
+        //console.log('Oops! Something went wrong.');
+      });
+
+      // Set up our request
+      xhr.open('POST', '/excel/export', true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.responseType = 'blob';
+
+      xhr.send(JSON.stringify(data));
+    });
+	*/
+	var rangeBuilder = function (sr, sc, er, ec) {
+      var val = 0, i = 0, indx = 0;
+      // Excel columns start from 1 = A, 27 = AA ...
+      var base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var start = '', end = '';
+
+      val = sc;
+      for (i = 0; Math.pow(base.length, i) - 1 < sc; i++) {
+        indx = (val % base.length) - 1;
+        val = Math.floor(val / base.length);
+        start += base[indx];
+      }
+      val = ec;
+      for (i = 0; Math.pow(base.length, i) - 1 < ec; i++) {
+        indx = (val % base.length) - 1;
+        val = Math.floor(val / base.length);
+        end += base[indx];
+      }
+      return start + sr + ":" + end + er;
+    };
+	
+	function herpderp(form) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "/upload"); 
+		xhr.onload = function(event){ 
+			alert("Success, server responded with: " + event.target.response); // raw response
+		}; 
+		// or onerror, onabort
+		var formData = new FormData(form); 
+		xhr.send(formData);
+	}
+
+</script>
+<html>

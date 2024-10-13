@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Standard Meta -->
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="shortcut icon" type="image/png" href="assets/images/fav.png"/>
+	<!-- Site Properties -->
+	<title>Yeni Gen Sentezi</title>
+	
+	<link rel="stylesheet" href="./jquery/jquery-plugins/css/jquery-ui.css">
+	<link rel="stylesheet" href="./semanticui/semantic.min.css">
+	<link rel="stylesheet" href="./datatables/datatables.min.css">
+	<link rel="stylesheet" type="text/css" href="css/orderpages.css">
+
+	<script src="./jquery/jquery-3.3.1.js"></script>
+	<script src="./jquery/jquery-plugins/js/jquery.cookie-1.4.1.js"></script>
+	<script src="./jquery/jquery-plugins/js/jquery-ui.js"></script>
+	<script src="./semanticui/semantic.custom.js"></script>
+	<script src="./datatables/datatables.min.js"></script>
+		
+	<script src="acm/acm-ui-auth.js" ></script>
+	<script src="acm/acm-data-handler.js"></script>
+	<script src="acm/acm-page-handler.js"></script>
+	<script src="acm/acm-dialog.js"></script>
+	<script src="acm/acm-form.js"></script>
+	<script src="acm/acm-input.js"></script>
+	<script src="acm/acm-textarea.js"></script>
+	<script src="acm/acm-table.js"></script>
+	<script src="acm/acm-container.js"></script>
+	<script src="acm/acm-img.js"></script>
+	<script src="acm/acm-link.js"></script>
+	<script src="acm/acm-dropdown.js"></script>
+	<script src="acm/acm-cbox.js"></script>
+	<script src="acm/acm-list.js"></script>
+	<script src="acm/acm-modal.js"></script>
+	<script src="acm/acm-modal.js"></script>
+	<script src="acm/acm-dataholder.js"></script>
+	<script src="acm/acm-display.js"></script>
+	<script src="acm/acm-prompt.js"></script>
+	<script src="acm/acm-msgdiv.js"></script>
+
+	<script src="./js/moment-with-locales.js"></script>
+	<script src="./acm/acm-xlsx.js"></script>
+	<!--<script src="./js-xlsx/shim.js"></script>-->
+	<script src="./js-xlsx/xlsx.full.min.js"></script>
+	<script src="./js/FileSaver.js"></script>	
+
+</head>
+<body>
+	<acmus id="navbarcontainer"></acmus>
+	<acmus id="genepagecontainer"></acmus>
+</body>
+<script>
+
+	String.prototype.replaceAll = function(search, replacement) {
+		var target = this;
+		return target.replace(new RegExp(search, 'g'), replacement);
+	};
+
+var	saveService = {
+	source: "ajax",
+	url: "saveGene"
+}
+
+var tableService = {
+	source: "ajax",
+	url: "table"
+}
+
+var orderService = {
+	source: "ajax",
+	url: "insertGene"
+}
+
+$.Widget.registerService("saveService",saveService);
+$.Widget.registerService("tableService",tableService);
+$.Widget.registerService("orderService",orderService);
+
+function save() {
+	$.formAction({genes : "genelist"},"saveService",function(res){
+		if (res.ok == "ok") {
+			$.getWidget("successmsg").show();
+		}
+	})
+}
+
+function order() {
+	$.formAction({genes : "genelist"},"orderService",function(res){
+		//console.log(res);
+		if (res.ok == "ok") {
+			window.location.href = "/confirmgene.html";
+		}
+	})
+}
+
+var seqonchange = function(widg) {
+	var tempseq = widg.get().replace(/\s+/g, '').toUpperCase();
+	if (widg.get() != tempseq) widg.set(tempseq);
+}
+
+var geneformchangefunc = function(x) {	
+	var self = this;
+	if(x.extractedId != undefined) {
+		if(x.extractedId == "sequence"){
+			self.childrenWidget["bp"].set(
+				{
+					html : x.get().replace(/\s+/g, '').length + "bp"
+				}
+			);
+		}
+	}
+}
+
+var geneformtemplate = {
+	type: "widgetform",
+	options: {
+		div: "ui segments form",
+		childfunc: geneformchangefunc,
+		structure: [
+			{div: "ui secondary segment grid", structure: [
+				{div: "one wide column #pcbox", template:"cboxtemp"},
+				{div: "one wide column #pnum", template:"pnum"},
+				{div: "field four wide column #name", template:"nametemp"},
+				{div: "six wide column"},
+				{div: "field four wide fluid centertext column #cost", template:"cost"},
+			]},//checkbox
+			{div: "ui segment", structure: [
+				{div: "ui grid",structure:[
+					{div: "two wide column"},//label
+					{div: "fourteen wide column", structure:[
+						{div: "ui grid", structure:[
+							//{div: "field four wide column #fmod", template:"fmodtemp"},//dd1
+							{div: "two wide column"},
+							{div: "four wide column #bp", template:"bp"},
+							{div: "two wide column"},
+							//{div: "field four wide column #tmod", template:"tmodtemp"}//dd2
+						]},
+						{div:"row field #sequence", template: "texttest"},//textarea
+					]}
+				]}
+			]},
+			{div: " #costval", template:"costval"},
+		],
+		templates: {
+			texttest: {
+				type: "textarea",
+				formchange: true,
+				options: {
+					div: "ui left icon fluid input",
+					rows: 1,
+					name: "sequence",
+					placeholder: "SEKANS",
+					onchange: seqonchange,
+				}
+			},
+			cboxtemp: {
+				type: "cbox",
+				options: {
+					div: "",
+					//label: ""
+				}
+			},
+			nametemp: {
+				type: "input",
+				options:{
+					div: "small ui fluid input",
+					type: "text",
+					name: "name"
+				}
+			},
+			cost: {
+				type: "link",
+				options:{
+					div: "",
+					html: "Fiyat isteyiniz €", //TO DO 0 €
+					src : ""
+				}
+			},
+			bp: {
+				type: "link",
+				options:{
+					div: "",
+					html: "0bp",
+					src : ""
+				}
+			},
+			costval: {
+				type: "dataholder",
+				options: {
+					div: "hidden",
+					defdata: 0
+				}
+			},
+			pnum: {
+				type: "display",
+				selector: "#pnum",
+				options: {
+					valelem: "span",
+					defval: "0",
+					label: {
+						label: "",
+						html: ""
+					}
+				}		
+			},
+		},
+		rules: {
+			inline: true,
+			on: 'change',
+			fields: {
+				sequence: {
+					identifier  : 'sequence',
+					rules: [
+						{
+							type : 'minLength[3]',
+							dontrim : true,
+							prompt : 'Sekans en az 3bp'
+						},
+						{
+							type: "regExp[/^[ACGTRYMKSWHBVDNI\\s]{3,3000}$/i]",
+							dontrim : true,
+							prompt: "Hatalı sekans"
+						}
+					]
+				},
+				name: {
+					identifier : 'name',
+					rules: [
+						{
+							type : 'minLength[1]',
+							prompt : 'Probe adı en az 1 karakter'
+						},
+						{
+							type : 'maxLength[40]',
+							prompt : 'Probe adı en fazla 40 karakter'
+						}
+					]
+				}
+			}
+		}	
+	}
+};
+
+var genepage = {
+		container: {
+			type: "container",
+			selector: "#genepagecontainer",
+			options: {
+				div: "below_navbar ui container",
+				structure: [
+					{div:"ui grid", structure:[
+						{div:"twelve wide column",structure:[
+							{div:"ui segments",structure: [
+								{div:"ui secondary segment",structure: [
+									{p:"noclass",html:"Gen Sipariş"}
+								]},
+								{div:"ui segment mainseg",structure: [
+									{div:"vertpad ui input cntr #probeCntr", structure:[]},
+									{div:"mini basic ui button #bulkset",structure:[
+										{icon: "noclass", i:"ui pencil alternate icon"},
+										{span: "noclass",html:"Toplu Giriş"}
+									]},
+									{div:"mini basic ui button #bulkadd",structure:[
+										{icon: "noclass", i:"ui plus icon"},
+										{span: "noclass",html:"Toplu Ekle"}
+									]},
+									{hr:"noclass",structure: []},
+									{div:"vertpad ui input #mastercbox", structure:[]},
+									{div:"mini ui red button #cboxdelete",structure:[
+										{icon: "noclass", i:"ui trash alternate icon"},
+										{span: "noclass",html:"Sil"}
+									]},
+									{hr:"noclass",structure: []},
+									{div:"row pad #listwidgetid",structure:[]}
+								]}
+							]}
+						]},
+						{div:"four wide column", structure:[
+							{div:"fixeddiv", structure: [
+								{div:"fluid ui orange big button orderBtn #orderBtn" ,structure:[
+									{icon: "noclass", i:"ui cart icon"},
+									{span: "noclass",html:"Sipariş Et"}
+								]},
+								{div: "ui two attached basic fluid buttons", structure:[
+									{div: "ui button #savebtn", structure: [
+										{icon: "noclass", i:"ui save icon"},
+										{span: "noclass",html:"Kaydet"}									
+									]},
+									{div: "ui button #loadbtn", structure: [
+										{icon: "noclass", i:"ui sync icon"},
+										{span: "noclass",html:"Yükle"}									
+									]}
+								]},
+								{div: "ui segment", structure:[
+									{div: "div #pamount"},
+									{div: "div #totalcost"}
+								]},
+								{div:"vertpad #successmsg"},
+								{div:"vertpad #geneerr"},
+							]}
+						]}
+					]},
+					{div: "#mod", structure:[
+						{div:"header #modalhead", html:""},
+						{div:"content", structure:[
+							{div:"ui grid", structure:[
+								{div: "five wide column",structure:[
+									{div: "",html: "Gen Adı"},
+									{div: "#modpnames"},
+									{div: "#numnames"}
+								]},
+								{div: "eleven wide column",structure:[
+									{div: "",html: "Gen Sekans"},
+									{div: "#modpseqs"},
+									{div: "#numseqs"}
+								]},
+							]}
+						]},
+						{div:"content #moderr"},
+						{div:"actions", structure:[
+							{div: "ui blue button #modalbtnset",html:"Giriş"},
+							{div: "ui green button #modalbtnadd",html:"Ekle"},
+							{div: "ui red button #modalbtncancel",html:"İptal"}
+						]}
+					]},
+					{div: "#priceholder"},
+					{div: "mini #prompt"},
+					{div: "#userholder"},
+				]
+			}
+		},
+		counter : {
+			type: "input",
+			selector: "#probeCntr",
+			options:{
+				div: "mini ui left labeled action input",
+				type: "number",
+				label: {html: "Miktar :",label: "ui label"},
+				button: {html: "Yükle", button: "mini basic ui button", id:"loadamount"},
+				placeholder: "0",
+				min : 0,
+				width: "65px"
+			}
+		},
+		genelist : {
+			type: "widgetlist",
+			selector: "#listwidgetid",
+			options: {
+				div: "",
+				itemdiv: "itempadding",
+				item : geneformtemplate,
+				listCbox: "pcbox",
+				listnumber: "pnum",
+				oncreate: false,
+				datasource:"tableService",
+				fetchparams:{
+					table: "gene_temporary",
+					columns: ["name", "sequence"],
+					filter: {
+						where : {
+							orderitem: false
+						}
+					}
+				}
+			}
+		},
+		mastercbox : {
+			type: "cbox",
+			selector: "#mastercbox",
+			options: {
+				div: ""
+			}
+		},
+		mod : {
+			type: "ACMmodal",
+			selector: "#mod",
+			options: {
+				semanticOptions : {
+					closable: false
+				}
+			}
+		},
+		modpnames: {
+			type: "textarea",
+			selector: "#modpnames",
+			options: {
+				div: "ui left icon fluid input",
+				rows: 20,
+				name: "username",
+				placeholder: "Gen Adı"
+			}
+		},
+		modpseqs: {
+			type: "textarea",
+			selector: "#modpseqs",
+			options: {
+				div: "ui left icon fluid input",
+				rows: 20,
+				name: "username",
+				placeholder: "Gen Sekans"
+			}
+		},
+		pamount: {
+			type: "display",
+			selector: "#pamount",
+			options: {
+				valelem: "span",
+				defval: "0",
+				label: {
+					label: "",
+					html: "Toplam ürün sayısı: "
+				}
+			}
+		},
+		totalcost: {
+			type: "display",
+			selector: "#totalcost",
+			options: {
+				valelem: "span",
+				defval: "0 €",
+				label: {
+					label: "",
+					html: "Toplam Tutar: "
+				}
+			}		
+		},
+		prompt: {
+			type: "prompt",
+			selector: "#prompt",
+			options: {
+				semanticOptions : {
+				}
+			}
+		},
+		userholder: {
+			type: "dataholder",
+			selector: "#userholder",
+			options: {
+				oncreate: true,
+				datasource:"tableService",
+				fetchparams:{
+					table: "acm_users",
+					columns: ["id"],
+					join: [
+						{ table: "users", foreign: "id" ,target: "userid"},
+					],
+				},
+				div: "hidden"
+			}
+		},
+		geneerr: {
+			type: "msgdiv",
+			selector: "#geneerr",
+			options: {
+				closable: true,
+				div: "negative hidden",
+				header: "Hata:",
+				msglist: [],
+				fadeout: 5000,
+			}
+		},
+		successmsg: {
+			type: "msgdiv",
+			selector: "#successmsg",
+			options: {
+				closable: true,
+				div: "success hidden",
+				header: "Form Kayıt Edildi !",
+				msglist: [],
+				fadeout: 2000,
+			}
+		},
+		numnames: {
+			type: "display",
+			selector: "#numnames",
+			options: {
+				valelem: "span",
+				defval: "0",
+				label: {
+					label: "",
+					html: "Toplam : "
+				}
+			}
+		},
+		moderr: {
+			type: "msgdiv",
+			selector: "#moderr",
+			options: {
+				closable: true,
+				div: "negative hidden",
+				header: "Probe ve sekans sayısı aynı değil!",
+				msglist: [],
+			}
+		},
+		numseqs: {
+			type: "display",
+			selector: "#numseqs",
+			options: {
+				valelem: "span",
+				defval: "0",
+				label: {
+					label: "",
+					html: "Toplam : "
+				}
+			}
+		},
+	};
+
+	$.createWidgets(genepage);
+	
+	
+	/*
+	$('#excelupload').xlsx({
+		fileupload: true,
+		map: [
+			{
+			},
+			{
+				'dtOrigin': 'A21',
+				'dtTitleRow': ['A20', 'B20', 'C20', 'D20']
+			}
+		],
+		uploadfunc : function(inp) {
+			var arr = [];
+			$.each(inp,function(i,v){
+				if(v[0] == undefined) {
+					return false;
+				}
+				else {						
+					var temparr = Object.create(null);
+					temparr["name"] = v[0];
+					if (v[1]) temparr["fmod"] = v[1];
+					temparr["sequence"] = v[2].replace(/\s+/g, '');
+					if (v[3]) temparr["tmod"] = v[3];
+					arr.push(temparr);
+				}	
+			})
+			$.getWidget("genelist").empty();
+			$.getWidget("genelist").addItems(arr.length,arr);
+			updatepamount();
+		}
+	});
+	*/
+	
+	////////// Probe Amount Set
+	
+	$("#loadamount").click(function(){
+	
+		let cur = $.getWidget("genelist").getItemAmount()
+		var cntr = $.getWidget("counter").get()
+		
+		if(cntr < 0) cntr = 0;
+	
+		if(cur > cntr) {
+			$.getWidget("prompt").fire("Silme uyarısı !","Son " + (cur-cntr) + " gen silinsin mi?", 
+				function(){
+					$.getWidget("genelist").setItemAmount(cntr);
+					updatepamount();
+					updatecost();
+				}
+			)
+		} else {
+			$.getWidget("genelist").setItemAmount(cntr);
+			updatepamount();
+			updatecost();
+		}
+	});
+	
+	////////// Checkbox Delete Update
+	
+	var mastercboxfunc = function(b){
+		$.getWidget("genelist").setAllCbox(b.get());
+	}
+	
+	$.getWidget("mastercbox").setonchange(mastercboxfunc);
+	
+	var numnamesfunc = function(w) {
+		$.getWidget("numnames").set(getLinesArr(w.get()).length)
+	}
+	
+	var numseqsfunc = function(w) {
+		$.getWidget("numseqs").set(getLinesArr(w.get()).length)
+	}
+	
+	$.getWidget("modpnames").setonchange(numnamesfunc);
+	$.getWidget("modpseqs").setonchange(numseqsfunc);
+	
+	
+	$("#cboxdelete").click(function(){
+				
+		$.getWidget("prompt").fire("Silme uyarısı !","Seçili probelar silinsinmi ?", 
+			function(){
+				$.getWidget("genelist").remSelected();
+				$.getWidget("mastercbox").set(false);
+				updatepamount();
+				updatecost();
+			}
+		)
+		
+	});
+			
+	////////// BULK MODAL
+	
+	$("#bulkset").click(function(){
+		$("#modalbtnadd").hide();
+		$("#modalbtnset").show();
+		$("#modalhead").html("Toplu Giriş");
+		$.getWidget("modpnames").set("");
+		$.getWidget("modpseqs").set("");
+		$.getWidget("mod").show();
+		$.getWidget("moderr").hide();
+	});
+	
+	$("#bulkadd").click(function(){
+		$("#modalbtnset").hide();
+		$("#modalbtnadd").show();
+		$("#modalhead").html("Toplu Ekle");
+		$.getWidget("modpnames").set("");
+		$.getWidget("modpseqs").set("");	
+		$.getWidget("mod").show();
+		$.getWidget("moderr").hide();
+	});
+
+	$("#modalbtnset").click(function(){
+		setaddFromModal(true);
+	});
+	
+	$("#modalbtnadd").click(function(){
+		setaddFromModal(false);
+	});
+	
+	$("#modalbtncancel").click(function(){
+		$.getWidget("mod").hide();
+	});
+	
+	var setaddFromModal = function(b) { // b == true set mode	
+	
+		let parr = getLinesArr($.getWidget("modpnames").get());
+		let sarr = getLinesArr($.getWidget("modpseqs").get());
+		
+		if(sarr.length > 0 && (parr.length == sarr.length)) { // seperate to show distinct messages
+			$.getWidget("mod").hide();
+			$.getWidget("modpseqs").set("");
+			$.getWidget("modpnames").set("");
+			var arr = [];			
+			for (i = 0;i<parr.length;i++) {
+				var temparr = Object.create(null);
+				temparr["name"] = parr[i];
+				temparr["sequence"] = sarr[i].replace(/\s+/g, '');
+				temparr["bp"] = {html : sarr[i].replace(/\s+/g, '').length + "bp"};
+				arr.push(temparr);
+			}
+			
+			if(b) $.getWidget("genelist").empty();
+			$.getWidget("genelist").addItems(arr.length,arr);
+			
+			updatepamount();
+			updatecost();
+			
+		} else {
+			$.getWidget("moderr").show();
+		}
+		
+	}
+	
+	function getLinesArr(str) { //get primer lines from modal textbox
+		var arr = str.trim().length > 0 ? str.trim().split(/\n/) : [];
+		return arr;
+	}
+	//// //// //// Primer Info Side Panel
+	
+	var updatepamount = function() {
+		let n = $.getWidget("genelist").getItemAmount();
+		$.getWidget("pamount").set(n);
+	}
+		
+	var updatecost = function() {
+		
+		let pArr = $.getWidget("genelist").get();
+		var ret = 0;
+		$.each(pArr,function(i,v){
+			ret += Number(v["costval"]);
+		})
+		ret = Number.parseFloat(ret).toFixed(2);
+		$.getWidget("totalcost").set(ret + " €");
+		updatepamount();
+	}
+	
+	$("#savebtn").click(function(){
+		save();
+	});
+	
+	$("#loadbtn").click(function(){
+		$.getWidget("genelist").fetch();
+	});
+	
+	$("#orderBtn").click(function(){
+		let validatearr = $.getWidget("genelist").semantic("is valid");
+		$.getWidget("geneerr").set();
+		
+		if(validatearr.length == 0) {
+			$.getWidget("geneerr").addmsg("Lütfen gen ekleyin!");
+			$.getWidget("geneerr").show();
+			return;
+		}
+		var valid = true;
+		for(i in validatearr) {
+			if(validatearr[i] == false) {
+				$.getWidget("geneerr").addmsg( (Number(i)+1) + " nolu gen hatalı!");
+				valid = false;
+			}
+		}
+		if(valid) {
+			$.getWidget("geneerr").hide();
+			$.getWidget("geneerr").set();
+			order();
+		} else {
+			$.getWidget("geneerr").show();
+		}
+	});
+	
+	/*
+	$('#exceldownload').on("click", function (e) {
+	  
+	  let plist = $.getWidget("genelist");
+	  let elemList = plist.elemList;
+	  
+	  var table_data = [];
+	  var instance = null;
+	  for (it = 0; it< elemList.length;it++){
+	  
+		let tempobj = [];
+		instance = elemList[it].widgetform("instance");
+		tempobj[0] = instance.childrenWidget["name"].get();
+		if (instance.childrenWidget["fmod"].get() != 0) tempobj[1] = instance.childrenWidget["fmod"].semantic("get text");
+		else tempobj[1] = "";
+		tempobj[2] = instance.childrenWidget["sequence"].get().replace(/\s+/g, '');
+		if (instance.childrenWidget["tmod"].get() != 0) tempobj[3] = instance.childrenWidget["tmod"].semantic("get text");
+		else tempobj[3] = "";
+		
+		table_data.push(tempobj);
+	  }
+	  	  	  
+      var range2 = rangeBuilder(21, 2, 20 + 231, 2);  // B21:BXX
+      var range3 = rangeBuilder(21, 4, 20 + 231, 4);  // D21:DXX
+			var imgrange = rangeBuilder(1,1,5,4);
+
+      var data = {
+		templateid : 2,
+        sheets: [
+          {
+            id: 1,
+            'name': 'Siparis Talimatları',
+            pageSetup: { paperSize: 9, orientation: 'landscape', fitToPage: true },
+            columns: [{ width: 36 }],
+            properties: { defaultRowHeight: 16, showGridLines: false }
+          },
+          {
+            id: 2,
+            'name': 'Prob Sipariş Formu',
+			image: true,
+			imageRange: imgrange,
+            cells: {
+              'B9': [
+                [],
+                ['<date>'],
+                ['<name>'],
+                ['<curator>'],
+                ['<corporation>'],
+                ['<division>'],
+                ['<room>'],
+                ['<address>'],
+                [],
+                ['<phone>'],
+                ['<email>']
+              ],
+              'E9': [
+                [],
+                ['<order_no>'],
+                [],
+                ['<vergi_dairesi ve no>'],
+                [],
+                ['<billing_address>'],
+                [],
+                ['<project_no>']
+              ],
+              'A21': table_data
+            },
+            validations: [
+              {
+                target: [range2],
+                validation: {
+                  type: 'list',
+                  allowBlank: false,
+                  formulae: ['"'+ $.getWidget("fmodholder").key("val").join(",") +'"']
+                }
+              },
+              {
+                target: [range3],
+                validation: {
+                  type: 'list',
+                  allowBlank: false,
+                  formulae: ['"'+ $.getWidget("tmodholder").key("val").join(",") +'"']
+                }
+              },
+            ]
+          }
+        ],
+        excel_entries: {
+			'<date>' : moment().format('YYYY-MM-DD HH:mm:ss')
+		}
+      };
+
+	  var userholder = $.getWidget("userholder").get();
+	  if (userholder && userholder.length > 0 && userholder[0].user ) {
+	    data.excel_entries['<name>'] = userholder[0].user.name;
+		data.excel_entries['<address>'] = userholder[0].user.address;
+		data.excel_entries['<corporation>'] = userholder[0].user.company;
+		data.excel_entries['<division>'] = userholder[0].user.department;
+		data.excel_entries['<room>'] = userholder[0].user.door;
+		data.excel_entries['<phone>'] = userholder[0].user.phone;
+		data.excel_entries['<email>'] = userholder[0].user.mail;
+	  }
+
+      var xhr = new XMLHttpRequest();
+
+      // Define what happens on successful data submission
+      xhr.addEventListener('load', function (event) {
+        var blob = xhr.response;
+        saveAs(blob, "probe_siparis.xlsx");
+      });
+
+      // Define what happens in case of error
+      xhr.addEventListener('error', function (event) {
+        //console.log('Oops! Something went wrong.');
+      });
+
+      // Set up our request
+      xhr.open('POST', '/excel/export', true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.responseType = 'blob';
+
+      xhr.send(JSON.stringify(data));
+    });
+	*/
+	
+	/*
+	var rangeBuilder = function (sr, sc, er, ec) {
+      var val = 0, i = 0, indx = 0;
+      // Excel columns start from 1 = A, 27 = AA ...
+      var base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var start = '', end = '';
+
+      val = sc;
+      for (i = 0; Math.pow(base.length, i) - 1 < sc; i++) {
+        indx = (val % base.length) - 1;
+        val = Math.floor(val / base.length);
+        start += base[indx];
+      }
+      val = ec;
+      for (i = 0; Math.pow(base.length, i) - 1 < ec; i++) {
+        indx = (val % base.length) - 1;
+        val = Math.floor(val / base.length);
+        end += base[indx];
+      }
+      return start + sr + ":" + end + er;
+    };
+	*/
+	
+</script>
+<html>

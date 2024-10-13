@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Standard Meta -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="shortcut icon" type="image/png" href="assets/images/fav.png"/>
+  <!-- Site Properties -->
+  <title>FAQ</title>
+	<link rel="stylesheet" type="text/css" href="semantic.min.css">
+	<link rel="stylesheet" type="text/css" href="jquery-ui.css">
+	
+	<link rel="stylesheet" type="text/css" href="css/faq.css">
+	
+	<script src="./jquery/jquery-3.3.1.js"></script>
+	<script src="./jquery/jquery-plugins/js/jquery.cookie-1.4.1.js"></script>
+	<script src="./jquery/jquery-plugins/js/jquery-ui.js"></script>
+    <script src="semantic.min.js"></script>
+	
+	<script src="acm/acm-ui-auth.js" ></script>
+	<script src="acm/acm-data-handler.js"></script>
+	<script src="acm/acm-page-handler.js"></script>
+	<script src="acm/acm-dialog.js"></script>
+	<script src="acm/acm-dropdown.js"></script>
+	<script src="acm/acm-link.js"></script>
+	<script src="acm/acm-container.js"></script>
+	<script src="acm/acm-img.js"></script>
+	
+	</head>
+	<body>
+	
+	<acmus id="navbarcontainer"></acmus>
+	
+	<div class="content ui transition fade in container">
+		<div class="ui grid">
+			<div class="four wide column">
+				<div class="ui vertical inverted menu widthauto">
+					<a class="item active" data-tab="tab1">
+						Sipariş ve Teslimat
+					</a>
+					<a class="item" data-tab="tab2">
+						Saflaştırma ve Skala
+					</a>
+					<a class="item" data-tab="tab3">
+						Primer/Probe dizayn
+					</a>
+					<a class="item" data-tab="tab4">
+						Modifiye primer/Probe
+					</a>
+					<a class="item" data-tab="tab5">
+						Tüple ilgili sorular 
+					</a>
+					<a class="item" data-tab="tab6">
+						 Saklama ve garanti
+					</a>
+					<a class="item" data-tab="tab7">
+						 Sulandırma
+					</a>					
+				</div>
+			</div>
+			<div class="twelve wide column">
+				<div class="ui marg0 custab transition scale in tab segment active" data-tab="tab1">
+					<h4>Nasıl Sipariş Verebilirim</h4>
+					<p>
+						'Yeni Sipariş' sayfasına gidip Primer yada Probe sipariş edebilirsiniz.
+						Sipariş verdikten sonra üretim departmanımız teslim tarihi ile ilgili bilgiyi size en yakın zamanda iletecektir.
+					</p>
+					<p>
+						Sipariş sayfasında 'Yardım' kısmında, sistemin nasıl kullanacağına dair videolar bulunmaktadır.
+					</p>
+					<hr>
+					<h4>Sipariş verdiğim primerler ne zaman teslim edilir?</h4>
+					<p>
+					  Standart saflaştırma yapılan primerleriniz sentezin ertesi günü, OPC saflaştırma yapılan primerleriniz sentez sonrası 2 gün sonra teslime hazır olmaktadır.
+					  HPLC saflaştırma yapılan primerleriniz / modifiyeprimer ve probe’larınız için lütfen bizimle iletişime geçiniz. Rutin sentez günlerimiz aşağıda verilmiştir.
+				   </p>
+				   
+					<div class="ui segments">
+					  <div class="ui secondary segment">
+						<p>Sentez Takvimi</p>
+					  </div>
+					  <div class="ui segment">
+						<p>40 baz altı olan primlerin takvim tablosu</p>
+						<!---->
+						<table class="ui celled table txtcntr">
+						  <thead>
+							<tr>
+								<th>PZT</th>
+								<th>ÇAR</th>
+								<th>PER</th>
+							</tr>
+						  </thead>
+						  <tbody>
+							<tr>
+							  <td>
+								 10:00 &nbsp;<br>
+								 <span class="label label-default">50nmol</span>
+							  </td>
+							  <td>
+								 10:00 &nbsp;<br>
+								 <span class="label label-default">50nmol</span>
+							  </td>
+							  <td>
+								 &nbsp;<br>
+							  </td>
+							</tr>
+							<tr>
+							  <td>
+								 16:00 &nbsp;<br>
+								 <span class="label label-primary">100nmol</span>
+							  </td>
+							  <td>
+								 16:00 &nbsp;<br>
+								 <span class="label label-primary">100nmol</span>
+							  </td>
+							  <td>
+								 16:00 &nbsp;<br>
+								 <span class="label label-success">200nmol</span>
+							  </td>
+						   </tr>
+						  </tbody>
+						</table>
+					  </div>
+					</div>
+				   
+				   
+				</div>
+				<div class="ui marg0 custab transition scale in tab segment" data-tab="tab2">
+					<h4>Hangi saflaştırma türünü seçmeliyim?</h4>
+					<p>
+					  Saflaştırma olarak <span style="text-decoration: underline; font-weight: 600">Standart</span> (DSLT-desalting) saflaştırma,
+					  <span style="text-decoration: underline; font-weight: 600">OPC</span> (RP-HPLC grade)
+					  ve <span style="text-decoration: underline; font-weight: 600">HPLC</span> (IO-HPLC) seçenekleri mevcuttur.
+					</p>
+					<div class="ui segments">
+					  <div class="ui segment">
+						<p>Standart saflaştırma</p>
+					  </div>
+					  <div class="ui secondary segment">
+						<p>Standart saflaştırma olarak desalting işlemi gerçekleştirilir ve primerler istenmeyen tuzlardan arındırılır. 35 baz ve daha kısa oligolar için, PCR uygulamalarında kullanılacak oligolar da dahil olmak üzere birçok uygulama için bu yöntem kullanılabilir.</p>
+					  </div>
+					</div>
+					<div class="ui segments">
+					  <div class="ui segment">
+						<p>OPC saflaştırma</p>
+					  </div>
+					  <div class="ui secondary segment">
+						<p>OPC yöntemi ile hatalı sekanslar, yan ürünler, kirlilikler elenir. Bu yöntem ile elde edilen primerler sekans, PCR, hibridizasyonprobe’ları için ve gen sentezi için kullanılabilir. 60 Baz uzunluğundaki nükleotidlere kadar OPC purifikasyonu tavsiye edilir.</p>
+					  </div>
+					</div>
+					<div class="ui segments">
+					  <div class="ui segment">
+						<p>HPLC saflaştırma</p>
+					  </div>
+					  <div class="ui secondary segment">
+						<p>HPLC yöntemi tüm n-1 oligo yan ürünlerinden kurtulmak için en etkili yöntemdir. Klonlama çalışmaları gibi tek bazlık hataların tolere edilmeyeceği çalışmalar için tercih edilebilir. Ayrıca modifiyeoligonükleotidler için de tavsiye edilen saflaştırma yöntemidir. 50 nmol- HPLC saflaştırma seçeneğinde miktar garantisi bulunmamaktadır.</p>
+					  </div>
+					</div>
+					<hr>
+					<h4>Hangi skalada sipariş vereceğimi nasıl belirleyebilirim?</h4>
+					<p>Aşağıdaki tablo 100 µl PCR reaksiyonunda son primer konsantrasyonu olarak 0.1-0.5µM kullanıldığı kabul edilerek hazırlanmıştır:</p>
+					<table class="ui celled table txtcntr" style="font-size: 90%;">
+					  <thead>
+						 <tr>
+							<th>Sentez Skalası</th>
+							<th>Tahmini PCR reaksiyon sayısı</th>
+						 </tr>
+					  </thead>
+					  <tbody>
+						 <tr>
+							<td>50 nmol</td>
+							<td>500 - 2500</td>
+						 </tr>
+						 <tr>
+							<td>100 nmol</td>
+							<td>1000 - 5000</td>
+						 </tr>
+						 <tr>
+							<td>200 nmol</td>
+							<td>4000 - 20000</td>
+						 </tr>
+					  </tbody>
+					</table>
+					<hr>
+					<h4>Tercih ettiğim sentez skalası bana teslim edilen ürün miktarı ile aynı mı olmalıdır?</h4>
+					<p>
+						Tercih edilen skala senteze başlama miktarını belirlemektedir. Saflaştırma türüne göre teslim edilecek ürün miktarı değişkenlik göstermektedir.  Farklı skala ve saflaştırma türlerinde teslim edilebilecek en düşük ürün miktarı aşağıdaki tabloda verilmiştir:
+					</p>
+					<table class="ui celled table txtcntr" style="font-size: 90%;">
+					  <caption>Garanti OD miktarları</caption>
+					  <thead>
+						 <tr>
+							<th>Skala</th>
+							<th>50 nmol</th>
+							<th>100 nmol </th>
+							<th>200 nmol</th>
+							<th>200 nmol + HPLC<sub>saf</sub> </th>
+						 </tr>
+					  </thead>
+					  <tbody>
+						 <tr>
+							<th>Garanti - min OD</th>
+							<td>2 OD</td>
+							<td>6 OD</td>
+							<td>12 OD</td>
+							<td>6 OD</td>
+						 </tr>
+					  </tbody>
+					</table>
+				</div>
+				<div class="ui marg0 custab transition scale in tab segment" data-tab="tab3">
+					<h4>Primer/probe dizaynı yapıyor musunuz?</h4>
+					<p>
+						Primer/probe dizaynı hizmetimiz bulunmaktadır. Dizaynı bizim tarafımızdan yapılan primer/probe’lar her türlü optimizasyonu
+						yapılıp optimizasyon raporu ile birlikte çalışır halde teslim edilmektedir.
+					</p>
+					<p>
+						Bunun için bu hizmeti paket halinde aşağıdaki kalemleri
+						kapsayacak şekilde vermekteyiz:
+					</p>
+					<ul>
+						<li>Primer/probe dizaynı</li>
+						<li>PCR optimizasyonu</li>
+						<li>Pozitif kontrol (gen fragmenti) sentezi </li>
+					</ul>
+				</div>
+				<div class="ui marg0 custab transition scale in tab segment" data-tab="tab4">
+					<h4> Modifiye primer üretimi yapıyor musunuz? </h4>
+					<p>
+						Aşağıdaki tabloda yer alan modifikasyonlara sahip oligonükleotidlerin üretimini rutin olarak yapmaktayız.
+					</p>
+					<p>
+						Eğer istediğiniz modifikasyon bu tabloda yer almıyorsa lütfen bizimle iletişime geçiniz.
+					</p>
+					
+					<table class="ui celled table txtcntr">
+								  <caption>Primer modifikasyonlar tablosu</caption>
+								  <thead>
+									 <tr>
+										<th>5' modifikasyon</th>
+										<th>3' modifikasyon</th>
+									 </tr>
+								  </thead>
+								  <tbody>
+									 <tr>
+										<td>FAM</td>
+										<td>TAMRA</td>
+									 </tr>
+									 <tr>
+										<td>HEX</td>
+										<td></td>
+									 </tr>
+									 <tr>
+										<td>TAMRA</td>
+										<td></td>
+									 </tr>
+									 <tr>
+										<td>Phosphate</td>
+										<td></td>
+									 </tr>
+									 <tr>
+										<td>Amino</td>
+										<td></td>
+									 </tr>
+								  </tbody>
+							   </table>
+							</td>
+					<hr>
+					<h4>Probe üretimi yapıyor musunuz ?</h4>
+					<p>
+						Aşağıdaki tabloda yer alan boya ve quencher’ları içeren Taqman probe’larının üretimini yapmaktayız.
+					</p>
+					<p>
+						Eğer istediğiniz probe’a ait boya/quencher bu tabloda yer almıyorsa lütfen bizimle iletişime geçiniz.
+					</p>
+
+							   
+							<td class="col-md-6 col-sm-12">
+							   <table class="ui celled table txtcntr">
+								  <caption>Probe boya-quencher tablosu</caption>
+								  <thead>
+									 <tr>
+										<th>5'</th>
+										<th>3'</th>
+									 </tr>
+								  </thead>
+								  <tbody>
+									 <tr>
+										<td>FAM</td>
+										<td>TAMRA</td>
+									 </tr>
+									 <tr>
+										<td>FAM</td>
+										<td>BHQ-1</td>
+									 </tr>
+									 <tr>
+										<td>HEX</td>
+										<td>BHQ-1</td>
+									 </tr>
+								  </tbody>
+							   </table>
+
+					<hr>
+					<h4>Modifiye primer/probe siparişim için boya/quencher’ları nasıl seçmeliyim?</h4>
+					<p>
+						Modifiye primer/probe’larınızda kullanılacak boyaların excitation ve emission dalga boyları kullanılacak cihazın lazer ve filtreleri ile uyumlu olmalıdır.
+					</p>
+					<p>
+						Cihazınıza ait lazer ve filtre bilgilerine cihazınızın web sitesi/kullanım kılavuzundan ulaşabilirsiniz.
+					</p>
+					<p>
+						Modifiye primer/probe üretiminde kullanmakta olduğumuz boyalara ait excitation/emission dalga boyları aşağıdaki tabloda verilmiştir:
+					</p>
+					<table class="ui celled table txtcntr">
+					  <tbody>
+						 <tr>
+							<td class="col-md-6 col-sm-12">
+							   <table class="ui celled table txtcntr">
+								  <caption>Boyaların excitation emission değer tablosu</caption>
+								  <thead>
+									 <tr>
+										<th>Boya</th>
+										<th>Excitation (nm)</th>
+										<th>Emission (nm)</th>
+									 </tr>
+								  </thead>
+								  <tbody>
+									 <tr>
+										<td>FAM</td>
+										<td>494</td>
+										<td>518</td>
+									 </tr>
+									 <tr>
+										<td>HEX</td>
+										<td>535</td>
+										<td>556</td>
+									 </tr>
+									 <tr>
+										<td>TAMRA</td>
+										<td>555</td>
+										<td>580</td>
+									 </tr>
+								  </tbody>
+							   </table>
+							</td>
+							<td class="col-md-6 col-sm-12">
+							   <table class="ui celled table txtcntr">
+								  <caption>Taqman probe’ları için önerilen boya/quencher çiftleri tablosu </caption>
+								  <thead>
+									 <tr>
+										<th>5'</th>
+										<th>3'</th>
+									 </tr>
+								  </thead>
+								  <tbody>
+									 <tr>
+										<td>FAM</td>
+										<td>TAMRA</td>
+									 </tr>
+									 <tr>
+										<td>FAM</td>
+										<td>BHQ-1</td>
+									 </tr>
+										<td>HEX</td>
+										<td>BHQ-1</td>
+									 </tr>
+								  </tbody>
+							   </table>
+							</td>
+						 </tr>
+					  </tbody>
+					</table>
+				</div>
+				<div class="ui marg0 custab transition scale in tab segment" data-tab="tab5">
+					
+				   <h4>
+					  Tüplerin içinde ürün görünmüyor. Sebebi ne olabilir?
+				   </h4>
+				   <p>
+					  Sentezlenen tüm oligonükleotidler kurutulmuş (liyofilize) halde teslim edilmektedir.
+				   </p>
+				   <p>
+					  Ürünlerin renksiz olması nedeniyle kurutulmuş halde tüpte farkedilmeleri, özellikle düşük skalada, oldukça zordur.
+				   </p>
+				   <hr>
+				   <h4>
+					  Tüplerin dibinde jelimsi, hafif kahverengi bir ürün var. Normal midir?
+				   </h4>
+				   <p>
+					  100 nmol ve 200 nmol sentezlerde ürün yoğunluğundan dolayı kurutma sonrası bu görüntü normaldir.
+				   </p>
+				   <p>
+					  Primerinizi standart şekilde sulandırıp çalışabilirsiniz.
+				   </p>
+					
+				</div>
+				<div class="ui marg0 custab transition scale in tab segment" data-tab="tab6">
+
+					   <h4>
+						  Oligonükleotidlerim elime ulaştı, hangi koşullarda saklamalıyım?
+					   </h4>
+					   <p>
+						  Liyofilize olarak teslim edilen primerler oda sıcaklığında saklanabilir. Sulandırılan primerlerin saklama sıcaklığı -20 ºC dir.
+					   </p>
+					   <p>
+						  Primerlerinizi uzun süreli saklamak için TE Buffer ile çözünüz ve stok primerlerinizi don-çöz yapmayınız,
+						  kullanacağınız kadar seyreltip bölünmüş porsiyonlar (aliquot) halinde muhafaza ediniz.
+					   </p>
+					   <table class="ui celled table txtcntr">
+						  <thead>
+							 <tr>
+								<th class="col-sm-4">
+								   Saklama Koşulları
+								</th>
+								<th class="col-sm-4">
+								   Sıcaklık
+								</th>
+								<th class="col-sm-4">
+								   Maksimum Depolama Süresi
+								</th>
+							 </tr>
+						  </thead>
+						  <tbody>
+							 <tr>
+								<td>
+								   Liyofilize
+								</td>
+								<td>
+								   -20<sup>0</sup>C
+								</td>
+								<td>
+								   &lt; 1 yıl
+								</td>
+							 </tr>
+							 <tr>
+								<td>
+								   Liyofilize
+								</td>
+								<td>
+								   Oda sıcaklığı
+								</td>
+								<td>
+								   1 ay’a kadar
+								</td>
+							 </tr>
+							 <tr>
+								<td>
+								   Solüsyon içerisinde
+								</td>
+								<td>
+								   -20<sup>0</sup>C
+								</td>
+								<td>
+								   &lt; 6 ay
+								</td>
+							 </tr>
+							 <tr>
+								<td>
+								   Solüsyon içerisinde
+								</td>
+								<td>
+								   Oda sıcaklığı
+								</td>
+								<td>
+								   1 hafta’ya kadar
+								</td>
+							 </tr>
+						  </tbody>
+					   </table>
+
+					   <hr>
+					   <h4>
+						  Primerler için garanti süreci nasıl işlemektedir?
+					   </h4>
+					   <p>
+						  Primerleriniz kullanım kılavuzuna uygun bir şekilde sulandırıldı, saklandı ancak çalışmıyor ise aşağıdaki koşulları sağlaması durumunda garanti kapsamında ücretsiz olarak tekrar sentezlenecektir.
+					   </p>
+					   <ul>
+						  <li>Oligonükleotid dizisinin bir yayından alınmış olması (ilgili yayını lütfen e-mail ile bize iletiniz) ya da,</li>
+						  <li>Daha önce laboratuvarınızda rutin olarak kulllanılmakta olan bir dizi olması.</li>
+					   </ul>
+
+				</div>
+				<div class="ui marg0 custab transition scale in tab segment" data-tab="tab7">
+				   <h4>
+					  Oligonükleotidlerimi nasıl sulandırmalıyım?
+				   </h4>
+				   <p>
+					  100 µM ana stok için eklenmesi gereken çözücü miktarı kullanım kılavuzunda (datasheet) yer almaktadır.
+				   </p>
+				   <p>
+					  Oligonükleotidleri çözmek için TE (Tris-EDTA tampon çözeltisi) veya DNaz/RNaz içermeyen su (DNase/RNasefreewater/DEPC water) kullanılabilir.
+				   </p>
+
+				   <hr>
+				   <h4>
+					  Primerlerin çalışma konsantrasyonu ne olmalıdır?
+				   </h4>
+				   <p>
+					  Kullanılacak primer konsantrasyonu çalışılacak yönteme bağlı olarak değişkenlik gösterebilir.
+				   </p>
+				   <p>
+					  Rutin PCR uygulamaları için 10 µM ara stok oluşturup 25 µl PCR reaksiyonu için bu ara stoktan 0.5 µl kullanılabilir.
+				   </p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	</body>
+	<script>
+		$('.menu .item').tab();
+	</script>
+<html>

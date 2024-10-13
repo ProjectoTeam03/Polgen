@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="shortcut icon" type="image/png" href="assets/images/fav.png"/>
+	<title>Sentez Detayı</title>
+	<link rel="stylesheet" type="text/css" href="semantic.min.css">
+	<link rel="stylesheet" type="text/css" href="jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="datatables/datatables.min.css">
+
+	<script src="jquery-3.3.1min.js"></script>
+	<script src="jquery-ui.js"></script>
+	<script src="jquery.cookie-1.4.1.js"></script>
+	<script src="semantic.min.js"></script>
+	<script src="datatables/datatables.min.js"></script>
+
+	<script src="acm/acm-ui-auth.js" ></script>
+	<script src="acm/acm-data-handler.js"></script>
+	<script src="acm/acm-page-handler.js"></script>
+	<script src="acm/acm-dialog.js"></script>
+	<script src="acm/acm-table.js"></script>
+	<script src="acm/acm-container.js"></script>
+	<script src="acm/acm-img.js"></script>
+	<script src="acm/acm-link.js"></script>
+	<script src="acm/acm-dropdown.js"></script>
+	<script src="acm/acm-input.js"></script>
+	<script src="acm/acm-two-col-card.js"></script>
+	<script src="acm/acm-xlsx.js"></script>
+	<script src="acm/acm-file.js"></script>
+	<script src="acm/acm-thumbnail.js"></script>
+	<script src="acm/acm-modal.js"></script>
+	<script src="acm/acm-dataholder.js"></script>
+	<script src="acm/acm-prompt.js"></script>
+
+	<script src="./js/moment-with-locales.js"></script>
+	<script src="./datatables/datetime.js"></script>
+	<script src="./datatables/widgetbase.js"></script>
+	<script src="./js-xlsx/xlsx.full.min.js"></script>
+	<script src="./js/FileSaver.js"></script>
+	<style>
+		.content.container {
+			margin-top:100px;
+		}
+		.ui.fullscreen.modal {
+			position: static !important;
+		}
+	</style>
+</head>
+
+<body>
+	<acmus id="navbarcontainer"></acmus>
+
+  	<div class="ui vertically divided grid content container">
+    <div class="row">
+      <div class="ui large header">
+        <i class="history icon"></i>
+        <div class="content">
+          Sentez Detayı
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+		<div class="one wide column"></div>
+		<div class="five wide column">
+			<div class="field">
+				<div class="ui left labeled fluid input">
+					<div class="ui label">
+						Sentez No
+					</div>
+					<input type="text" name="total" value="" id="newname">
+				</div>
+			</div>
+		</div>
+		<div class="three wide column">
+			<button class="ui orange fluid button" id="changename">Değiştir</button>
+		</div>
+		<div class="seven wide column">
+
+		</div>
+    </div>
+	<div class="row">
+		<div class="one wide column"></div>
+		<div class="eight wide column">
+			<div class="ui input" id ="csvf"></div>
+			<div class="ui input" id ="csvi"></div>
+		</div>
+		<div class="seven wide column">
+
+		</div>
+	</div>
+    <div class="row">
+      <div id="synthesistable"></div>
+    </div>
+    <div class="row">
+      <div id="button_container" class="eight wide column"></div>
+      <div id="button2_container" class="eight wide column"></div>
+    </div>
+  </div>
+  	<a class="transition hidden" id="csvlink"	href="empty" download="empty.csv"></a>
+  	<div class="transition hidden" id="synthinfo"></div>
+  	<div id="prompt"></div>
+
+  <acmus id="reportcontainer"></acmus>
+
+</body>
+
+
+<script>
+
+	//			{a:"transition hidden #csvlink","attr":{"href":"empty","download":"empty.csv"}},
+	//			{div: "#synthinfo"},
+
+	$.fn.dataTable.ext.order['prodno'] = function ( settings, col ){
+		return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
+			var x = td.innerHTML.split("-");
+			return Number(x[x.length-1]);
+			//return td.innerHTML;
+		} );
+	};
+
+	$(document).on("pagecreated", function() {
+		var row = JSON.parse($.cookie("tempvarsynth"));
+		var checks = 0;
+		$.getWidget("synthesistable").fetch("lazy", [row.id]);
+		$.getWidget("synthinfo").fetch("eager", [row.id]);
+		$.getWidget('synthesistable').table.DataTable().buttons(0, null).container().appendTo($('div.eight.column:eq(0)',$.getWidget('synthesistable').table.DataTable().table().container()));
+		$(document).on("rowsdone",function(){
+			console.log("rowsdone");
+			checks++;
+			if (checks === 2) {
+				$.formAction({id:row.id},"deletesynthservice",function(data){
+					$.removeCookie("tempvarsynth");
+					window.location.href = "productionOldSyntheses.html";
+				});
+			}
+		});
+		$("#cancel").click(function(e){
+			$.getWidget("prompt").fire("Sentez Silme Uyarısı",
+					"Sentezi silmek ve sentezdeki primerleri havuza göndermek istediğinizden emin misiniz ?",
+					function(){
+						let contolprimerids = [];
+						let orderprimerids = [];
+
+						const edi = $.getWidget("synthesistable").editor;
+						let orderids = [];
+
+				$.getWidget("synthesistable").datatable.rows().every(function(){
+					if (this.data().orderid != null && this.data().orderid !== 0) {
+						orderprimerids.push(this.index());
+						if (orderids.includes(this.data().orderid) === false) orderids.push(this.data().orderid);
+					} else {
+						contolprimerids.push(this.index());
+					}
+				});
+
+				if(orderprimerids.length) {
+					edi.edit(orderprimerids,false)
+						.set("dmt","null")
+						.set("synthid","null")
+						.set("synthname","null")
+						.set("od","null")
+						.set("a260","null")
+						.set("tmbasic","null")
+						.set("mw","null")
+						.set("conc","null")
+						.set("totalng","null")
+						.set("totalnmol","null")
+						.set("excoef","null")
+						.set("gc","null")
+						.submit(function(){
+							$.formAction({orderids:orderids, type:"primer"}, "orderProgressService",function(){
+								console.log("ok")
+							})
+							$(document).trigger("rowsdone");
+							}, function() {
+							console.log("not ok");
+						});
+				} else {
+					$(document).trigger("rowsdone");
+				}
+
+				if(contolprimerids.length) {
+					edi.remove(contolprimerids,false).submit(function(x){
+						console.log("ok");
+						$(document).trigger("rowsdone");
+					}, function() {
+						console.log("not ok");
+					});
+				} else {
+					$(document).trigger("rowsdone");
+				}
+			});
+		});
+		$("#prepare_report").click(function(e){
+
+			var tempid = JSON.parse($.cookie("tempvarsynth")).id
+
+			$.cookie("report",JSON.stringify({"id": tempid,"type":"primer"}));
+			window.location.href = "productionSynthReport.html";
+		});
+		$("#changename").click(function(){
+
+			if($("#newname").val()) {
+				var nextid = 1;
+				var edi = $.getWidget("synthesistable").editor;
+				var tbl = $.getWidget("synthesistable").datatable;
+
+				tbl.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+					var tdata = this.data();
+					tdata["synthname"] =  $("#newname").val() + "-" + nextid;
+
+					nextid++;
+				});
+
+				edi.edit(tbl.rows().indexes(), false).submit(
+					function (ret) {
+
+						$.formAction({name: $("#newname").val() ,id: JSON.parse($.cookie("tempvarsynth")).id },"updatesynthnameservice",function(data){
+							console.log("ok")
+						})
+
+					},
+					function () {
+						console.log("ERR");
+					}
+				);
+			}
+			location.reload();
+			alert("Bu kutudaki onay tuşuna basıp sayfanın yenilenmesini Bekleyin...");
+		});
+
+		$('#csv').on("click", function () {
+			if ($("#csvlink").length && $.getWidget("synthinfo").get().data.length) {
+
+				var unorderedrows = $.getWidget('synthesistable').getColsAOA([
+					{ name: "sequence" },
+					{ name: "dmt" },
+					{ name: "synthname" },
+					{ name: "name" },
+					{ name: "order.ordernum" },
+					{ name: "fmod" },
+				]);
+				var rows = [];
+				var order = $.getWidget('synthesistable').table.DataTable().rows({ order: 'applied' } )[0];
+				$.each(order,function(rit,rvt) {
+					rows.push( unorderedrows[rvt] );
+				});
+
+				if($.getWidget("csvi").get().length) {
+					var tempi = $.getWidget("csvi").get();
+					$.each(rows,function(ri,rv) {
+						rows[ri][0] = rows[ri][0].replaceAll("I", tempi);
+					});
+				}
+
+				if($.getWidget("csvf").get().length) {
+					var tempf = $.getWidget("csvf").get();
+					$.each(rows,function(ri,rv) {
+						if(rows[ri][5] !== "" && rows[ri][5] != null) {
+							rows[ri][0] = tempf + rows[ri][0];
+
+						}
+					});
+				}
+
+				$.each(rows,function(ri,rv) {
+					$.each(rows[ri],function(tri,trv){
+						if ( rows[ri][tri].replaceAll != undefined  ) { //&& rows[ri][tri].includes('\n')
+							rows[ri][tri] = rows[ri][tri].replaceAll('\r\n','');
+							rows[ri][tri] = rows[ri][tri].replaceAll('\r','');
+							rows[ri][tri] = rows[ri][tri].replaceAll('\n','');
+						}
+						rows[ri][5] = "";
+						rows[ri][3] = rows[ri][3].replaceAll(',','');
+					})
+
+					if (rows[ri][1] === true ) rows[ri][1] = "DMTON";
+					else rows[ri][1] = "DMTOFF";
+				});
+
+				var csvlink = $("#csvlink")[0];
+				//var csvContent = "data:text/csv;charset=utf-8,";
+				var csvContent = ""
+				rows.forEach(function(rowArray){
+				   if (rowArray.length == 6) rowArray.pop();
+				   var row = rowArray.join(",");
+				   csvContent += row + "\r\n";
+				});
+
+				var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+				if (navigator.msSaveBlob) { // IE 10+
+					navigator.msSaveBlob(blob, filename);
+				} else {
+					var link = document.createElement("a");
+					if (link.download !== undefined) { // feature detection
+						// Browsers that support HTML5 download attribute
+						var url = URL.createObjectURL(blob);
+						link.setAttribute("href", url);
+						link.setAttribute("download", $.getWidget("synthinfo").get().data[0].name + ".csv");
+						link.style.visibility = 'hidden';
+						document.body.appendChild(link);
+						link.click();
+						document.body.removeChild(link);
+					}
+				}
+				//var encodedUri = encodeURIComponent(csvContent);
+				/*
+				var encodedUri = encodeURI(csvContent);
+				csvlink.setAttribute("href", encodedUri);
+
+				csvlink.setAttribute("download", $.getWidget("synthinfo").get().data[0].name + ".csv");
+				csvlink.click();
+				*/
+			} else {
+
+			}
+		});
+
+		$('#show_report').on("click", function () {
+			$.getWidget("reportmodal").show([row.id],[]);
+		});
+	});
+
+	String.prototype.replaceAll = function(search, replacement) {
+		var target = this;
+		return target.replace(new RegExp(search, 'g'), replacement);
+	};
+
+</script>
+</html>

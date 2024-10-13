@@ -1,0 +1,76 @@
+
+@media screen {
+}
+
+@page { 
+  size: 29mm 21mm; 
+  margin: 0mm;
+}
+
+@media print {
+	
+
+	
+  body {
+    -webkit-print-color-adjust: exact;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+
+  .kutuPage {
+    margin: 0 0 0 0;
+		page-break-after: always;
+		padding-top: 0.3em;
+		padding-left: 0;
+		padding-right: 1.5em;
+		font-size: 0.55em !important;
+		font-weight: normal;
+  }
+
+
+  .rhead {
+		font-size: 1.1em;
+		font-weight: 500 !important;
+		font-family: 'Segoe UI';
+	}
+	
+	.capitalize {
+		text-transform: capitalize;
+	}
+
+  .hidePrint {
+    display: none;
+  }
+
+	.rhead_border {
+		margin: 0 !important;
+		border-top: 1px solid;
+		padding-right: 2em;
+	}
+	
+  .hideView {
+    display: block !important;
+  }
+
+  img {
+    margin-left: 1.5mm !important;
+    margin-top: 0.5em;
+    height: 5mm !important;
+    width: 26mm !important;
+  }
+}
+
+.primerName {
+	/*font-size: 0.9em;*/
+	margin-left: 1.5mm;
+}
+				
+body {
+	margin: 0 !important;
+	padding: 0 !important;
+	font-family: 'Tahoma' !important;
+	color: #000 !important;
+	font-weight: normal;
+	font-size: 1.2em !important;
+}

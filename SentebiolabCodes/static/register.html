@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+		<link rel="shortcut icon" type="image/png" href="assets/images/fav.png"/>
+		<!-- Site Properties -->
+		<title>Customer Page</title>
+		<link rel="stylesheet" type="text/css" href="semantic.min.css">
+		<link rel="stylesheet" type="text/css" href="jquery-ui.css">
+
+		<link rel="stylesheet" type="text/css" href="css/customer.css">
+
+		<script src="./jquery/jquery-3.3.1.js"></script>
+		<script src="./jquery/jquery-plugins/js/jquery.cookie-1.4.1.js"></script>
+		<script src="./jquery/jquery-plugins/js/jquery-ui.js"></script>
+		<script src="./semanticui/semantic.min.js"></script>
+
+		<script src="./acm/acm-ui-auth.js"></script>
+		<script src="./acm/acm-data-handler.js"></script>
+		<script src="./acm/acm-page-handler.js"></script>
+		<script src="./acm/acm-input.js"></script>
+		<script src="./acm/acm-form.js"></script>
+		<script src="./acm/acm-link.js"></script>
+
+		<style>
+			.ui.label {
+				width: 15%;
+			}
+			body {
+				background-image: url("assets/images/bg1.jpg");
+			}
+		</style>
+	</head>
+	<body>
+		<acmus id="registerformcontainer"></acmus>
+	</body>
+	<script>
+
+	function sendForm() {
+		var form = $.getWidget("container");
+		form.semantic("validate form");
+		if(form.semantic("is valid")) {
+			$.formAction({name:"name",
+				company:"company",
+				mail:"mail",
+				department:"department",
+				door:"door",
+				address:"address",
+				phone:"phone"
+			},"register",function(data){
+				if(data.ok) {
+					$(".ui.success.message").show();
+				} else {
+					form.semantic("add errors", [data.error]);
+				}
+			});
+		}
+	}
+
+	$.ajax("/registerpage",{
+		type: "POST",
+		contentType:"application/json",
+		dataType: "json",
+		data: JSON.stringify({"pageid":"register"})
+	}).done(function(data){
+		$.createPage(data.page);
+		$("#registerbutton").click(function() {
+			sendForm();
+		});
+
+		$('.input').keypress(function (e) {
+			if(e.which === 13) {// the enter key code
+				sendForm();
+				return false;
+			}
+		});
+	}).catch(function(err) {
+		console.log(err);
+	});
+	</script>
+</html>

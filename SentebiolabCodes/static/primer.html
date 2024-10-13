@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Standard Meta -->
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="shortcut icon" type="image/png" href="assets/images/fav.png" />
+	<!-- Site Properties -->
+	<title>Yeni Primer</title>
+
+	<link rel="stylesheet" href="./jquery/jquery-plugins/css/jquery-ui.css">
+	<link rel="stylesheet" href="./semanticui/semantic.min.css">
+	<link rel="stylesheet" href="./datatables/datatables.min.css">
+	<link rel="stylesheet" type="text/css" href="css/orderpages.css">
+
+	<script src="./jquery/jquery-3.3.1.js"></script>
+	<script src="./jquery/jquery-plugins/js/jquery.cookie-1.4.1.js"></script>
+	<script src="./jquery/jquery-plugins/js/jquery-ui.js"></script>
+	<script src="./semanticui/semantic.custom.js"></script>
+	<script src="./datatables/datatables.min.js"></script>
+
+	<script src="acm/acm-ui-auth.js" ></script>
+	<script src="acm/acm-data-handler.js"></script>
+	<script src="acm/acm-page-handler.js"></script>
+	<script src="acm/acm-dialog.js"></script>
+	<script src="acm/acm-form.js"></script>
+	<script src="acm/acm-input.js"></script>
+	<script src="acm/acm-textarea.js"></script>
+	<script src="acm/acm-table.js"></script>
+	<script src="acm/acm-container.js"></script>
+	<script src="acm/acm-img.js"></script>
+	<script src="acm/acm-link.js"></script>
+	<script src="acm/acm-dropdown.js"></script>
+	<script src="acm/acm-cbox.js"></script>
+	<script src="acm/acm-list.js"></script>
+	<script src="acm/acm-modal.js"></script>
+	<script src="acm/acm-dataholder.js"></script>
+	<script src="acm/acm-display.js"></script>
+	<script src="acm/acm-prompt.js"></script>
+	<script src="acm/acm-msgdiv.js"></script>
+
+	<script src="./js/moment-with-locales.js"></script>
+	<script src="./acm/acm-xlsx.js"></script>
+	<!--<script src="./js-xlsx/shim.js"></script>-->
+	<script src="./js-xlsx/xlsx.full.min.js"></script>
+	<script src="./js/FileSaver.js"></script>
+
+</head>
+<body>
+	<acmus id="navbarcontainer"></acmus>
+	<acmus id="primerpagecontainer"></acmus>
+</body>
+<script>
+
+	String.prototype.replaceAll = function(search, replacement) {
+		var target = this;
+		return target.replace(new RegExp(search, 'g'), replacement);
+	};
+
+	var	saveService = {
+		source: "ajax",
+		url: "savePrimer"
+	}
+
+	var orderService = {
+		source: "ajax",
+		url: "insertPrimer"
+	}
+
+	tableAllService = {
+		source: "ajax",
+		url: "tableAll"
+	}
+
+	var priceService = {
+		source: "ajax",
+		url: "pricetable"
+	}
+
+	singletableAllService = {
+		source: "singleajax",
+		url: "tableAll",
+		reqs : {
+			primer_fifth: {
+				table: "primer_fifth",
+				columns: ["id","val","costval"]
+			},
+			primer_third: {
+				table: "primer_third",
+				columns: ["id","val","costval"]
+			},
+			primer_puri: {
+				table: "primer_puri",
+				columns: ["id","val"]
+			},
+			primer_sca: {
+				table: "primer_sca",
+				columns: ["id","val"]
+			},
+		}
+	}
+
+	tableService = {
+		source: "ajax",
+		url: "table"
+	}
+
+	$.Widget.registerService("saveService",saveService);
+	$.Widget.registerService("orderService",orderService);
+	$.Widget.registerService("tableAllService",tableAllService);
+	$.Widget.registerService("tableService",tableService);
+	$.Widget.registerService("singletableAllService",singletableAllService);
+	$.Widget.registerService("priceService",priceService);
+
+	function save() {
+		$.formAction({primers : "primerlist"},"saveService",function(res){
+			if (res.ok === "ok") {
+				$.getWidget("successmsg").show();
+			}
+		})
+	}
+
+	function order() {
+		$.formAction({primers : "primerlist"},"orderService",function(res){
+			////console.log(res);
+			if (res.ok === "ok") {
+				window.location.href = "/confirmprimer.html";
+			}
+		})
+	}
+
+	var getprice = function(self) {
+
+		var purmolcost = 0;
+
+		let purmol = $.getWidget("priceholder").query(
+			{
+				"puriid" : self.childrenWidget["purification"].get(),
+				"scaid" : self.childrenWidget["scale"].get()
+			}
+		)
+
+		if(purmol.length) {
+			purmolcost = purmol[0].val;
+		}
+
+		var modcost = 0;
+
+		if(purmolcost) {
+			if(self.childrenWidget["tmod"].get() !== "0" ) {
+				let mod = $.getWidget("tmodholder").query({
+					"id" : self.childrenWidget["tmod"].get()
+				})
+				if(mod.length) {
+					modcost = mod[0].costval;
+				}
+			} else if(self.childrenWidget["fmod"].get() !== "0" ) {
+				let mod = $.getWidget("fmodholder").query({
+					"id" : self.childrenWidget["fmod"].get()
+				})
+				if(mod.length) {
+					modcost = mod[0].costval;
+				}
+			}
+		}
+		var realbp = self.childrenWidget["sequence"].get().replace(/\s+/g, '').length;
+		var Icount = countchar(self.childrenWidget["sequence"].get(),"I");
+
+		if (Icount) modcost += (11.99 * Icount);
+
+		realbp = realbp-Icount;
+
+		var bp = 15;
+		if (realbp > bp) bp = realbp;
+
+		var totalcost = modcost + (bp * purmolcost);
+		//console.log(totalcost);
+
+		totalcost = Number.parseFloat(totalcost).toFixed(2);
+		var totaltext = (self.childrenWidget["sequence"].get().replace(/\s+/g, '').length ? (purmolcost ? ( modcost? "mod : " + modcost + " + " : "") + bp + " * " + purmolcost + " = " + totalcost : "0") : "0") + " €";
+		self.childrenWidget["cost"].set(
+			{
+				html : totaltext
+			}
+		);
+		self.childrenWidget["costval"].set(totalcost);
+		updatecost();
+	}
+
+
+	var mod2onSelect = function(x){
+		if(x.options.id === "mod2fmod") {
+			if(x.get() !== "0" && x.get() !== "") {
+				$.getWidget("mod2tmod").semantic("set selected","0");
+			}
+		} else if(x.options.id === "mod2tmod") {
+			if(x.get() !== "0" && x.get() !== "") {
+				$.getWidget("mod2fmod").semantic("set selected","0");
+			}
+		}
+	}
+
+	var primerformchangefunc = function(x) {
+		var self = this;
+		if(x.extractedId !== undefined) {
+			if(x.extractedId == "sequence"){
+				self.childrenWidget["bp"].set(
+					{
+						html : x.get().replace(/\s+/g, '').length + "bp"
+					}
+				);
+				updatebp();
+				getprice(self);
+			} else if(x.extractedId === "tmod") {
+				if(x.get() !== "0") {
+					self.childrenWidget["fmod"].semantic("set selected","0");
+				}
+				getprice(self);
+			} else if(x.extractedId === "fmod") {
+				if(x.get() !== "0") {
+					self.childrenWidget["tmod"].semantic("set selected","0");
+				}
+				getprice(self);
+			} else if(x.extractedId === "purification") {
+				getprice(self);
+				//self.semantic("validate field","ppur");
+
+			} else if(x.extractedId === "scale") {
+				getprice(self)
+				//self.semantic("validate field","pmol")
+			}
+		}
+	}
+
+	var seqonchange = function(widg) {
+		var tempseq = widg.get().replace(/\s+/g, '').toUpperCase();
+		if (widg.get() !== tempseq) widg.set(tempseq);
+	}
+
+	var primerforminit = function(x){
+		x.semantic("validate form");
+	}
+
+	var primerformtemplate = {
+		type: "widgetform",
+		options: {
+			div: "ui segments form",
+			childfunc: primerformchangefunc,
+			initfunc: primerforminit,
+			structure: [
+				{div: "ui secondary segment grid", structure: [
+					{div: "one wide column #pcbox", template:"cboxtemp"},
+					{div: "one wide column #pnum", template:"pnum"},
+					{div: "field four wide column #name", template:"nametemp"},
+					{div: "four wide column"},
+					{div: "field six wide fluid centertext column #cost", template:"cost"},
+				]},//checkbox
+				{div: "ui segment", structure: [
+					{div: "ui grid",structure:[
+						{div: "two wide column"},//label
+						{div: "fourteen wide column", structure:[
+							{div: "ui grid", structure:[
+								{div: "field four wide column #fmod", template:"fmodtemp"},//dd1
+								{div: "two wide column"},
+								{div: "four wide column #bp", template:"bp"},
+								{div: "two wide column"},
+								{div: "field four wide column #tmod", template:"tmodtemp"}//dd2
+							]},
+							{div:"row field #sequence", template: "sequence"},//textarea
+						]}
+					]},
+					{div: "ui grid", structure:[
+						{div: "three wide right aligned column",html: "Saflaştırma:"},
+						{div: "field four wide column #purification",template:"fmodpur"},//dd3
+						{div: "field two wide column"},
+						{div: "three wide right aligned column",html: "Skala (nmol):"},//space
+						{div: "field four wide column #scale",template:"tmodsca"}//dd4
+					]},
+				]},
+				//{div: "ui error message"},
+				{div: " #costval", template:"costval"},
+			],
+			templates: {
+				fmodtemp: {
+					type: "ddown",
+					formchange: true, // options.name required for onchange func to fire
+					options: {
+						oncreate: true,
+						name: "fmod", // options.name required for onchange func to fire
+						datasource:"singletableAllService",
+						fetchparams:{
+							sarid: "primer_fifth",
+						},
+						div: "ui labeled selection fluid dropdown icon",
+						header: [
+							{span:"text"},
+							{icon: "dropdown icon"}
+						],
+						def : {id:"0",val:"5' Modifikasyon"},
+						selected : "0"
+					}
+				},
+				tmodtemp: {
+					type: "ddown",
+					formchange: true,
+					options: {
+						oncreate: true,
+						name:"tmod",
+						datasource:"singletableAllService",
+						fetchparams:{
+							sarid: "primer_third",
+						},
+						div: "ui labeled selection fluid dropdown icon",
+						header: [
+							{span:"text"},
+							{icon: "dropdown icon"}
+						],
+						def : {id:"0",val:"3' Modifikasyon"},
+						selected : "0"
+					}
+				},
+				fmodpur : {
+					type: "ddown",
+					formchange: true,
+					options: {
+						oncreate: true,
+						datasource:"singletableAllService",
+						fetchparams:{
+							sarid: "primer_puri",
+						},
+						name: "purification",
+						div: "ui labeled selection fluid dropdown icon",
+						header: [
+							{span:"text"},
+							{icon: "dropdown icon"}
+						]
+					}
+				},
+				tmodsca : {
+					type: "ddown",
+					formchange: true,
+					options: {
+						oncreate: true,
+						datasource:"singletableAllService",
+						fetchparams:{
+							sarid: "primer_sca",
+						},
+						name: "scale",
+						div: "ui labeled selection fluid dropdown icon",
+						header: [
+							{span:"text"},
+							{icon: "dropdown icon"}
+						]
+					}
+				},
+				sequence: {
+					type: "textarea",
+					formchange: true,
+					options: {
+						div: "ui left icon fluid input",
+						rows: 1,
+						name: "sequence",
+						placeholder: "SEKANS",
+						onchange: seqonchange,
+					}
+				},
+				cboxtemp: {
+					type: "cbox",
+					options: {
+						div: "",
+						//label: ""
+					}
+				},
+				nametemp: {
+					type: "input",
+					formchange: true,
+					options:{
+						div: "small ui fluid input",
+						type: "text",
+						name: "name"
+					}
+				},
+				cost: {
+					type: "link",
+					options:{
+						div: "",
+						html: "0 €",
+						src : ""
+					}
+				},
+				bp: {
+					type: "link",
+					options:{
+						div: "",
+						html: "0bp",
+						src : ""
+					}
+				},
+				costval: {
+					type: "dataholder",
+					options: {
+						div: "hidden",
+						defdata: 0
+					}
+				},
+				pnum: {
+					type: "display",
+					selector: "#pnum",
+					options: {
+						valelem: "span",
+						defval: "0",
+						label: {
+							label: "",
+							html: ""
+						}
+					}
+				},
+			},
+			rules: {
+				inline: true,
+				on: 'change',
+				fields: {
+					sequence: {
+						identifier  : 'sequence',
+						rules: [
+							{
+								type : 'minLength[3]',
+								dontrim : true,
+								prompt : 'Sekans en az 3bp'
+							},
+							{
+								type: "regExp[/^[ACGTRYMKSWHBVDNI\\s]{3,250}$/i]",
+								dontrim : true,
+								prompt: "Hatalı sekans"
+							}
+						]
+					},
+					name: {
+						identifier : 'name',
+						rules: [
+							{
+								type : 'minLength[1]',
+								prompt : 'Primer adı en az 1 karakter'
+							},
+							{
+								type : 'maxLength[40]',
+								prompt : 'Primer adı en fazla 40 karakter'
+							}
+						]
+					},
+					purification: {
+						identifier : 'purification',
+						rules: [
+							{
+								type : 'empty',
+								prompt : 'Saflaştırma girilmedi'
+							}
+						]
+					},
+					scale: {
+						identifier : 'scale',
+						rules: [
+							{
+								type : 'empty',
+								prompt : 'Skala girilmedi'
+							}
+						]
+					}
+				}
+			}
+		}
+
+	};
+
+	var primerpage= {
+		container: {
+			type: "container",
+			selector: "#primerpagecontainer",
+			options: {
+				div: "below_navbar ui container",
+				structure: [
+					{div:"ui grid", structure:[
+						{div:"twelve wide column",structure:[
+							{div:"ui segments",structure: [
+								{div:"ui secondary segment",structure: [
+									{p:"noclass",html:"Primer Sipariş"}
+								]},
+								{div:"ui segment mainseg",structure: [
+									{div:"vertpad ui input cntr #primerCntr"},
+									{label:"mini basic ui button", attr:{"for":"excelupload"}, structure: [
+										{icon: "noclass", i:"ui upload icon"},
+										{span: "noclass",html:"Excel Yükle"},
+										{input: "#excelupload", attr:{"type":"file","style":"display: none"}}
+									]},/*
+									{div:"mini basic ui button #exceldownload", structure: [
+										{icon: "noclass", i:"ui download icon"},
+										{span: "noclass",html:"Excel İndir"}
+									]},*/
+									{a:"mini basic ui button", attr: {"href":"/files/Sentebiolab-Primer-siparis-formu.xlsx","download":"Sentebiolab-Primer-siparis-formu.xlsx"}, structure: [
+										{icon: "noclass", i:"ui download icon"},
+										{span: "noclass",html:"Excel İndir"}
+									]},
+									{div:"mini basic ui button #bulkset",structure:[
+										{icon: "noclass", i:"ui pencil alternate icon"},
+										{span: "noclass",html:"Toplu Giriş"}
+									]},
+									{div:"mini basic ui button #bulkadd",structure:[
+										{icon: "noclass", i:"ui plus icon"},
+										{span: "noclass",html:"Toplu Ekle"}
+									]},
+									{hr:"noclass",structure: []},
+									{div:"vertpad ui input #mastercbox", structure:[]},
+									{div:"mini ui blue button #cboxmodify",structure:[],html: "Değiştir"},
+									{div:"mini ui red button #cboxdelete",structure:[
+										{icon: "noclass", i:"ui trash alternate icon"},
+										{span: "noclass",html:"Sil"}
+									]},
+									{hr:"noclass",structure: []},
+									{div:"row pad #listwidgetid",structure:[]}
+								]}
+							]}
+						]},
+						{div:"four wide column", structure:[
+							{div:"fixeddiv", structure: [
+								{div:"fluid ui green big button orderBtn #orderBtn" ,structure:[
+									{icon: "noclass", i:"ui cart icon"},
+									{span: "noclass",html:"Sipariş Et"}
+								]},
+								{div: "ui two attached basic fluid buttons", structure:[
+									{div: "ui button #savebtn", structure: [
+										{icon: "noclass", i:"ui save icon"},
+										{span: "noclass",html:"Kaydet"}
+									]},
+									{div: "ui button #loadbtn", structure: [
+										{icon: "noclass", i:"ui sync icon"},
+										{span: "noclass",html:"Yükle"}
+									]}
+								]},
+								{div: "ui segment", structure:[
+									{div: "div #pamount"},
+									{div: "div #totalbp"},
+									{div: "div #totalcost"}
+								]},
+								{div:"vertpad #successmsg"},
+								{div:"vertpad #primererr"},
+
+							]}
+						]}
+					]},
+					{div: "#mod", structure:[
+						{div:"header #modalhead", html:""},
+						{div:"content", structure:[
+							{div:"ui grid", structure:[
+								{div: "five wide column",structure:[
+									{div: "",html: "Primer Adı"},
+									{div: "#modpnames"},
+									{div: "#numnames"}
+								]},
+								{div: "five wide column",structure:[
+									{div: "",html: "Primer Sekans"},
+									{div: "#modpseqs"},
+									{div: "#numseqs"}
+								]},
+								{div: "three wide column", structure:[
+									{div: "",html: "Saflaştırma"},
+									{div: "#modpur"}
+								]},
+								{div: "three wide column", structure:[
+									{div: "",html: "Skala (nmol)"},
+									{div: "#modmol"}
+								]}
+							]},
+						]},
+						{div:"content #moderr"},
+						{div:"actions", structure:[
+							{div: "ui blue button #modalbtnset",html:"Giriş"},
+							{div: "ui green button #modalbtnadd",html:"Ekle"},
+							{div: "ui red button #modalbtncancel",html:"İptal"}
+						]}
+					]},
+					{div: "#mod2", structure:[
+						{div:"header", html:"Toplu Değiştir"},
+						{div:"content", structure:[
+							{div:"ui grid", structure:[
+								{div: "eight wide column" ,structure:[
+									{div: "",html: "Saflaştırma"},
+									{div: "#mod2pur"}
+								]},
+								{div: "eight wide column" ,structure:[
+									{div: "",html: "Skala (nmol)"},
+									{div: "#mod2mol"}
+								]}
+							]}
+						]},
+						{div:"content", structure:[
+							{div:"ui grid", structure:[
+								{div: "eight wide column" ,structure:[
+									{div: "",html: "5' Mod."},
+									{div: "#mod2fmod"}
+								]},
+								{div: "eight wide column" ,structure:[
+									{div: "",html: "3' Mod."},
+									{div: "#mod2tmod"}
+								]}
+							]}
+						]},
+						{div:"actions", structure:[
+							{div: "ui green button #modal2btnaccept",html:"Tamam"},
+							{div: "ui red button #modal2btncancel",html:"İptal"},
+						]}
+					]},
+					{div: "mini #prompt"},
+					{div: "#priceholder"},
+					{div: "#tmodholder"},
+					{div: "#fmodholder"},
+					{div: "#puriholder"},
+					{div: "#scaholder"},
+					{div: "#userholder"},
+				]
+			}
+		},
+		counter : {
+			type: "input",
+			selector: "#primerCntr",
+			options:{
+				div: "mini ui left labeled action input",
+				type: "number",
+				label: {html: "Miktar :",label: "ui label"},
+				button: {html: "Yükle", button: "mini basic ui button", id:"loadamount"},
+				placeholder: "0",
+				min : 0,
+				width: "65px"
+			}
+		},
+		primerlist : {
+			type: "widgetlist",
+			selector: "#listwidgetid",
+			options: {
+				div: "",
+				itemdiv: "itempadding",
+				item : primerformtemplate,
+				listCbox: "pcbox",
+				listnumber: "pnum",
+				oncreate: false,
+				datasource:"tableService",
+				fetchparams:{
+					table: "primer_temporary",
+					columns: ["name", "sequence", "fmod", "tmod", "purification", "scale"],
+					filter: {
+						where : {
+							orderitem: false
+						}
+
+					}
+				}
+			},
+
+		},
+		mastercbox : {
+			type: "cbox",
+			selector: "#mastercbox",
+			options: {
+				div: ""
+			}
+		},
+		mod : {
+			type: "ACMmodal",
+			selector: "#mod",
+			options: {
+				semanticOptions : {
+					closable: false
+				}
+			}
+		},
+		mod2 : {
+			type: "ACMmodal",
+			selector: "#mod2",
+			options: {
+				className : "small ui",
+				semanticOptions : {
+					closable: true
+				}
+			}
+		},
+		modpnames: {
+			type: "textarea",
+			selector: "#modpnames",
+			options: {
+				div: "ui left icon fluid input",
+				rows: 20,
+				name: "username",
+				placeholder: "Toplu Taşı/Yapıştır"
+			}
+		},
+		modpseqs: {
+			type: "textarea",
+			selector: "#modpseqs",
+			options: {
+				div: "ui left icon fluid input",
+				rows: 20,
+				name: "username",
+				placeholder: "Toplu Taşı/Yapıştır"
+			}
+		},
+		puri: {
+			type: "ddown",
+			selector: "#modpur",
+			options: {
+				oncreate: true,
+				datasource:"singletableAllService",
+				fetchparams:{
+					sarid: "primer_puri",
+				},
+				div: "ui labeled selection fluid dropdown icon",
+				header: [
+					{span:"text"},
+					{icon: "dropdown icon"}
+				]
+			}
+		},
+		scale: {
+			type: "ddown",
+			selector: "#modmol",
+			options: {
+				oncreate: true,
+				datasource:"singletableAllService",
+				fetchparams:{
+					sarid: "primer_sca",
+				},
+				div: "ui labeled selection fluid dropdown icon",
+				header: [
+					{span:"text"},
+					{icon: "dropdown icon"}
+				]
+			}
+		},
+		mod2pur: {
+			type: "ddown",
+			selector: "#mod2pur",
+			options: {
+				oncreate: true,
+				datasource:"singletableAllService",
+				fetchparams:{
+					sarid: "primer_puri",
+				},
+				div: "ui labeled selection fluid dropdown icon",
+				header: [
+					{span:"text"},
+					{icon: "dropdown icon"}
+				],
+				semanticOptions : {
+					showOnFocus : false
+				}
+			}
+		},
+		mod2mol: {
+			type: "ddown",
+			selector: "#mod2mol",
+			options: {
+				oncreate: true,
+				datasource:"singletableAllService",
+				fetchparams:{
+					sarid: "primer_sca",
+				},
+				div: "ui labeled selection fluid dropdown icon",
+				header: [
+					{span:"text"},
+					{icon: "dropdown icon"}
+				],
+				semanticOptions : {
+					showOnFocus : false
+				}
+			}
+		},
+		mod2fmod : {
+			type: "ddown",
+			selector: "#mod2fmod",
+			options: {
+				oncreate: true,
+				onchange : mod2onSelect,
+				name: "mod2fmod", // options.name required for onchange func to fire
+				datasource:"singletableAllService",
+				fetchparams:{
+					sarid: "primer_fifth",
+				},
+				div: "ui labeled selection fluid dropdown icon",
+				header: [
+					{span:"text"},
+					{icon: "dropdown icon"}
+				],
+				def : {id:"0",val:"5' Modifikasyon"},
+				semanticOptions : {
+					showOnFocus : false
+				}
+				//selected : "0"
+			}
+		},
+		mod2tmod : {
+			type: "ddown",
+			selector: "#mod2tmod",
+			options: {
+				oncreate: true,
+				onchange : mod2onSelect,
+				name: "mod2tmod", // options.name required for onchange func to fire
+				datasource:"singletableAllService",
+				fetchparams:{
+					sarid: "primer_third",
+				},
+				div: "ui labeled selection fluid dropdown icon",
+				header: [
+					{span:"text"},
+					{icon: "dropdown icon"}
+				],
+				def : {id:"0",val:"3' Modifikasyon"},
+				semanticOptions : {
+					showOnFocus : false
+				}
+				//selected : "0"
+			}
+		},
+		priceholder: {
+			type: "dataholder",
+			selector: "#priceholder",
+			options: {
+				oncreate: true,
+				datasource:"priceService",
+				fetchparams: {
+					primer : true
+				},
+				div: "hidden"
+			}
+		},
+		tmodholder: {
+			type: "dataholder",
+			selector: "#tmodholder",
+			options: {
+				oncreate: true,
+				datasource:"singletableAllService",
+				fetchparams:{
+					sarid: "primer_third",
+				},
+				div: "hidden"
+			}
+		},
+		fmodholder: {
+			type: "dataholder",
+			selector: "#fmodholder",
+			options: {
+				oncreate: true,
+				datasource:"singletableAllService",
+				fetchparams:{
+					sarid: "primer_fifth",
+				},
+				div: "hidden"
+			}
+		},
+		puriholder: {
+			type: "dataholder",
+			selector: "#puriholder",
+			options: {
+				oncreate: true,
+				datasource:"singletableAllService",
+				fetchparams:{
+					sarid: "primer_puri",
+				},
+				div: "hidden"
+			}
+		},
+		scaholder: {
+			type: "dataholder",
+			selector: "#scaholder",
+			options: {
+				oncreate: true,
+				datasource:"singletableAllService",
+				fetchparams:{
+					sarid: "primer_sca",
+				},
+				div: "hidden"
+			}
+		},
+		userholder: {
+			type: "dataholder",
+			selector: "#userholder",
+			options: {
+				oncreate: true,
+				datasource:"tableService",
+				fetchparams:{
+					table: "acm_users",
+					columns: ["id"],
+					join: [
+						{ table: "users", foreign: "id" ,target: "userid"},
+					],
+				},
+				div: "hidden"
+			}
+		},
+		pamount: {
+			type: "display",
+			selector: "#pamount",
+			options: {
+				valelem: "span",
+				defval: "0",
+				label: {
+					label: "",
+					html: "Toplam ürün sayısı: "
+				}
+			}
+		},
+		totalbp: {
+			type: "display",
+			selector: "#totalbp",
+			options: {
+				valelem: "span",
+				defval: "0",
+				label: {
+					label: "",
+					html: "Toplam BP: "
+				}
+			}
+		},
+		totalcost: {
+			type: "display",
+			selector: "#totalcost",
+			options: {
+				valelem: "span",
+				defval: "0.00 €",
+				label: {
+					label: "",
+					html: "Toplam Tutar: "
+				}
+			}
+		},
+		prompt: {
+			type: "prompt",
+			selector: "#prompt",
+			options: {
+				semanticOptions : {
+				}
+			}
+		},
+		primererr: {
+			type: "msgdiv",
+			selector: "#primererr",
+			options: {
+				closable: true,
+				div: "negative hidden",
+				header: "Hata:",
+				msglist: [],
+				fadeout: 5000,
+				anim: "fly left",
+			}
+		},
+		successmsg: {
+			type: "msgdiv",
+			selector: "#successmsg",
+			options: {
+				closable: true,
+				div: "success hidden",
+				header: "Form Kayıt Edildi !",
+				msglist: [],
+				fadeout: 2000,
+			}
+		},
+		moderr: {
+			type: "msgdiv",
+			selector: "#moderr",
+			options: {
+				closable: true,
+				div: "negative hidden",
+				header: "Primer ve sekans sayısı aynı değil!",
+				msglist: [],
+			}
+		},
+		numnames: {
+			type: "display",
+			selector: "#numnames",
+			options: {
+				valelem: "span",
+				defval: "0",
+				label: {
+					label: "",
+					html: "Toplam : "
+				}
+			}
+		},
+		numseqs: {
+			type: "display",
+			selector: "#numseqs",
+			options: {
+				valelem: "span",
+				defval: "0",
+				label: {
+					label: "",
+					html: "Toplam : "
+				}
+			}
+		},
+	};
+
+	$(document).on("pagecreated",function() {
+		$.removeCookie("fatura");
+		$.removeCookie("adres");
+		$.removeCookie("proje");
+		$.removeCookie("daire");
+		$.removeCookie("numara");
+	});
+
+	$.createWidgets(primerpage);
+
+	////////// Excel Buttons
+
+	$('#excelupload').xlsx({
+		fileupload: true,
+		map: [
+			{
+			},
+			{
+				'dtOrigin': 'A7',
+				'dtTitleRow': ['A20', 'B20', 'C20', 'D20', 'E20', 'F20', 'G20']
+			}
+		],
+		uploadfunc : function(inp) {
+
+			console.log(inp)
+
+			$.cookie("fatura", inp[7][5]);
+			$.cookie("adres", inp[9][1]);
+			$.cookie("proje", inp[9][5]);
+
+			if(typeof(inp[5][5]) == "string") {
+				var taxarr = inp[5][5].split("-");
+				if(taxarr.length === 2) {
+					$.cookie("daire", taxarr[0]);
+					$.cookie("numara", taxarr[1]);
+				} else {
+					$.cookie("daire", inp[5][5]);
+					$.cookie("numara", "");
+				}
+			}
+
+			var arr = [];
+			$.each(inp,function(i,v){
+				if (i<14) return;
+				if(v[0] === undefined) {
+					return false;
+				}
+				else {
+					var temparr = Object.create(null);
+					temparr["name"] = v[0];
+					if (v[1]) temparr["fmod"] = v[1];
+					temparr["sequence"] = v[2].replace(/\s+/g, '');
+					if (v[3]) temparr["tmod"] = v[3];
+					temparr["scale"] = v[5];
+					temparr["purification"] = v[6];
+					console.log(v[6])
+					if (temparr["purification"] === "Standart(DSLT)")  {console.log("Standart"); temparr["purification"] = "DSLT";}
+					arr.push(temparr);
+				}
+			})
+			$.getWidget("primerlist").empty();
+			$.getWidget("primerlist").addItems(arr.length,arr);
+			updatepamount();
+			updatebp();
+		}
+	});
+
+	////////// Primer Amount Set
+
+	$("#loadamount").click(function(){
+
+		let cur = $.getWidget("primerlist").getItemAmount()
+		var cntr = $.getWidget("counter").get()
+
+		if(cntr < 0) cntr = 0;
+
+		if(cur > cntr) {
+			$.getWidget("prompt").fire("Silme uyarısı !","Son " + (cur-cntr) + " primer silinsin mi?",
+				function(){
+					$.getWidget("primerlist").setItemAmount(cntr);
+					updatepamount();
+					updatebp();
+					updatecost();
+				}
+			)
+		} else {
+			$.getWidget("primerlist").setItemAmount(cntr);
+			updatepamount();
+			updatebp();
+			updatecost();
+		}
+	});
+
+	////////// Checkbox Delete Update
+
+	var mastercboxfunc = function(b){
+		$.getWidget("primerlist").setAllCbox(b.get());
+	}
+
+	$.getWidget("mastercbox").setonchange(mastercboxfunc);
+
+	var numnamesfunc = function(w) {
+		$.getWidget("numnames").set(getLinesArr(w.get()).length)
+	}
+
+	var numseqsfunc = function(w) {
+		$.getWidget("numseqs").set(getLinesArr(w.get()).length)
+	}
+
+	$.getWidget("modpnames").setonchange(numnamesfunc);
+	$.getWidget("modpseqs").setonchange(numseqsfunc);
+
+	$("#cboxdelete").click(function(){
+
+		$.getWidget("prompt").fire("Silme uyarısı !","Seçili primerler silinsinmi ?",
+			function(){
+				$.getWidget("primerlist").remSelected();
+				$.getWidget("mastercbox").set(false);
+				updatepamount();
+				updatebp();
+				updatecost();
+			}
+		)
+
+	});
+
+	$("#cboxmodify").click(function(){
+		$.getWidget("mod2pur").semantic("clear");
+		$.getWidget("mod2mol").semantic("clear");
+		$.getWidget("mod2tmod").semantic("clear");
+		$.getWidget("mod2fmod").semantic("clear");
+		$.getWidget("mod2").show();
+	});
+
+	$("#modal2btnaccept").click(function(){
+		let pur = $.getWidget('mod2pur').get();
+		let mol = $.getWidget('mod2mol').get();
+		let fmod = $.getWidget('mod2fmod').get();
+		let tmod = $.getWidget('mod2tmod').get();
+
+		var ret = {}
+		if (pur !== "") ret["purification"] = pur;
+		if (mol !== "") ret["scale"] = mol;
+		if (fmod !== "") ret["fmod"] = fmod;
+		if (tmod !== "") ret["tmod"] = tmod;
+		$.getWidget("mod2").hide();
+		$.getWidget("primerlist").setSelected(ret);
+		$.getWidget("primerlist").semantic("validate field","purification");
+	});
+
+	$("#modal2btncancel").click(function(){
+		$.getWidget("mod2").hide();
+	});
+
+
+	////////// BULK MODAL
+
+	$("#bulkset").click(function(){
+		$("#modalbtnadd").hide();
+		$("#modalbtnset").show();
+		$("#modalhead").html("Toplu Giriş");
+		$.getWidget("modpnames").set("");
+		$.getWidget("modpseqs").set("");
+		$.getWidget("scale").semantic("clear");
+		$.getWidget('puri').semantic("clear");
+		$.getWidget("mod").show();
+		$.getWidget("moderr").hide();
+	});
+
+	$("#bulkadd").click(function(){
+		$("#modalbtnset").hide();
+		$("#modalbtnadd").show();
+		$("#modalhead").html("Toplu Ekle");
+		$.getWidget("modpnames").set("");
+		$.getWidget("modpseqs").set("");
+		$.getWidget("scale").semantic("clear");
+		$.getWidget('puri').semantic("clear");
+		$.getWidget("mod").show();
+		$.getWidget("moderr").hide();
+	});
+
+	$("#modalbtnset").click(function(){
+		setaddFromModal(true);
+	});
+
+	$("#modalbtnadd").click(function(){
+		setaddFromModal(false);
+	});
+
+	$("#modalbtncancel").click(function(){
+		$.getWidget("mod").hide();
+	});
+
+	var setaddFromModal = function(b) { // b == true set mode
+
+		let parr = getLinesArr($.getWidget("modpnames").get());
+		let sarr = getLinesArr($.getWidget("modpseqs").get());
+
+		let pur = $.getWidget('puri').get();
+		let mol = $.getWidget('scale').get();
+
+
+		if(sarr.length > 0 && (parr.length === sarr.length)) { // seperate to show distinct messages
+			$.getWidget("mod").hide();
+			$.getWidget("modpseqs").set("");
+			$.getWidget("modpnames").set("");
+			var arr = [];
+			for (i = 0;i<parr.length;i++) {
+				var temparr = Object.create(null);
+				temparr["name"] = parr[i];
+				temparr["sequence"] = sarr[i].replace(/\s+/g, '');
+				temparr["purification"] = pur;
+				temparr["scale"] = mol;
+				arr.push(temparr);
+			}
+
+			if(b) $.getWidget("primerlist").empty();
+			$.getWidget("primerlist").addItems(arr.length,arr);
+
+			updatepamount();
+			updatebp();
+
+		} else {
+			$.getWidget("moderr").show();
+		}
+
+	}
+
+	function getLinesArr(str) { //get primer lines from modal textbox
+		return str.trim().length > 0 ? str.trim().split(/\n/) : [];
+	}
+	////////// Primer Info Side Panel
+
+	var updatepamount = function() {
+		let n = $.getWidget("primerlist").getItemAmount();
+		$.getWidget("pamount").set(n);
+	}
+
+	var updatebp = function() {
+		//totalbp
+		let pArr = $.getWidget("primerlist").get();
+		var ret = 0;
+		$.each(pArr,function(i,v){
+			ret += v["sequence"].replace(/\s+/g, '').length;
+		})
+		$.getWidget("totalbp").set(ret);
+	}
+
+	var updatecost = function() {
+		let pArr = $.getWidget("primerlist").get();
+		var ret = 0;
+		$.each(pArr,function(i,v){
+			ret += Number(v["costval"]);
+		})
+		ret = Number.parseFloat(ret).toFixed(2);
+		$.getWidget("totalcost").set(ret + " €");
+		updatepamount();
+	}
+
+	$("#savebtn").click(function(){
+		save();
+	});
+
+	$("#loadbtn").click(function(){
+		$.getWidget("primerlist").fetch();
+	});
+
+	$("#orderBtn").click(function(){
+
+
+
+		let validatearr = $.getWidget("primerlist").semantic("is valid");
+		$.getWidget("primererr").set();
+
+		if(validatearr.length === 0) {
+			$.getWidget("primererr").addmsg("Lütfen primer ekleyin!");
+			$.getWidget("primererr").show();
+			return;
+		}
+		var valid = true;
+		for(i in validatearr) {
+			if(validatearr[i] === false) {
+				$.getWidget("primererr").addmsg( (Number(i)+1) + " nolu primer hatalı!");
+				valid = false;
+			}
+		}
+		if(valid) {
+			$.getWidget("primererr").set();
+			$.getWidget("primererr").hide();
+			order();
+		} else {
+			$.getWidget("primererr").show();
+		}
+	});
+
+	var rangeBuilder = function (sr, sc, er, ec) {
+		let val = 0, i = 0, indx = 0;
+		// Excel columns start from 1 = A, 27 = AA ...
+		const base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		let start = '', end = '';
+
+		val = sc;
+		for (i = 0; Math.pow(base.length, i) - 1 < sc; i++) {
+			indx = (val % base.length) - 1;
+			val = Math.floor(val / base.length);
+			start += base[indx];
+		}
+		val = ec;
+		for (i = 0; Math.pow(base.length, i) - 1 < ec; i++) {
+			indx = (val % base.length) - 1;
+			val = Math.floor(val / base.length);
+			end += base[indx];
+		}
+		return start + sr + ":" + end + er;
+	};
+
+	function countchar (str, ch){
+		var c = 0;
+		for (var i = 0; i < str.length; i++){
+			if (str[i] === ch) c++;
+		}
+		return c;
+	}
+
+</script>
+</html>

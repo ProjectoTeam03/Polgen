@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Standard Meta -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="shortcut icon" type="image/png" href="assets/images/fav.png" />
+  <!-- Site Properties -->
+  <title>Kargo Giriş</title>
+
+
+  <link rel="stylesheet" href="./jquery/jquery-plugins/css/jquery-ui.css">
+  <link rel="stylesheet" href="./semanticui/semantic.min.css">
+  <link rel="stylesheet" href="./datatables/datatables.min.css">
+	<link rel="stylesheet" href="./css/general.css">
+   
+  <script src="./jquery/jquery-3.3.1.js"></script>
+	<script src="./jquery/jquery-plugins/js/jquery-ui.js"></script>
+	<script src="./jquery/jquery-plugins/js/jquery.cookie-1.4.1.js"></script>
+	<script src="./semanticui/semantic.min.js"></script>
+	<script src="./datatables/datatables.min.js"></script>
+
+	<script src="./js/moment-with-locales.js"></script>
+	<script src="./datatables/datetime.js"></script>
+	<script src="./datatables/widgetbase.js"></script>
+
+	<script src="./js-xlsx/xlsx.full.min.js"></script>
+	<script src="./js/FileSaver.js"></script>
+
+	<script src="acm/acm-ui-auth.js"></script>
+	<script src="acm/acm-data-handler.js"></script>
+	<script src="acm/acm-page-handler.js"></script>
+	<script src="acm/acm-table.js"></script>
+	<script src="acm/acm-xlsx.js"></script>
+	<script src="acm/acm-file.js"></script>
+	<script src="acm/acm-thumbnail.js"></script>
+	<script src="acm/acm-modal.js"></script>
+	<script src="acm/acm-dropdown.js"></script>
+	<script src="acm/acm-container.js"></script>
+	<script src="acm/acm-img.js"></script>
+	<script src="acm/acm-link.js"></script>
+	<script src="acm/acm-input.js"></script>
+	<script src="acm/acm-dialog.js"></script>
+	<script src="acm/acm-modal.js"></script>
+	
+	<style>
+		.content.container {
+			margin-top:100px;
+		}
+		.tablecontent {
+			cursor:pointer;
+			color:#33E;
+			text-decoration:underline;
+		}
+		.tablecontent:hover {
+			text-decoration:none;
+			text-shadow: 1px 1px 1px #555;
+		}
+		.ui.fullscreen.modal {
+			position: static !important;
+		}
+	</style>
+	
+</head>
+
+	<body>
+
+		<acmus id="navbarcontainer"></acmus>
+		<acmus id="pagecontainer"></acmus>
+		<acmus id="dialogcontainer"></acmus>
+	</body>
+
+	<script>
+		$.fn.dataTable.ext.errMode = 'none';
+		var pagewidgets = {
+		
+		
+			container: {
+				type: "container",
+				selector: "#pagecontainer",
+				options: {
+					div: "below_navbar ui content container",
+					structure: [
+						{div: "ui vertically divided grid", structure:[
+							{div: "row",structure:[
+								{div: "ui large header",structure:[
+									{icon: "noclass", i:"file alternate icon"},
+									{div:"content",html:"Modifikasyonlar"}
+								]}
+							]},
+							{div: "row",structure:[
+								{div: "column", structure:[
+									{h3: "header", html: "Fiyat Tabloları Listesi"}
+								]}
+							]},
+							{div: "row",structure:[
+								{div: "column", structure:[
+									{div: "#pricelisttable"}
+								]}
+							]},
+							{div: "row",structure:[
+								{div: "column", structure:[
+									{h3: "header", html: "Fiyat Tablosu"}
+								]}
+							]},
+							{div: "row",structure:[
+								{div: "column", structure:[
+									{div: "#listtable"}
+								]}
+							]}
+						]}
+					]
+				}
+			},
+			pricelisttable: {
+				type: "table",
+				selector: "#pricelisttable",
+				options: {
+					datasource: "editorService",
+					oncreate: true,
+					fetchparams: {
+						table: "coupon",
+						columns: ["id", "name"],
+					},
+					table: "ui celled table",
+					datatable: {
+						order: [],
+						responsive: true,
+						select: true,
+						pageLength: 100,
+						dom: '<"top">Brt<"bottom">p<"clear">',
+						columns: [
+							{ data: "id", name:"id", visible: false, type: "hidden" },
+							{ data: "feck", defaultContent: '', className: 'select-checkbox noneditable', orderable: false,type:"hidden"},
+							{ data: "name", name: "name", title: "İsim"}
+						],
+						select: {
+							style: 'single'
+						},
+						buttons: [
+							{ extend: "create",  editor: true, text: "Yeni" },
+							{ extend: "remove",  editor: true, text: "Sil" }
+						]
+					},
+					editor: {
+						inline: {
+							submit: "allIfChanged"
+						},
+						idSrc: 'id'
+					}
+				}
+			},
+			listtable: {
+				type: "table",
+				selector: "#listtable",
+				options: {
+					datasource: "editorService",
+					oncreate: false,
+					fetchparams: {
+						table: "primer_price",
+						columns: ["id", "puriid","scaid","val", "couponid"],
+						join: [
+							{ table:"primer_puri", foreign:"puriid", target:"id", columns : ["id","val"], addoptions: { value: "id", label: "val" }, datakey: "primer_puri.id" },
+							{ table:"primer_sca", foreign:"scaid", target:"id", columns : ["id","val"], addoptions: { value: "id", label: "val" }, datakey: "primer_sca.id" }
+						],
+						whereparams: ["couponid"]
+					},
+					table: "ui celled table",
+					datatable: {
+						order: [],
+						responsive: true,
+						select: true,
+						pageLength: 100,
+						dom: '<"top">Brt<"bottom">p<"clear">',
+						columns: [
+							{ data: "id", name:"id", visible: false, type: "hidden" },
+							{ data: "couponid", name:"couponid", visible: false, type: "hidden" },
+							{ data: "primer_puri.val", name: "primer_puri.id", title: "Saflaştırma", type:"select", editField: ["primer_puri.id"], placeholder:"" },
+							{ data: "primer_sca.val", name: "primer_sca.id", title: "Skala", type:"select", editField: ["primer_sca.id"], placeholder:"" },
+							{ data: "val", name: "val", title: "Fiyat"}
+						],
+						buttons: [
+							{ extend: "create",  editor: true, text: "Yeni"},
+							{ extend: "remove",  editor: true, text: "Sil"}
+						]
+					},
+					select: {
+						style:    "os"
+					},
+					editor: {
+						presubmit: {couponid:1},
+						inline: {
+							submit: "allIfChanged"
+						},
+						idSrc: 'id'
+					}
+				}
+			}
+		}
+
+		var firstcreate = true;
+		$(document).on("pagecreated",function() {
+			if(firstcreate) {
+				firstcreate = false;
+				$.createWidgets(pagewidgets);
+				var thetable = $.getWidget("pricelisttable").datatable;
+				thetable.on("select", function( e, dt, type, indexes ){
+					if(type == "row") {
+						var couponid = thetable.rows(indexes).data()[0].id;
+						$.getWidget("listtable").option("editor.presubmit.couponid", couponid);
+						$.getWidget("listtable").fetch("eager", [couponid]);
+					}
+				});
+				
+			}
+		});
+
+
+	</script>
+<html>

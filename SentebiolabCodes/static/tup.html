@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Etiket tup</title>
+   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+   <link href="./css/derp.css" rel="stylesheet" />
+
+   <script src="./js/modernizr.js"></script>
+
+   <script src="./jquery/jquery-3.3.1.js"></script>
+
+   <style type="text/css">
+      @media screen {}
+
+      @media print {
+         body {
+            -webkit-print-color-adjust: exact;
+            margin: 0 !important;
+            padding: 0 !important;
+         }
+
+         table {
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+         }
+
+         table td {
+            border: none !important;
+         }
+
+         #shiftTable {
+            display: none;
+         }
+
+         .hidePrint {
+            display: none;
+         }
+
+         .hideView {
+            display: block !important;
+         }
+
+         img {
+            margin-left: 1.5mm !important;
+            margin-top: 1mm !important;
+            height: 3.3mm !important;
+            width: 22mm !important;
+         }
+      }
+
+      @page {
+         size: A4;
+         margin: 11.1mm 3mm 0 2mm;
+         margin-bottom: 0mm !important;
+         padding-bottom: 0mm !important;
+         padding-top: 0 !important;
+         margin-top: 11.1mm !important;
+      }
+
+      html,
+      body {
+         margin: 0 !important;
+         width: 204mm;
+         /*height: 285.9mm;*/
+      }
+
+      body {
+         margin: 0 !important;
+         padding: 0 !important;
+         font-family: 'Tahoma' !important;
+         font-size: 0.8em !important;
+         color: #000 !important;
+         font-weight: 800;
+      }
+
+      table {
+         display: block;
+         word-wrap: break-word;
+         table-layout: fixed;
+         border: none !important;
+      }
+
+      thead {
+         display: table-header-group;
+      }
+
+      table td {
+         display: inline-block;
+         width: 38mm !important;
+         height: 21.1mm !important;
+         border: 1px solid;
+         margin-left: 2.5mm;
+      }
+
+      table tr {
+         margin: 0 !important;
+         padding: 0 !important;
+      }
+
+
+
+
+      .reportdata {
+         max-width: 32mm !important;
+         width: 32mm !important;
+         overflow: hidden;
+         white-space: nowrap;
+         text-overflow: ellipsis;
+         display: inline-block;
+      }
+
+      .reportcontent {
+         margin: 0 !important;
+         padding-top: 0.3em;
+         padding-left: 1em;
+      }
+
+      .hideView {
+         display: none;
+      }
+   </style>
+</head>
+
+<body>
+   <div id="shiftTable">
+      <div style="margin: 2em;">
+         <button class="btn btn-primary" id="shiftDown"><span class="glyphicon glyphicon-thumbs-down"></span> </button>
+         <button class="btn btn-primary" id="shiftRight"><span class="glyphicon glyphicon-arrow-right"></span> </button>
+
+         <button class="btn btn-primary" id="shiftUp" style="float:right"><span class="glyphicon glyphicon-thumbs-up"></span>
+         </button>
+         <button class="btn btn-primary" id="shiftLeft" style="float:right"><span class="glyphicon glyphicon-arrow-left"></span>
+         </button>
+      </div>
+   </div>
+   <table class="table">
+      <thead style="display:none;">
+         <tr>
+            <th></th>
+         </tr>
+      </thead>
+      <tr class="singleRow">
+         <td class="singlereport">
+            <div class="reportcontent">
+               <div class="hidePrint compname">GELISIM TIP LABORATUVARLARI - ELIFE &#214;ZDEMIR-0163</div>
+               <span class="reportname">MD1-CTG-TP-F1</span><br />
+               190108-3-1 44 bp <br />
+               <span class="reportdata">5'<span>AGCGGATAACAATTTCACACAGGATGCTGCTGCTGCTGCTGCTG</span>3'</span> <br />
+               Tm: MW:13547 <button type="button" class="btn btn-danger btn-xs hidePrint removeItem" style="width: 5px; height: 10px;"></button><button
+                  type="button" class="btn btn-warning btn-xs hidePrint hideItem" style="width: 5px; height: 10px;"></button><br />
+               <img class="hideView" src="./Images/logo_etiket.png" />
+            </div>
+         </td>
+         <td class="singlereport">
+            <div class="reportcontent">
+               <div class="hidePrint compname">GEN PLAZA BIYOTEKNOLOJI - UTKU KUTUOGLU-0031</div>
+               <span class="reportname">pqq-13</span><br />
+               190108-3-2 42 bp <br />
+               <span class="reportdata">5'<span>TGCCAGGAATTGGGGATCGGAAAGGTCTACTACCGTGCTAAC</span>3'</span> <br />
+               Tm: MW:13003 <button type="button" class="btn btn-danger btn-xs hidePrint removeItem" style="width: 5px; height: 10px;"></button><button
+                  type="button" class="btn btn-warning btn-xs hidePrint hideItem" style="width: 5px; height: 10px;"></button><br />
+               <img class="hideView" src="./Images/logo_etiket.png" />
+            </div>
+         </td>
+         <td class="singlereport">
+            <div class="reportcontent">
+               <div class="hidePrint compname">GEN PLAZA BIYOTEKNOLOJI - UTKU KUTUOGLU-0031</div>
+               <span class="reportname">pqq-14</span><br />
+               190108-3-3 42 bp <br />
+               <span class="reportdata">5'<span>CATGCATCTCGAGGCATGCCTTATTCAACCGCTTGAGCGTAC</span>3'</span> <br />
+               Tm: MW:12825 <button type="button" class="btn btn-danger btn-xs hidePrint removeItem" style="width: 5px; height: 10px;"></button><button
+                  type="button" class="btn btn-warning btn-xs hidePrint hideItem" style="width: 5px; height: 10px;"></button><br />
+               <img class="hideView" src="./Images/logo_etiket.png" />
+            </div>
+         </td>
+         <td class="singlereport">
+            <div class="reportcontent">
+               <div class="hidePrint compname">GEN PLAZA BIYOTEKNOLOJI - UTKU KUTUOGLU-0031</div>
+               <span class="reportname">pqq-15</span><br />
+               190108-3-4 42 bp <br />
+               <span class="reportdata">5'<span>ACGCTCAAGCGGTTGAATAAGGCATGCCTCGAGATGCATGGC</span>3'</span> <br />
+               Tm: MW:12988 <button type="button" class="btn btn-danger btn-xs hidePrint removeItem" style="width: 5px; height: 10px;"></button><button
+                  type="button" class="btn btn-warning btn-xs hidePrint hideItem" style="width: 5px; height: 10px;"></button><br />
+               <img class="hideView" src="./Images/logo_etiket.png" />
+            </div>
+         </td>
+         <td class="singlereport">
+            <div class="reportcontent">
+               <div class="hidePrint compname">GEN PLAZA BIYOTEKNOLOJI - UTKU KUTUOGLU-0031</div>
+               <span class="reportname">pqq-16</span><br />
+               190108-3-5 47 bp <br />
+               <span class="reportdata">5'<span>TAGCACGGTAGTAGACCTTTCCGATCCCCAATTCCTGGCAGTTTATG</span>3'</span> <br />
+               Tm: MW:14380 <button type="button" class="btn btn-danger btn-xs hidePrint removeItem" style="width: 5px; height: 10px;"></button><button
+                  type="button" class="btn btn-warning btn-xs hidePrint hideItem" style="width: 5px; height: 10px;"></button><br />
+               <img class="hideView" src="./Images/logo_etiket.png" />
+            </div>
+         </td>
+         <td class="singlereport">
+            <div class="reportcontent">
+               <div class="hidePrint compname">GEN PLAZA BIYOTEKNOLOJI - UTKU KUTUOGLU-0031</div>
+               <span class="reportname">pqq-17</span><br />
+               190108-3-6 40 bp <br />
+               <span class="reportdata">5'<span>GGCGTAGAGGATCTGAAGATCAGCAGTTCAACCTGTTGAT</span>3'</span> <br />
+               Tm: MW:12400 <button type="button" class="btn btn-danger btn-xs hidePrint removeItem" style="width: 5px; height: 10px;"></button><button
+                  type="button" class="btn btn-warning btn-xs hidePrint hideItem" style="width: 5px; height: 10px;"></button><br />
+               <img class="hideView" src="./Images/logo_etiket.png" />
+            </div>
+         </td>
+         <td class="singlereport">
+            <div class="reportcontent">
+               <div class="hidePrint compname">GEN PLAZA BIYOTEKNOLOJI - UTKU KUTUOGLU-0031</div>
+               <span class="reportname">pqq-18</span><br />
+               190108-3-7 40 bp <br />
+               <span class="reportdata">5'<span>ATCAACAGGTTGAACTGCTGATCTTCAGATCCTCTACGCC</span>3'</span> <br />
+               Tm: MW:12191 <button type="button" class="btn btn-danger btn-xs hidePrint removeItem" style="width: 5px; height: 10px;"></button><button
+                  type="button" class="btn btn-warning btn-xs hidePrint hideItem" style="width: 5px; height: 10px;"></button><br />
+               <img class="hideView" src="./Images/logo_etiket.png" />
+            </div>
+         </td>
+         <td class="singlereport">
+            <div class="reportcontent">
+               <div class="hidePrint compname">GEN PLAZA BIYOTEKNOLOJI - UTKU KUTUOGLU-0032</div>
+               <span class="reportname">pqq-20</span><br />
+               190108-3-8 47 bp <br />
+               <span class="reportdata">5'<span>CATGCATCTCGAGGCATGCCCAGTGCAATTTATCTCTTCAAATGTAG</span>3'</span> <br />
+               Tm: MW:14388 <button type="button" class="btn btn-danger btn-xs hidePrint removeItem" style="width: 5px; height: 10px;"></button><button
+                  type="button" class="btn btn-warning btn-xs hidePrint hideItem" style="width: 5px; height: 10px;"></button><br />
+               <img class="hideView" src="./Images/logo_etiket.png" />
+            </div>
+         </td>
+         <td class="singlereport">
+            <div class="reportcontent">
+               <div class="hidePrint compname">GEN PLAZA BIYOTEKNOLOJI - UTKU KUTUOGLU-0032</div>
+               <span class="reportname">pqq-21</span><br />
+               190108-3-9 43 bp <br />
+               <span class="reportdata">5'<span>TGAAGAGATAAATTGCACTGGGCATGCCTCGAGATGCATGGCG</span>3'</span> <br />
+               Tm: MW:13356 <button type="button" class="btn btn-danger btn-xs hidePrint removeItem" style="width: 5px; height: 10px;"></button><button
+                  type="button" class="btn btn-warning btn-xs hidePrint hideItem" style="width: 5px; height: 10px;"></button><br />
+               <img class="hideView" src="./Images/logo_etiket.png" />
+            </div>
+         </td>
+         <td class="singlereport">
+            <div class="reportcontent">
+               <div class="hidePrint compname">KARADENIZ TEKNIK &#220;NIVERSITESI - PROF.DR.ILHAN ALTINOK-0003</div>
+               <span class="reportname">16S V3F</span><br />
+               190108-3-10 50 bp <br />
+               <span class="reportdata">5'<span>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGCCTACGGGNGGCWGCAG</span>3'</span> <br />
+               Tm: MW:15541 <button type="button" class="btn btn-danger btn-xs hidePrint removeItem" style="width: 5px; height: 10px;"></button><button
+                  type="button" class="btn btn-warning btn-xs hidePrint hideItem" style="width: 5px; height: 10px;"></button><br />
+               <img class="hideView" src="./Images/logo_etiket.png" />
+            </div>
+         </td>
+         <td class="singlereport">
+            <div class="reportcontent">
+               <div class="hidePrint compname">KARADENIZ TEKNIK &#220;NIVERSITESI - PROF.DR.ILHAN ALTINOK-0003</div>
+               <span class="reportname">16S V4R</span><br />
+               190108-3-11 55 bp <br />
+               <span class="reportdata">5'<span>GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGGACTACHVGGGTATCTAATCC</span>3'</span>
+               <br />
+               Tm: MW:17065 <button type="button" class="btn btn-danger btn-xs hidePrint removeItem" style="width: 5px; height: 10px;"></button><button
+                  type="button" class="btn btn-warning btn-xs hidePrint hideItem" style="width: 5px; height: 10px;"></button><br />
+               <img class="hideView" src="./Images/logo_etiket.png" />
+            </div>
+         </td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+         <td class="emptycell"></td>
+
+      </tr>
+   </table>
+
+
+
+   <script type="text/javascript">
+      $(document).ready(function () {
+         $(".singlereport").each(function () {
+            var rname = $(this).find(".reportname").text().trim();
+            var rdata = $(this).find(".reportdata").text().trim();
+            var compname = $(this).find(".compname").text().trim();
+            if (rname.length > 21) rname = cropString(rname, 21, 10);
+            if (rdata.length > 21) rdata = cropString(rdata, 21, 10);
+            if (compname.length > 20) compname = compname.substring(0, 20) + "...";
+            $(this).find(".compname").text(compname);
+            $(this).find(".reportname").text(rname);
+            $(this).find(".reportdata").text(rdata);
+         });
+
+         $("#shiftDown").on('click', function () {
+            $(".singleRow").prepend("<td class='emptycell'></td>");
+            $(".singleRow").prepend("<td class='emptycell'></td>");
+            $(".singleRow").prepend("<td class='emptycell'></td>");
+            $(".singleRow").prepend("<td class='emptycell'></td>");
+            $(".singleRow").prepend("<td class='emptycell'></td>");
+         });
+         $("#shiftRight").on('click', function () {
+            $(".singleRow").prepend("<td class='emptycell'></td>");
+         });
+
+         $("#shiftLeft").on('click', function () {
+            $(".emptycell").first().remove();
+         });
+         $("#shiftUp").on('click', function () {
+            $(".emptycell").first().remove();
+            $(".emptycell").first().remove();
+            $(".emptycell").first().remove();
+            $(".emptycell").first().remove();
+            $(".emptycell").first().remove();
+         });
+
+         $(".table").on('change', function () {
+            console.log($(this).find("td").length);
+         });
+
+         $(".removeItem").on('click', function () {
+            var elem = $(this).closest('.singlereport');
+            elem.fadeOut();
+         });
+         $(".hideItem").on('click', function () {
+            var elem = $(this).closest('.reportcontent');
+            elem.slideUp(900, 0, function () {
+               elem.css("visibility", "hidden");
+            });
+         });
+      });
+
+
+
+      var cropString = function (s, n, r) {
+         var l = s.length;
+         if (l > n) {
+            return s.substring(0, r) + "..." + s.substring(l - r, l);
+         }
+      };
+   </script>
+</body>
+
+</html>

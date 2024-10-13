@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="shortcut icon" type="image/png" href="assets/images/fav.png"/>
+    <!-- Site Properties -->
+    <title>Login To System</title>
+    <link rel="stylesheet" type="text/css" href="semanticui/semantic.min.css">
+	<link rel="stylesheet" type="text/css" href="jquery-ui.css">
+	<script src="jquery-3.3.1min.js"></script>
+	<script src="jquery-ui.js"></script>
+	<script src="jquery.cookie-1.4.1.js"></script>
+    <script src="semanticui/semantic.min.js"></script>
+
+	<script src="acm/acm-ui-auth.js"></script>
+	<script src="acm/acm-data-handler.js"></script>
+	<script src="acm/acm-page-handler.js"></script>
+	<script src="acm/acm-dialog.js"></script>
+	<script src="acm/acm-input.js"></script>
+	<script src="acm/acm-form.js"></script>
+	<script src="acm/acm-link.js"></script>
+
+  <style>
+    body {
+      background-color: #DADADA;
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .image {
+      margin-top: -100px;
+    }
+    .column {
+      max-width: 450px;
+    }
+		body {
+			background-image: url("assets/images/bg1.jpg");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+		}
+  </style>
+</head>
+<body>
+
+	<div class="ui middle aligned center aligned grid">
+		<div class="column">
+			<a id="aid" href="https://www.sentebiolab.com.tr">
+				<img src="assets/images/logo-white.png" class="ui rounded fluid image" id="homepagelink" alt="">
+			</a>
+			<h2 class="ui teal image header">
+				Hesabınıza Giriş Yapın
+			</h2>
+			<div id="formcontainer">
+
+			</div>
+			<div class="ui error message hidden" id="autherror"></div>
+			<div class="ui message" id="registerlink">Hesabınız yok mu?</div>
+		</div>
+	</div>
+
+</body>
+	<script>
+		$(document).on("pagecreated",function() {
+			$("#aid").attr("href","https://www.sentebiolab.com.tr");
+			$("#homepagelink").css('cursor', 'pointer');
+
+		});
+
+		function sendForm() {
+			const form = $.getWidget("formWidget");
+			form.semantic("validate form");
+			if(form.semantic("is valid")) {
+				$.formAction({username:"usernameWidget", password:"passwordWidget"}, "loginService", function(data) {
+					if(data.ok) {
+						$.acm_auth("auth",data.token);
+						window.location.href = data.redir;
+					} else {
+						$("#autherror").html(data.reason).show();
+					}
+				});
+			}
+		}
+
+		$.ajax("/loginpage",{
+				type: "POST",
+				contentType:"application/json",
+				dataType: "json",
+				data: JSON.stringify({"pageid":"login"})
+			}).done(function(data){
+				$.createPage(data.page);
+				//click button
+				$("#submitbutton").click(function() {
+					sendForm();
+				});
+
+				//press enter
+				$('#password, #username').keypress(function (e) {
+				 if(e.which === 13) {// the enter key code
+						sendForm();
+						return false;
+					}
+				});
+			}).catch(function(err) {
+				console.log(err);
+			});
+
+  </script>
+</html>

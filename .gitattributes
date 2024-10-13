@@ -1,0 +1,6 @@
+# Enforce LF for all JavaScript files
+*.js text eol=lf
+
+# Enforce CRLF for Windows-specific files, if necessary
+*.bat text eol=crlf
+

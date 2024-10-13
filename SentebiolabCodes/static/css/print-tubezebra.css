@@ -1,0 +1,136 @@
+@media screen {}
+
+@page { 
+  size: 29mm 21mm; 
+  margin: 0mm;
+}
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+
+  .tubePage {
+    margin: 0 0 0 10mm;
+    page-break-after: always;
+  }
+
+
+  .reportname {
+    font-size: 0.82em;
+    font-weight: 600;
+    padding-bottom: 1.5em;
+  }
+
+  .hidePrint {
+    display: none;
+  }
+
+
+  .hideView {
+    display: block !important;
+  }
+
+  img {
+    margin-left: 1.5mm !important;
+    margin-top: 0.5em;
+    height: 5mm !important;
+    width: 26mm !important;
+  }
+}
+
+
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: 'Tahoma' !important;
+  font-size: 0.8em !important;
+  color: #000 !important;
+  font-weight: normal;
+}
+
+
+img {
+  margin-left: 1.5mm !important;
+  margin-top: 0.5em;
+  !important;
+  height: 5mm !important;
+  width: 26mm !important;
+}
+
+.compname {
+	max-width: 32mm !important;
+	width: 32mm !important;
+	font-size: 0.7em !important;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.reportname {
+	max-width: 32mm !important;
+	width: 32mm !important;
+	font-size: 0.82em !important;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.nmol {
+	max-width: 32mm !important;
+	width: 32mm !important;
+	font-size: 0.6em !important;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.mw {
+	float:left;
+	max-width: 16mm !important;
+	overflow: hidden;
+	white-space: nowrap;
+	font-size: 0.7em !important;
+}
+
+.tmbasic {
+	float:left;
+	margin-right:2mm;
+	max-width: 16mm !important;
+	overflow: hidden;
+	white-space: nowrap;
+	font-size: 0.7em !important;
+}
+
+.reportdata {
+  max-width: 28mm !important;
+  width: 28mm !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+	font-size: 0.55em !important;
+	word-wrap: break-word;
+}
+
+.reportdata2 {
+  max-width: 28mm !important;
+  width: 28mm !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+	font-size: 0.55em !important;
+	word-wrap: break-word;
+}
+
+.reportcontent {
+  margin: 0 !important;
+  padding-top: 1em;
+  padding-left: 0;
+}
+
+
+.hideView {
+  display: none;
+}
