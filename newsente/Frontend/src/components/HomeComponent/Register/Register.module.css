@@ -1,0 +1,63 @@
+/* Register.module.css */
+
+.registerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f7f7f7;
+}
+
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 300px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.registerForm h3 {
+  margin: 0;
+  text-align: center;
+  color: #343a40;
+}
+
+.inputField {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.submitButton,
+.googleButton {
+  padding: 10px;
+  font-size: 1rem;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submitButton {
+  background-color: #343a40;
+}
+
+.submitButton:hover {
+  background-color: #495057;
+}
+
+.googleButton {
+  background-color: #db4437;
+  margin-top: 10px;
+}
+
+.googleButton:hover {
+  background-color: #c1351d;
+}
+

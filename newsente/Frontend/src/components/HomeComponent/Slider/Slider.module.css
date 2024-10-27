@@ -1,0 +1,21 @@
+/* Slider.module.css */
+
+
+.carouselContainer {
+  width: 100%;
+  overflow: hidden;
+}
+
+.carouselImage {
+  width: 100%;
+  height: 60vh; /* Consistent height for all images */
+  object-fit: cover; /* Ensures the image scales properly without distortion */
+}
+
+.carouselCaption {
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background for readability */
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: #fff;
+}
+

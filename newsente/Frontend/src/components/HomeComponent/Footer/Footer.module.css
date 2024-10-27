@@ -1,0 +1,40 @@
+/* Footer.module.css */
+
+.FooterUp {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #f8f9fa;
+  color: #343a40;
+}
+
+.PolgenFooter h6 {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.PolgenFooter p {
+  margin: 8px 0;
+  font-size: 0.9rem;
+}
+
+.Address p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.FooterSocialMedia {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: #343a40;
+  color: #ffffff;
+}
+
+.FooterSocialMedia a {
+  margin: 0 10px;
+  color: inherit;
+  font-size: 1.5rem;
+}
+
