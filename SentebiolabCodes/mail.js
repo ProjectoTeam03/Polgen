@@ -14,6 +14,8 @@ module.exports = function(nm) {
 			
 	});
 	return {
+
+      //NOTE:------------------ sening mail after registerion takes 2 params------------------
 		send: function(rcv, msg) {
 			return new Promise( function(resolve, reject) {
 				// setup email data with unicode symbols
@@ -22,6 +24,7 @@ module.exports = function(nm) {
 						to: rcv, // list of receivers
 				};
 				if(msg.from) mailOptions.from = msg.from;
+      // NOTE:------------------we have the from option what about to --------- later noticed that no need-------------
 				if(msg.subject) mailOptions.subject = msg.subject;
 				if(msg.text) mailOptions.text = msg.text;
 				if(msg.html) mailOptions.html = msg.html;

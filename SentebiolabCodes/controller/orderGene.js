@@ -99,6 +99,8 @@ module.exports.orderGene = (sdb,gdb) => {
 		}
 		
 		try {
+
+            //WARN:-----------------------undeclared or not found---------------------------
 			existing = await db["gene_temporary"].destroy({
 				where:{
 					orderitem: true,

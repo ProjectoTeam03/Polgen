@@ -8,10 +8,11 @@ const params = {
 };
 
 const Passport = require('passport').Passport;
-passport = new Passport();
+let passport = new Passport();
 
 module.exports = function(db) {
     let strategy = new Strategy(params, async function(payload, done) {
+    //NOTE: ----------------- var olan userleri cagirmak----------------------;
 		let exists = await db["acm_users"].findAll({
 			include: [{
 				model: db.acm_roles

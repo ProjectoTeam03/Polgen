@@ -72,14 +72,19 @@
 		});
 
 		function sendForm() {
+            console.log("ssdasdw");
 			const form = $.getWidget("formWidget");
 			form.semantic("validate form");
 			if(form.semantic("is valid")) {
 				$.formAction({username:"usernameWidget", password:"passwordWidget"}, "loginService", function(data) {
 					if(data.ok) {
+            console.log(data);
 						$.acm_auth("auth",data.token);
+            console.log(data.token);
 						window.location.href = data.redir;
+            console.log(data.redir);
 					} else {
+            console.log("erorrr")
 						$("#autherror").html(data.reason).show();
 					}
 				});
@@ -93,9 +98,11 @@
 				data: JSON.stringify({"pageid":"login"})
 			}).done(function(data){
 				$.createPage(data.page);
+        console.log(data.page)
 				//click button
 				$("#submitbutton").click(function() {
 					sendForm();
+            console.log("ajax");
 				});
 
 				//press enter

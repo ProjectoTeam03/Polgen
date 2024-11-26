@@ -43,27 +43,35 @@ app.get("/assets/images/fav.png", function(req, res, next) {
 app.get("/assets/images/bg1.jpg", function(req, res, next) {
 	res.sendFile("./static/assets/images/bg1.jpg", { root: __dirname });
 });
-
+// WARN: -----------------------important-------------
 app.use(express.static('static'));
 
 app.use(bodyParser.json());
 
+
+// NOTE: -----------------------importing the mail and the auth files' data-------------
 const mail = require("./mail")(nodemailer);
 const auth = require("./auth.js")(db);
 
+// NOTE: -----------------------importing  the (controller) files as a controllers={} obj-------------
 const controllers = require("./controller");
 
 app.use(
 	async function(req, res, next) {
 		auth.initialize(req, res, next);
+
+// WARN: ----------------------- bu next() fazla sanki---------------
 		next();
 	}
 );
 
+// NOTE: ----------------------- importing the (excelService) files ------------
 const excelService = require("./excelService");
 app.use("/excel", excelService);
 
+// NOTE: -----------------------  upload file ----------------
 const fileUpload = require('express-fileupload');
+const { cls } = require("sequelize");
 
 app.use(fileUpload());
 app.post('/upload', function(req, res) {
@@ -98,6 +106,7 @@ app.post('/upload', function(req, res) {
 
 const patchMiddleWare = () => {
   return (req, res, next) => {
+    //WARN: There's a typo in aplication, which should be (application). This would prevent the header from being correctly set.
 		res.setHeader('Content-Type', 'aplication/json');
 		res.removeHeader("X-Powered-By");
 		req.session = {};
@@ -116,8 +125,11 @@ const selectAuthenticate = () => {
   }
 };
 
+//
+// NOTE: -----------------------  creating routes ----------------
 function createRoute(rt, ctrlr) {
 	app.post(rt,  auth.authenticate(), patchMiddleWare(),/* db.acl.middleware(),*/ controllers[ctrlr](db));
+  //NOTE: When a POST request is made to the route, Express first authenticates the user, applies middleware to adjust headers and session data, and then calls the appropriate controller to handle the request.----------------
 }
 
 Number.prototype.toStrLen = function(len) {
@@ -128,6 +140,7 @@ Number.prototype.toStrLen = function(len) {
 const excelservice = require("./excelService.js");
 app.use("/excel",excelservice);
 */
+//NOTE:------------------------------- buradan baslioyo hersey------------------------
 app.post("/updateTable", auth.authenticate(), async function(req, res) {
 	let response = {
 		type: req.body.type,
@@ -181,6 +194,8 @@ app.post("/updatePwd", auth.authenticate(), async function(req, res) {
 	});
 });
 
+//NOTE: -----------------------  creating routes  for all ----------------
+// //NOTE: the createRoute function is defined above to take two params
 createRoute("/table", "tableRead");
 createRoute("/tableAll", "tableAllRead");
 createRoute("/admin/api", "admin");
@@ -218,6 +233,7 @@ createRoute("/gene","gene");
 
 app.post("/orderSummary", auth.authenticate(), controllers.orderSummary(db));
 
+//NOTE: --------------------posting the users------------------
 app.post("/user", auth.authenticate(), async function(req, res) {
 	let exists = await db["acm_users"].findAll({
 		attributes: [[db.sequelize.fn('COUNT', db.sequelize.col('username')), 'cnt']],
@@ -269,6 +285,7 @@ app.post('/register', async function(req, res, next) {
 		userid : saved_acm_user.id
 	});
 
+  //NOTE: ----------------sening mail after registration----------------
 	let resp = await mail.send(saved_acm_user.username,{
 			subject: "Sente BioLab'a Hoşgeldiniz",
 			text: "Hesap Açılışı",
@@ -315,11 +332,13 @@ app.post("/token", async function(req, res) {
 				mainpage: exists[0].dataValues.acm_role.mainpage
 			};
 			const token = jwt.encode(payload, cfg.jwtSecret);
+      console.log(token)
 			res.json({
 				ok : true,
 				redir: exists[0].dataValues.acm_role.mainpage,
 				token: token
 			});
+console.log("Redirect URL:", exists[0].dataValues.acm_role.mainpage);
 		}
 	} else {
 		res.json({
@@ -335,6 +354,7 @@ app.post("/page", auth.authenticate(), function (req, res) {
 	console.log(req.body.pageid);
 	console.log(req.user.role);
 	const pagefound = pages[req.body.pageid] && pages[req.body.pageid][req.user.role] ? pages[req.body.pageid][req.user.role] : emptypage;
+  //
 	if(!pagefound.widgets) pagefound.widgets = {};
 	if(!pagefound.services) pagefound.services = {};
 	if(!pagefound.functions) pagefound.functions = {};
@@ -347,10 +367,13 @@ app.post("/page", auth.authenticate(), function (req, res) {
 
 app.post("/loginpage", function (req, res) {
 	res.status(200);
+  console.log("aaaaaaaaaa")
 	const response = {
 		ok: true,
+    
 		page: pages.login
 	};
+  console.log(pages.login)
 	res.json(response);
 });
 

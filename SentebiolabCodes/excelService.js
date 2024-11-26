@@ -77,7 +77,7 @@ router.post('/', upload.single('userfile'), function (req, res, next) {
   src.pipe(res);
 });
 */
-
+//WARN:-------------------------exel create-----------------------------
 router.post('/create', function (req, res) {
   var data = req.body;
   var excel_entries = data.excel_entries;
@@ -191,7 +191,8 @@ router.post('/create', function (req, res) {
 
 
 
-
+//NOTE: -------------------exportiing the exel file --------------------------
+//
 // Export Excel file with given data
 router.post('/export', function (req, res) {
   var data = req.body;

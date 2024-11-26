@@ -1,3 +1,4 @@
+//-NOTE:-------------------Login page---------------------------------
 let loginpage = {
 	widgets: {
 		formWidget: {
@@ -81,6 +82,9 @@ let loginpage = {
 		}
 	}
 };
+//-------------------Login page done---------------------------------
+
+//--NOTE:------------------register page ---------------------------------
 let registerpage = {
 	widgets: {
 		container: {
@@ -255,6 +259,8 @@ let registerpage = {
 		}
 	}
 }
+// -------------------register page done---------------------------------
+//NOTE:------------------ordercustomeritems ---------------------------------
 let ordercustomeritems = {
 	container: {
 		type: "widgetform",
@@ -364,6 +370,8 @@ let ordercustomeritems = {
 		}
 	}
 };
+//------------------ordercustomeritems done---------------------------------
+//NOTE:------------------ registerinputbase ---------------------------------
 let registerinputbase = {
 	type: "input",
 	options: {
@@ -508,6 +516,9 @@ let ordernavbaritems = {
 	}
 };
 
+//------------------ registerinputbase  done---------------------------------
+
+//NOTE:------------------ seq production navbar  ---------------------------------
 let seqproductionnavbaritems = {
 	navbar: {
 		type: "container",
@@ -602,6 +613,8 @@ let seqproductionnavbaritems = {
 	}
 };
 
+//------------------ production navbar  done---------------------------------
+//NOTE:------------------ production navbar  items---------------------------------
 let productionnavbaritems = {
 	navbar: {
 		type: "container",
@@ -723,6 +736,8 @@ let productionnavbaritems = {
 	},
 };
 
+//------------------ production navbar  items done---------------------------------
+//NOTE:------------------ admin navbar items---------------------------------
 let adminnavbaritems = {
 	navbar: {
 		type: "container",
@@ -834,6 +849,8 @@ let adminnavbaritems = {
 	}
 };
 
+//------------------ admin navbar items done---------------------------------
+//NOTE:------------------ admin navbar items---------------------------------
 let productionreporswidgetsall = {
 	container: {
 		type: "container",
@@ -1724,12 +1741,15 @@ let tableFuncs = {
 	redtext: (function(data){
 		return "<h4 class= 'ui red header'>" + data + "</h4>";
 	}).toString(),
+
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 	nulltracking:(function(data, type, row, meta){
 		if(data === null) return "Takip No Yok";
 		else {
 			return data;
 		}
 	}).toString(),
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 	trackingset: (function(data, type, row, meta){
 		if(data !== null) {
 			return "<i class='large  green check circle icon'></i>";
@@ -1760,6 +1780,7 @@ let tableFuncs = {
 		}
 	}).toString(),
 
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 	fileorder: (function (data, type, row, meta) {
 
 		let elm = $('<label class="mini basic ui button" for="excelupload' + row.userid + '"><i class="ui upload icon"></i><span class="noclass">Excel Yükle</span><input type="file" style="display: none" id="excelupload' + row.userid + '"></label>');
@@ -1947,6 +1968,7 @@ let tableFuncs = {
 		return null;
 
 	}).toString(),
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 	orderscale: (function (data, type, row, meta) {
 		if (data === 1) return "50 nmol";
 		else if (data === 2) return "100 nmol";
@@ -1990,6 +2012,7 @@ let tableFuncs = {
 	appr: (function (data) {
 		return "<i class='large " + (data ? " green check " : " hourglass half ") + "circle icon'></i>" + (data ? "Onaylandı" : "Beklemede");
 	}).toString(),
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 	apprbtn: (function (data, type, row, meta) {
 
 		let colattr = $("#" + meta.settings.sTableId).data("widget").options.datatable.columns[meta.col];
@@ -2020,6 +2043,8 @@ let tableFuncs = {
 
 					$.formAction({ orderid: row.id, type: row.type }, "deleteorderservice", function (resp) {
 						if (resp.ok === "ok") {
+
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 							$.getWidget("orderlisttable").editor.remove([meta.row], false).submit(function (x) {
 								console.log("ok");
 								location.reload();
@@ -2040,6 +2065,8 @@ let tableFuncs = {
 			$.getWidget('mailmodal').show();
 			let email = row.user.mail;
 			let name = row.user.name;
+
+//WARN:-----------------------------------not used or not FOUND -------------------
 			let date = moment(row.date).format('YYYY-MM-DD HH:mm');
 			let greeting = "Sayın " + name;
 			//let content = "\'" + row.ordernum + "\' nolu siparişiniz alınmıştır."
@@ -2139,6 +2166,7 @@ let tableFuncs = {
 		return null;
 	}).toString(),
 	mailbtn: (function (data, type, row, meta) {
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 		let colattr = $("#" + meta.settings.sTableId).data("widget").options.datatable.columns[meta.col];
 		let elm = $("<i class=' envelope outline circle icon'>").click(function () {
 			$.getWidget('mailmodal').show();
@@ -2176,6 +2204,7 @@ let tableFuncs = {
 		return "<div class='center aligned'>" + fields[0] + "</br><div class='ui " + color + " horizontal label'>" + fields[1] + "</div></div>"
 	}).toString(),
 	link: (function (data, type, row, meta) { //set #reportbutton to show correct report
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 		let link = $(document.createElement("a")).addClass("tablecontent").css('cursor', 'pointer').css("text-decoration", "none").html(data).click(function (e) {
 			if (row.type === undefined) {
 				let arr = []; arr.push(row.id);
@@ -2222,6 +2251,7 @@ let tableFuncs = {
 		return null;
 	}).toString(),
 	podlink: (function (data, type, row, meta) {
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 		let elm = $(document.createElement("a")).addClass("item").css('cursor', 'pointer').html(data);
 		elm.click(function () {
 			$.cookie("tempvar", JSON.stringify(row));
@@ -2286,6 +2316,8 @@ let tableFuncs = {
 		else return " ";
 	}).toString(),
 	momentdate: (function (data) {
+
+//WARN:-----------------------------------not used or not FOUND -------------------
 		moment.locale('tr');
 		return moment(data).format('YYYY-MM-DD HH:mm');//moment(data).format('HH:mm D MMM YY');
 	}).toString(),
@@ -2322,6 +2354,7 @@ let tableFuncs = {
 			$.getWidget('reporttable').table.DataTable().row([meta.row]).select()
 		}
 
+//WARN:-----------------------------------not used or not FOUND -------------------
 		elm = $('<i class="redo link icon"></i>').on("click", function () {
 			let self = $.getWidget('reporttable').table.DataTable().row([meta.row]);
 			let selindexes = $.getWidget("reporttable").datatable.rows({ selected: true }).indexes().toArray()
@@ -2331,6 +2364,7 @@ let tableFuncs = {
 				self.select();
 			}
 		});
+//WARN:-----------------------------------not used or not FOUND -------------------
 		$($("#" + meta.settings.sTableId).DataTable().cell(meta.row, meta.col).node()).empty().append(elm);
 		return null;
 	}).toString(),
@@ -2350,6 +2384,7 @@ let tableFuncs = {
 	}).toString(),
 	navigateorder: (function (data, type, row, meta) {
 		if (row.orderid !==0) {
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 			let link = $(document.createElement("a")).addClass("tablecontent").css('cursor', 'pointer').html(data).click(function (e) {
 				if (window.location.pathname === "/productionSynthesis.html") $.cookie("tempvar", JSON.stringify(row.order));
 				else if (window.location.pathname === "/productionSynthesisProbe.html") $.cookie("tempvar", JSON.stringify(row.order));
@@ -2688,6 +2723,7 @@ let productionnavbarservices = {
 };
 
 let productionFuncs = {
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 	boxprint: (function (data) {
 
 		let table_data_w_k = $.getWidget('reporttable')
@@ -2723,6 +2759,7 @@ let productionFuncs = {
 			});
 
 		let divs = $('<div>');
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 		$.each(toprintreborn, function (i, val) {
 			let div = $('<div>').addClass('singlereport');
 			let span = $('<span>').addClass('rhead').html(val[0]['user.company']);
@@ -2749,6 +2786,8 @@ let productionFuncs = {
 			'<body onload="window.print()">' + divs.html() + '</body><script src="./js/printbox.js"></script></html>');
 		my_window.document.close();
 	}).toString(),
+
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 	boxprintz: (function (data) {
 		let table_data_w_k = $.getWidget('reporttable')
 			.getCols([
@@ -2762,6 +2801,8 @@ let productionFuncs = {
 			let order = $.getWidget('reporttable').table.DataTable().rows({ order: 'applied' } )[0];
 			let table_data = [];
 			$.each(order, function(i,v){
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
+
 				if(table_data_w_k[v]["order.ordernum"] !=="Kontrol") {
 					table_data.push(table_data_w_k[v]);
 				}
@@ -2816,6 +2857,7 @@ let productionFuncs = {
 		my_window.document.close();
 	}).toString(),
 	tubeprint: (function (data) {
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 		let toprint = $.getWidget('reporttable')
 			.getCols([
 				{ name: "user.company", render: false },
@@ -2946,6 +2988,7 @@ let productionFuncs = {
 					{ name: "user.company" }
 				]);
 
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 				$.each(unorderedtoprint,function(ritp,rvtp) {
 
 					rvtp["bp"] = rvtp["sequence"].length;
@@ -3060,6 +3103,7 @@ let productionFuncs = {
 				let mainTr = $("<tr></tr>").css({"border":"none"}).appendTo(outerTbody);
 				let mainTd = $("<td></td>").addClass("single-paper").css({"padding-left": "1cm","padding-right": "1cm"}).appendTo(mainTr);
 				let h4 = $("<h4></h4>").html("Sentez Raporu: <span class='itemCompanyName'>" + comp + "</span><span style='float: right'>Sentez Tarihi - " + date).appendTo(mainTd);
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 				let headerInput = $("<input/>").addClass("editCompanyName hidePrint").val(comp).appendTo(mainTd);
 				mainTd.append($("<hr/>").css({"padding-top":"0", "padding-bottom": "0", "margin-bottom": "0", "color":"#222222"}));
 				let footTd = $("<td></td>").css({"padding-left": "1cm", "padding-right": "1cm"}).html("<h5>Primer Kullanım Kılavuzu:</h5> <ol style='padding-left:8px;'>"
@@ -3072,6 +3116,7 @@ let productionFuncs = {
 			 }
 
 			function createSingle(el, ordering, oligoname, sequence, bp, synthno, scala, purification, gc, mw, extcoef, tmbasic, tmneighbor, tmsalt, a260, conc, ng, totalnmol, od) {
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 				let div = $("<div></div>").addClass("single-report").css({"border-top": "solid","border-top-width": "1px", "border-top-color": "#222222"}).appendTo(el);
 				div.append($("<button></button>").addClass("hidePrint btn btn-xs btn-danger  removeReport").html("Raporu Sil").appendTo(div));
 				div.append($("<p></p>").addClass("small-font").css({"font-weight": "bold"}).html("#" + ordering + ". " + oligoname));
@@ -3130,6 +3175,7 @@ let productionFuncs = {
 					console.log(vv[0], "   ", vv[0]["order.date"], "   ", thedate);
 					let page6 = createPage6(printarea,k,thedatewithdots);
 					$.each(vv, function(ii,vvv) {
+//WARN:-----------------------------------not used or not FOUND , or NOT READ-------------------
 						let gcperc= ((vvv.sequence.match(/G/g) || []).length + (vvv.sequence.match(/C/g) || []).length)/vvv.sequence.length*100;
 						createSingle(page6, ii + 1, vvv.name, vvv.sequence, vvv.bp, vvv.synthname, vvv["primer_sca.id"], vvv["primer_puri.id"], vvv.gc, vvv.mw, vvv.excoef, vvv.tmbasic, "", "", vvv.a260, vvv.conc, vvv.totalng, vvv.totalnmol, vvv.od);
 					});
@@ -4878,6 +4924,7 @@ let nextsyntheseswidgetsprobe = {
 	}
 }
 
+//WARN:-----------------------------------not used or not FOUND -------------------
 cargodetailswidgets = {
 	container: {
 		type: "container",
@@ -5158,6 +5205,7 @@ productionorderdetailwidgets.genetable = Object.assign({}, orderordersitems.gene
 
 //cargodetailswidgets
 
+//WARN:-----------------------------------not used or not FOUND -------------------
 cargodetailswidgets.ordercard = Object.assign({}, orderordersitems.ordercard);
 cargodetailswidgets.primercard = Object.assign({}, orderordersitems.primercard);
 cargodetailswidgets.primertable = Object.assign({}, orderordersitems.modaltable);
@@ -5767,6 +5815,7 @@ let synthlistservices = {
 	}
 };
 
+//WARN:-----------------------------------not used or not FOUND -------------------
 customerlistitems = { //CURPOS
 	container: {
 		type: "container",
@@ -5996,6 +6045,7 @@ probe_pair : {
 	columns: ["fmodid","tmodid","val"]
 }*/
 
+//WARN:-----------------------------------not used or not FOUND -------------------
 orderlistitems = {
 	container: {
 		type: "container",
@@ -6109,6 +6159,7 @@ orderlistitems = {
 	}
 }
 
+//WARN:-----------------------------------not used or not FOUND -------------------
 orderdetailsitems = {
 	container: {
 		type: "container",
@@ -6141,7 +6192,7 @@ orderdetailsitems = {
 		}
 	}
 }
-
+//WARN:-----------------------------------not used or not FOUND -------------------
 productionOrderListItems = {
 	orderlisttable: {
 		type: "table",
@@ -6474,7 +6525,7 @@ let seqproductionOrderListItems = {
 		}
 	}
 };
-
+//WARN:------------------------- not used or not  found----------------------------
 orderListServices = {
 	deleteorderservice: {
 		source: "ajax",
@@ -6501,6 +6552,7 @@ orderServices = {
 	}
 }
 
+//WARN:-----------------------------------not used or not FOUND -------------------
 addCustomerwidgets = {
 
 	uploadcontainer: {
@@ -6592,6 +6644,8 @@ let productionGeneWidgets = {
 	}
 };
 
+
+//WARN:-----------------------------------not used or not FOUND -------------------
 orderdetailsitems.ordercard = Object.assign({}, orderordersitems.ordercard);
 orderdetailsitems.primercard = Object.assign({}, orderordersitems.primercard);
 orderdetailsitems.primertable = Object.assign({}, orderordersitems.modaltable);
@@ -6759,6 +6813,7 @@ adminregisterinputs.forEach(function (i) {
 	customeredititems[i.id].options.oncreate = false;
 });
 
+//WARN:-----------------------------------not used or not FOUND -------------------
 customerpitems = {
 	container: {
 		type: "widgetform",
@@ -6848,12 +6903,16 @@ customerpitems = {
 	}
 };
 
-
+//WARN: -----------------------------------all pages ---------------------------------
+      //NOTE: ---------------- neden oopi konsepti ile bu sayflari yaptigini anladim ----------------
 let pages = {
+  //NOTE:  -------------------- this is the main class i think , pages which take the name of the page as params -----
 	login: loginpage,
 	register: registerpage,
 	primer: {
 		order: {
+      //NOTE:-----------------cok fazla code yazmamak icin o sayfalarin icindeki sabit olan navbar vs yukarida bir kez tanimlayip ondan sonra istedigim zaman sadece adiyla cok kez cagirilabilir -----------
+      //NOTE: ----------------Aslinda React i kullanarak bu isi daha basit hale getirebiliriz--------------
 			widgets: Object.assign({}, ordernavbaritems),
 			services: Object.assign({}, ordernavbarservices),
 			functions: Object.assign({}, ordernavbarfuncs)
@@ -6918,6 +6977,7 @@ let pages = {
 	},
 	productionOrderList: {
 		production: {
+//WARN:-----------------------------------not used or not FOUND -------------------
 			widgets: Object.assign({}, productionnavbaritems, productionOrderListItems),
 			services: Object.assign({}, productionnavbarservices, tableServices, mailServices, orderListServices),
 			functions: Object.assign({}, ordernavbarfuncs, tableFuncs)
@@ -7037,6 +7097,8 @@ let pages = {
 	},
 	viewCustomerList: {
 		production: {
+
+//WARN:-----------------------------------not used or not FOUND -------------------
 			widgets: Object.assign({}, productionnavbaritems, customerlistitems),
 			services: Object.assign({}, productionnavbarservices, tableServices, orderServices),
 			functions: Object.assign({}, ordernavbarfuncs, tableFuncs)
@@ -7090,6 +7152,8 @@ let pages = {
 	},
 	addCustomer: {
 		production: {
+
+//WARN:-----------------------------------not used or not FOUND -------------------
 			widgets: Object.assign({}, productionnavbaritems, registerpage.widgets, addCustomerwidgets),
 			services: Object.assign({}, productionnavbarservices),
 			functions: Object.assign({}, tableFuncs, ordernavbarfuncs)
@@ -7252,4 +7316,5 @@ let pages = {
 		}
 	}
 };
+//WARN:-----------------------------------File is a CommenJS file.it may be converted to an ES module -------------------
 module.exports = pages;

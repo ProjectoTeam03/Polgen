@@ -1,18 +1,23 @@
 /* UserPageLayout.module.css */
-
 .layoutContainer {
   display: flex;
-  min-height: 100vh; /* Full viewport height */
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+  background-color: var(--primary-bg-color); /* Ensure it matches your theme */
 }
 
-.sidebar {
-  flex: 0 0 250px; /* Fixed width for sidebar */
+.navbar {
+  flex-shrink: 0; /* Prevent shrinking of the navbar */
+  position: sticky; /* Keep the navbar at the top */
+  top: 0;
+  z-index: 1000; /* Ensure it stays above other elements */
+  background-color: var(--primary-bg-color); /* Matches the theme */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for navbar */
 }
 
-.content {
-  flex: 1;
-  padding: 20px;
-  background-color: #f4f6f8; /* Light background for main content */
-  overflow-y: auto; /* Scrollable if content overflows */
+.mainContent {
+  flex-grow: 1; /* Allow content to grow and fill the remaining space */
+  padding: 20px; /* Add some padding around the content */
+  overflow-y: auto; /* Enable scrolling if content overflows */
 }
 

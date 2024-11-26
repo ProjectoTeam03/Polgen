@@ -53,6 +53,8 @@ module.exports.extraservice = (db) => {
 
 				if (req.body.services[servname].confirm) {
 					try {
+            //WARN:-----------------------undeclared or not found---------------------------
+            
 						cntq = await db["primer_temporary"].findAll({
 							attributes: ["purification", [db.sequelize.fn("COUNT", db.sequelize.col("primer_temporary.purification")), "puricount" ]],
 							where:{

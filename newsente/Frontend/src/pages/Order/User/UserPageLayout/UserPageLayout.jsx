@@ -1,17 +1,20 @@
 import React from 'react';
+import DashboardNavbar from '../../../../components/OrderComponent/Navbar/DashboardNavbar';
 import { Outlet } from 'react-router-dom';
-import UserSideBar from '../../../../components/OrderComponent/UserComponent/UserSideBar/UserSideBar';
-import styles from './UserPageLayout.module.css';
+import styles from './UserPageLayout.module.css'; // Optional CSS module for layout-specific styles
 
 const UserPageLayout = () => {
   return (
     <div className={styles.layoutContainer}>
-      <div className={styles.sidebar}>
-        <UserSideBar />
-      </div>
-      <div className={styles.content}>
+      {/* Navbar */}
+      <header className={styles.navbar}>
+        <DashboardNavbar />
+      </header>
+
+      {/* Main Content */}
+      <main className={styles.mainContent}>
         <Outlet />
-      </div>
+      </main>
     </div>
   );
 };

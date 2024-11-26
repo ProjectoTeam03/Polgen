@@ -83,6 +83,7 @@ config.operatorsAliases = {
 	$values: Op.values,
 	$col: Op.col
 };
+//NOTE: -------------------------sanirim datayi buradan aliyor  sequelize starting-------------------------
 config.logging = console.log;
 // Option 3: Passing parameters separately (other dialects)
 const sequelize = new Sequelize("sentebiolab", "sentebiolab", "sentebiolab", {
@@ -96,6 +97,7 @@ try {
 	console.error('Unable to connect to the database:', error);
 }
 
+//NOTE: -------------------------passing the model files to sequelize-------------------------
 fs
 	.readdirSync(models)
 	.filter(function (file) {
@@ -119,7 +121,7 @@ Object.keys(db).forEach(function (modelName) {
 })
 
 db.acm_users.belongsTo(db.acm_roles, {
-	foreignKey: 'role'
+  foreignKey: 'role'
 });
 db.acm_permissions.belongsTo(db.acm_roles, {
 	foreignKey: 'roleid'
