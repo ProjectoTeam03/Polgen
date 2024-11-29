@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Table,
   TableBody,
@@ -12,21 +12,28 @@ import {
   Box,
   Typography,
   CircularProgress,
+  TablePagination,
+  TableSortLabel,
+  Checkbox,
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { getProducts } from "../../../../api/product"; // Import the API function
+import DeleteIcon from '@mui/icons-material/Delete';
+import { alpha } from '@mui/material/styles';
+import { visuallyHidden } from '@mui/utils';
 
 const UserTables = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('name');
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openRows, setOpenRows] = useState({});
-
-  const toggleRow = (rowId) => {
-    setOpenRows((prev) => ({ ...prev, [rowId]: !prev[rowId] }));
-  };
-
+  
   // Fetch data from API on component mount
   useEffect(() => {
     const fetchData = async () => {
@@ -40,9 +47,82 @@ const UserTables = () => {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
+
+  const toggleRow = (rowId) => {
+    setOpenRows((prev) => ({ ...prev, [rowId]: !prev[rowId] }));
+  };
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelected = rows.map((n) => n.id);
+      setSelected(newSelected);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+    setSelected(newSelected);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const descendingComparator = (a, b, orderBy) => {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const getComparator = (order, orderBy) => {
+    return order === 'desc'
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  };
+
+  const visibleRows = useMemo(
+    () =>
+      [...rows]
+        .sort(getComparator(order, orderBy))
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    [order, orderBy, page, rowsPerPage, rows]
+  );
+
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   if (loading) {
     return (
@@ -64,123 +144,74 @@ const UserTables = () => {
   }
 
   return (
-    <TableContainer
-      component={Paper}
-      sx={{
-        backgroundColor: "var(--primary-bg-color)",
-        borderRadius: "8px",
-        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)",
-        padding: "20px",
-      }}
-    >
-      <Typography
-        variant="h6"
-        sx={{
-          fontWeight: "bold",
-          color: "var(--primary-text-color)",
-          marginBottom: "15px",
-        }}
-      >
+    <TableContainer component={Paper} sx={{ padding: "20px" }}>
+      <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: "15px" }}>
         Product List
       </Typography>
       <Table>
         <TableHead>
-          <TableRow sx={{ backgroundColor: "var(--secondary-bg-color)" }}>
-            <TableCell />
-            <TableCell
-              sx={{
-                fontWeight: "bold",
-                color: "var(--secondary-text-color)",
-              }}
-            >
-              Product
+          <TableRow>
+            <TableCell padding="checkbox">
+              <Checkbox
+                color="primary"
+                indeterminate={selected.length > 0 && selected.length < rows.length}
+                checked={rows.length > 0 && selected.length === rows.length}
+                onChange={handleSelectAllClick}
+              />
             </TableCell>
             <TableCell
-              align="right"
-              sx={{
-                fontWeight: "bold",
-                color: "var(--secondary-text-color)",
-              }}
+              sortDirection={orderBy === "name" ? order : false}
+              onClick={(event) => handleRequestSort(event, "name")}
             >
-              Quantity
+              <TableSortLabel
+                active={orderBy === "name"}
+                direction={orderBy === "name" ? order : "asc"}
+              >
+                Product
+              </TableSortLabel>
             </TableCell>
-            <TableCell
-              align="right"
-              sx={{
-                fontWeight: "bold",
-                color: "var(--secondary-text-color)",
-              }}
-            >
-              Price
+            <TableCell align="right" onClick={(event) => handleRequestSort(event, "quantity")}>
+              <TableSortLabel
+                active={orderBy === "quantity"}
+                direction={orderBy === "quantity" ? order : "asc"}
+              >
+                Quantity
+              </TableSortLabel>
             </TableCell>
-            <TableCell
-              align="right"
-              sx={{
-                fontWeight: "bold",
-                color: "var(--secondary-text-color)",
-              }}
-            >
-              Status
+            <TableCell align="right" onClick={(event) => handleRequestSort(event, "price")}>
+              <TableSortLabel
+                active={orderBy === "price"}
+                direction={orderBy === "price" ? order : "asc"}
+              >
+                Price
+              </TableSortLabel>
             </TableCell>
+            <TableCell align="right">Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {visibleRows.map((row) => (
             <React.Fragment key={row.id}>
               <TableRow>
-                <TableCell>
-                  <IconButton
-                    onClick={() => toggleRow(row.id)}
-                    sx={{
-                      color: "var(--primary-text-color)",
-                      "&:hover": { color: "var(--accent-color)" },
-                    }}
-                  >
-                    {openRows[row.id] ? (
-                      <KeyboardArrowUpIcon />
-                    ) : (
-                      <KeyboardArrowDownIcon />
-                    )}
-                  </IconButton>
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    color="primary"
+                    checked={selected.indexOf(row.id) !== -1}
+                    onClick={(event) => handleClick(event, row.id)}
+                  />
                 </TableCell>
-                <TableCell sx={{ color: "var(--primary-text-color)" }}>
+                <TableCell>
                   {row.name}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ color: "var(--primary-text-color)" }}
-                >
-                  {row.stock}
-                </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ color: "var(--primary-text-color)" }}
-                >
-                  ${row.price.toFixed(2)}
-                </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ color: "var(--primary-text-color)" }}
-                >
-                  {row.status || "N/A"}
-                </TableCell>
+                <TableCell align="right">{row.stock}</TableCell>
+                <TableCell align="right">${row.price.toFixed(2)}</TableCell>
+                <TableCell align="right">{row.status || "N/A"}</TableCell>
               </TableRow>
               {openRows[row.id] && (
                 <TableRow>
                   <TableCell colSpan={5}>
-                    <Box
-                      sx={{
-                        backgroundColor: "var(--secondary-bg-color)",
-                        borderRadius: "5px",
-                        padding: "10px",
-                        margin: "10px 0",
-                        color: "var(--secondary-text-color)",
-                      }}
-                    >
-                      <Typography
-                        variant="subtitle1"
-                        sx={{ fontWeight: "bold", marginBottom: "5px" }}
-                      >
+                    <Box sx={{ padding: "10px", backgroundColor: "#f9f9f9" }}>
+                      <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
                         Product Details
                       </Typography>
                       <Typography variant="body2">{row.description}</Typography>
@@ -190,8 +221,22 @@ const UserTables = () => {
               )}
             </React.Fragment>
           ))}
+          {emptyRows > 0 && (
+            <TableRow style={{ height: 53 * emptyRows }}>
+              <TableCell colSpan={6} />
+            </TableRow>
+          )}
         </TableBody>
       </Table>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </TableContainer>
   );
 };

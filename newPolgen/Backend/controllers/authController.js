@@ -9,6 +9,58 @@ import {
   sendContactEmail,
 } from '../services/email/emailService.js';
 
+// Register User Handler
+export const registerUser = async (req, res, next) => {
+  const { username, email, password, phone, address, role } = req.body;
+  try {
+    // Check for duplicate email
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email already exists.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const assignedRole = role && ['user', 'admin'].includes(role) ? role : 'user';
+    const user = await User.create({ username, email, password: hashedPassword, phone, address, role: assignedRole });
+
+    await sendRegistrationEmail(email, username, password);
+    res.status(201).json({ message: 'User registered successfully.', user });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Login User Handler
+export const loginUser = async (req, res, next) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) return res.status(401).json({ error: 'Invalid email or password.' });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(401).json({ error: 'Invalid email or password.' });
+
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.json({ message: 'Login successful.', token, user });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get User Profile Handler
+export const getUserProfile = async (req, res, next) => {
+  const userId = req.user.id; // This will now work because req.user is set by the JWT middleware
+
+  try {
+    const user = await User.findOne({ where: { id: userId } });
+    if (!user) return res.status(404).json({ error: 'User not found.' });
+
+    res.json({ user });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Contact Us Handler
 export const contactUs = async (req, res, next) => {
   const { name, email, message } = req.body;
@@ -72,41 +124,76 @@ export const resetPassword = async (req, res, next) => {
   }
 };
 
-// Register User Handler
-export const registerUser = async (req, res, next) => {
-  const { username, email, password, phone, address, role } = req.body;
+//update user profile
+export const updateUserProfile = async (req, res) => {
+  const userId = req.user.id;  // Get user ID from JWT payload
+  const { username, email, phone, address } = req.body;
+
   try {
-    // Check for duplicate email
-    const existingUser = await User.findOne({ where: { email } });
-    if (existingUser) {
-      return res.status(400).json({ error: 'Email already exists.' });
+    // Find the user by ID (from the JWT token)
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const assignedRole = role && ['user', 'admin'].includes(role) ? role : 'user';
-    const user = await User.create({ username, email, password: hashedPassword, phone, address, role: assignedRole });
+    // Update user profile data
+    await user.update({ username, email, phone, address });
 
-    await sendRegistrationEmail(email, username,password);
-    res.status(201).json({ message: 'User registered successfully.', user });
+    return res.json({ message: 'Profile updated successfully.', user });
   } catch (error) {
-    next(error);
+    console.error('Error updating profile:', error);
+    return res.status(500).json({ error: 'Failed to update profile.' });
   }
 };
-
-// Login User Handler
-export const loginUser = async (req, res, next) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ where: { email } });
-    if (!user) return res.status(401).json({ error: 'Invalid email or password.' });
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ error: 'Invalid email or password.' });
-
-    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ message: 'Login successful.', token, user });
-  } catch (error) {
-    next(error);
-  }
-};
-
+// // Register User Handler
+// export const registerUser = async (req, res, next) => {
+//   const { username, email, password, phone, address, role } = req.body;
+//   try {
+//     // Check for duplicate email
+//     const existingUser = await User.findOne({ where: { email } });
+//     if (existingUser) {
+//       return res.status(400).json({ error: 'Email already exists.' });
+//     }
+//
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     const assignedRole = role && ['user', 'admin'].includes(role) ? role : 'user';
+//     const user = await User.create({ username, email, password: hashedPassword, phone, address, role: assignedRole });
+//
+//     await sendRegistrationEmail(email, username,password);
+//     res.status(201).json({ message: 'User registered successfully.', user });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+//
+// // Login User Handler
+// export const loginUser = async (req, res, next) => {
+//   const { email, password } = req.body;
+//   try {
+//     const user = await User.findOne({ where: { email } });
+//     if (!user) return res.status(401).json({ error: 'Invalid email or password.' });
+//
+//     const isMatch = await bcrypt.compare(password, user.password);
+//     if (!isMatch) return res.status(401).json({ error: 'Invalid email or password.' });
+//
+//     const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+//     res.json({ message: 'Login successful.', token, user });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+//
+// // Get User Profile Handler
+// export const getUserProfile = async (req, res, next) => {
+//   const userId = req.user.id; // This will now work because req.user is set by the JWT middleware
+//
+//   try {
+//     const user = await User.findOne({ where: { id: userId } });
+//     if (!user) return res.status(404).json({ error: 'User not found.' });
+//
+//     res.json({ user });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+//

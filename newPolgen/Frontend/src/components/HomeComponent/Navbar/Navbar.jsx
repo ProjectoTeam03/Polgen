@@ -35,7 +35,6 @@ const Navbar = () => {
           <li><Link to="/services">{t('navbar.our_services')}</Link></li>
           <li><Link to="/covid_19_test">{t('navbar.covid_19_test')}</Link></li>
           <li><Link to="/Ar-Ge">{t('navbar.ar_ge')}</Link></li>
-          <li><Link to="/enes">enes</Link></li>
         </ul>
       </nav>
 

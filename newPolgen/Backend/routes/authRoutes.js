@@ -6,8 +6,10 @@ import {
   contactUs,
   forgotPassword,
   resetPassword,
+  getUserProfile,updateUserProfile
 } from '../controllers/authController.js';
 import { check } from 'express-validator';
+import { requireAuth } from '../middlewares/authMiddleware.js';  // Import the requireAuth middleware
 
 const router = express.Router();
 
@@ -51,5 +53,9 @@ router.post(
   loginUser
 );
 
+// Fetch user profile route with the requireAuth middleware
+router.get('/profile', requireAuth, getUserProfile);  // Apply requireAuth to ensure user is authenticated
+// Add this route for updating the profile
+router.put('/profile', requireAuth, updateUserProfile);
 export default router;
 

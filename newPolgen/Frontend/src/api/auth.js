@@ -1,5 +1,28 @@
 import API from './api';
 
+// Fetch User Profile
+export const getUserProfile = async () => {
+  try {
+    // Retrieve token from localStorage (or sessionStorage)
+    const token = localStorage.getItem('authToken');  // Assuming token is stored in localStorage
+
+    if (!token) {
+      throw new Error('Authentication token is missing');
+    }
+
+    const response = await API.get('/auth/profile', {
+      headers: {
+        'Authorization': `Bearer ${token}` // Send token in Authorization header
+      }
+    });
+
+    return response.data.user;
+  } catch (error) {
+    console.error('Error fetching user profile:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
 // User Registration
 export const register = async (data) => {
   try {
@@ -15,7 +38,12 @@ export const register = async (data) => {
 export const login = async (data) => {
   try {
     const response = await API.post('/auth/login', data);
-    return response.data;
+    const { token, user } = response.data;
+
+    // Save the token to localStorage (or sessionStorage)
+    localStorage.setItem('authToken', token);
+
+    return { token, user };
   } catch (error) {
     console.error('Login Error:', error.response?.data || error.message);
     throw error;
@@ -44,8 +72,6 @@ export const resetPassword = async (data) => {
   }
 };
 
-
-
 // Contact API
 export const contact = async (data) => {
   try {
@@ -53,6 +79,28 @@ export const contact = async (data) => {
     return response.data;
   } catch (error) {
     console.error('Contact Error:', error.response?.data || error.message);
+    throw error;
+  }
+};
+// In your frontend code (e.g., `auth.js`)
+// In your frontend code (e.g., `auth.js`)
+export const updateUserProfile = async (updatedData) => {
+  try {
+    const token = localStorage.getItem('authToken');  // Retrieve token from localStorage
+
+    if (!token) {
+      throw new Error('Authentication token is missing');
+    }
+
+    const response = await API.put('/auth/profile', updatedData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,  // Attach JWT token to headers
+      }
+    });
+
+    return response.data; // Assuming response.data contains the updated user profile
+  } catch (error) {
+    console.error('Update Profile Error:', error.response?.data || error.message);
     throw error;
   }
 };

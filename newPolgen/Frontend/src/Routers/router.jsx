@@ -23,6 +23,8 @@ import AdminAddProduct from "../pages/Order/Admin/AdminAddProduct/AdminAddProduc
 // import AdminTables from "../pages/Order/Admin/"
 import Reports from "../pages/Order/Admin/Reports/Reports.jsx";
 import Orders from "../pages/Order/Admin/Orders/Orders.jsx";
+import UserOrder from "../pages/Order/User/UserOrder/UserOrder.jsx";
+import UserProfile from "../pages/Order/User/UserProfile/UserProfile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +55,8 @@ const router = createBrowserRouter([
       { index: true, element: <UserDashboard /> },
       { path: "dashboard", element: <UserDashboard /> },
       { path: "add-product", element: <AddProduct /> },
+      { path: "order", element:  <UserOrder/> },
+      { path: "profile", element: <UserProfile/> },
     ],
   },
   {

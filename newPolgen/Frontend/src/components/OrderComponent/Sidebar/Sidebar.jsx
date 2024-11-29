@@ -1,10 +1,12 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CloseIcon from "@mui/icons-material/Close";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AddIcon from "@mui/icons-material/Add"; // Icon for Add Product
 import styles from "./Sidebar.module.css";
+import { AccountCircleSharp } from "@mui/icons-material";
 
 const Sidebar = ({ userType, isSidebarOpen, toggleSidebar, onSignOut }) => {
   const navigate = useNavigate();
@@ -17,11 +19,23 @@ const Sidebar = ({ userType, isSidebarOpen, toggleSidebar, onSignOut }) => {
       icon: <DashboardIcon />,
       path: userType === "admin" ? `/admin/${id}/dashboard` : `/user/${id}/dashboard`,
     },
+        {
+      title: "Order",
+      icon: <ShoppingCartIcon />,
+      path: userType === "admin" ? `/admin/${id}/order` : `/user/${id}/order`,
+    },
+
       {
       title: "Add Product",
       icon: <AddIcon />,
       path: userType === "admin" ? `/admin/${id}/add-product` : `/user/${id}/add-product`,
     },
+            {
+      title: "Profile",
+      icon: <AccountCircleIcon />,
+      path: userType === "admin" ? `/admin/${id}/profile` : `/user/${id}/profile`,
+    },
+
     ...(userType === "admin"
       ? [
           {
