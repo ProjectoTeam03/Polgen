@@ -2,6 +2,58 @@ import transporter from './transporter.js';
 import registrationTemplate from './templates/registrationTemplate.js';
 import passwordResetTemplate from './templates/passwordResetTemplate.js';
 import contactTemplate from './templates/contactTemplate.js';
+import approvedTemplate from './templates/approvedTemplate.js';
+import workingOnTemplate from './templates/workingOnTemplate.js';
+import finishedTemplate from './templates/finishedTemplate.js';
+
+export const sendApprovedEmail = async (email, username, productName) => {
+  try {
+    const mailOptions = {
+      from: `"Polgen Notification" <${process.env.SMTP_USER}>`,
+      to: email,
+      subject: 'Your Product Has Been Approved',
+      html: approvedTemplate(username, productName),
+    };
+    await transporter.sendMail(mailOptions);
+    console.log(`Approval email sent to ${email}`);
+  } catch (error) {
+    console.error('Error sending approval email:', error.message);
+    throw error;
+  }
+};
+
+export const sendWorkingOnEmail = async (email, username, productName) => {
+  try {
+    const mailOptions = {
+      from: `"Polgen Notification" <${process.env.SMTP_USER}>`,
+      to: email,
+      subject: 'Your Product is in Progress',
+      html: workingOnTemplate(username, productName),
+    };
+    await transporter.sendMail(mailOptions);
+    console.log(`Working on email sent to ${email}`);
+  } catch (error) {
+    console.error('Error sending working on email:', error.message);
+    throw error;
+  }
+};
+
+export const sendFinishedEmail = async (email, username, productName) => {
+  try {
+    const mailOptions = {
+      from: `"Polgen Notification" <${process.env.SMTP_USER}>`,
+      to: email,
+      subject: 'Your Product is Ready',
+      html: finishedTemplate(username, productName),
+    };
+    await transporter.sendMail(mailOptions);
+    console.log(`Finished email sent to ${email}`);
+  } catch (error) {
+    console.error('Error sending finished email:', error.message);
+    throw error;
+  }
+};
+
 
 export const sendRegistrationEmail = async (email, username, password) => {
   try {

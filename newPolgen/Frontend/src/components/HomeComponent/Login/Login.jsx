@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../../api/auth.js';
+import { login } from '../../../api/auth.js'; // Make sure your auth file is correct
 import { useTranslation } from 'react-i18next';
 import { Link } from "react-router-dom";
 import styles from './Login.module.css';
@@ -17,10 +17,11 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await login({ email, password });
+      const response = await login({ email, password }, navigate); // Pass navigate here
 
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
+ sessionStorage.setItem('token', response.token);
+      sessionStorage.setItem('user', JSON.stringify(response.user));
+
 
       if (response.user.role === 'admin') {
         navigate(`/admin/${response.user.username}/dashboard`);
@@ -63,9 +64,8 @@ const Login = () => {
           {t('login.no_account')} <Link to="/register">{t('login.signup')}</Link>
         </p>
         <p className={styles.forgotPassword}>
-  <Link to="/Forgot_password">{t('login.forgot_password')}</Link>
-</p>
-
+          <Link to="/Forgot_password">{t('login.forgot_password')}</Link>
+        </p>
       </div>
     </div>
   );

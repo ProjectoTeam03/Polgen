@@ -1,0 +1,105 @@
+/* Apply global color variables */
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--primary-bg-color); /* Light and dark mode background */
+  color: var(--primary-text-color); /* Text color */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--primary-text-color); /* Text color */
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input, .textarea {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid var(--border-color); /* Light and dark mode border */
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: var(--primary-bg-color); /* Ensure input background follows theme */
+  color: var(--primary-text-color); /* Text color */
+}
+
+.textarea {
+  resize: vertical;
+  height: 120px;
+}
+
+.submitButton {
+  /* background-color: var(--accent-color); /* Accent color for buttons */ 
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-text-color));
+  color: var(--primary-bg-color); /* Button text */
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.submitButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Hover effect for buttons */
+.submitButton:hover {
+  background-color: var(--secondary-bg-color); /* Hover background */
+  color: var(--accent-color); /* Hover text color */
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+/* Optional: Additional styles */
+.scrollable-section {
+  overflow-y: auto;
+  scrollbar-width: none; /* Hide scrollbars for Firefox */
+}
+
+/* Responsive Utility Classes */
+.flex {
+  display: flex;
+  gap: 15px;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--primary-text-color);
+}
+

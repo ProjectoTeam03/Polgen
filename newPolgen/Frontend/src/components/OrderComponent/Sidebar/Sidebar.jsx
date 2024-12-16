@@ -1,4 +1,6 @@
 import React from "react";
+import GradingIcon from '@mui/icons-material/Grading';
+import ScienceIcon from '@mui/icons-material/Science';
 import { useNavigate, useParams } from "react-router-dom";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CloseIcon from "@mui/icons-material/Close";
@@ -6,52 +8,67 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AddIcon from "@mui/icons-material/Add"; // Icon for Add Product
 import styles from "./Sidebar.module.css";
-import { AccountCircleSharp } from "@mui/icons-material";
 
 const Sidebar = ({ userType, isSidebarOpen, toggleSidebar, onSignOut }) => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { username } = useParams();
 
-  // Dynamic navigation items based on userType
-  const NAV_ITEMS = [
+  // Define nav items for user and admin separately
+  const USER_NAV_ITEMS = [
     {
       title: "Dashboard",
       icon: <DashboardIcon />,
-      path: userType === "admin" ? `/admin/${id}/dashboard` : `/user/${id}/dashboard`,
+      path: `/user/${username}/dashboard`,
     },
-        {
+    {
       title: "Order",
       icon: <ShoppingCartIcon />,
-      path: userType === "admin" ? `/admin/${id}/order` : `/user/${id}/order`,
+      path: `/user/${username}/order`,
     },
-
-      {
+    {
       title: "Add Product",
       icon: <AddIcon />,
-      path: userType === "admin" ? `/admin/${id}/add-product` : `/user/${id}/add-product`,
+      path: `/user/${username}/add-product`,
     },
-            {
+    {
       title: "Profile",
       icon: <AccountCircleIcon />,
-      path: userType === "admin" ? `/admin/${id}/profile` : `/user/${id}/profile`,
+      path: `/user/${username}/profile`,
     },
+  ];
 
-    ...(userType === "admin"
-      ? [
-          {
-            title: "Reports",
-            icon: <CloseIcon />,
-            path: `/admin/${id}/reports`,
-          },
-          {
+  const ADMIN_NAV_ITEMS = [
+    {
+      title: "Dashboard",
+      icon: <DashboardIcon />,
+      path: `/admin/${username}/dashboard`,
+    },
+    {
+      title: "Reports",
+      icon: <CloseIcon />,
+      path: `/admin/${username}/reports`,
+    },
+    {
       title: "Orders",
       icon: <ShoppingCartIcon />,
-      path: userType === "admin" ? `/admin/${id}/orders` : `/user/${id}/orders`,
+      path: `/admin/${username}/orders`,
+    },
+     {
+      title: "approvedOrders",
+      icon: <GradingIcon />,
+      path: `/admin/${username}/approvedOrders`,
+    },
+         {
+      title: "synthingOrders",
+      icon: <ScienceIcon />,
+      path: `/admin/${username}/synthingOrders`,
     },
 
-        ]
-      : []),
+
   ];
+
+  // Determine which nav items to display based on userType
+  const NAV_ITEMS = userType === "admin" ? ADMIN_NAV_ITEMS : USER_NAV_ITEMS;
 
   return (
     <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ""}`}>

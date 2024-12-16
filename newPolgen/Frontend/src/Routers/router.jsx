@@ -19,12 +19,13 @@ import ResetPassword from "../components/HomeComponent/Reset_Password/ResetPassw
 
 // New imports for added pages
 import AddProduct from "../pages/Order/User/AddProduct/AddProduct.jsx";
-import AdminAddProduct from "../pages/Order/Admin/AdminAddProduct/AdminAddProduct.jsx";
 // import AdminTables from "../pages/Order/Admin/"
 import Reports from "../pages/Order/Admin/Reports/Reports.jsx";
-import Orders from "../pages/Order/Admin/Orders/Orders.jsx";
+import Orders from "../pages/Order/Admin/AdminOrders/AdminOrders.jsx";
 import UserOrder from "../pages/Order/User/UserOrder/UserOrder.jsx";
 import UserProfile from "../pages/Order/User/UserProfile/UserProfile.jsx";
+import AdminApprovedOrders from "../pages/Order/Admin/AdminApprovedOrders/AdminApprovedOrders.jsx";
+import AdminSynthingOrders from "../pages/Order/Admin/AdminSynthingOrders/AdminSynthingOrders.jsx";
 
 const router = createBrowserRouter([
   {
@@ -45,12 +46,13 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/user/:id",
+    path: "/user/:username",
     element: (
-      <ProtectedRoute>
+      <ProtectedRoute requiredRole="user">
         <UserPageLayout />
       </ProtectedRoute>
     ),
+        errorElement: <Error404 />,  // This will handle all unknown routes
     children: [
       { index: true, element: <UserDashboard /> },
       { path: "dashboard", element: <UserDashboard /> },
@@ -60,19 +62,21 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/admin/:id",
+    path: "/admin/:username",
     element: (
       <ProtectedRoute requiredRole="admin">
         <AdminPageLayout />
       </ProtectedRoute>
     ),
+        errorElement: <Error404 />,  // This will handle all unknown routes
     children: [
       { index: true, element: <AdminDashboard /> },
       { path: "dashboard", element: <AdminDashboard /> },
-      { path: "add-product", element: <AdminAddProduct /> },
       // { path: "manage-products", element: <AdminTables /> },
       { path: "reports", element: <Reports /> },
       { path: "orders", element: <Orders /> },
+      { path: "approvedOrders", element: <AdminApprovedOrders/>},
+            { path: "synthingOrders", element: <AdminSynthingOrders/>},
     ],
   },
 ]);

@@ -1,33 +1,39 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
-const ProtectedRoute = ({ children, requiredRole }) => {
-  const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user') || null); // Safely parse 'user'
+const ProtectedRoute = React.memo(({ children, requiredRole }) => {
+  const token = sessionStorage.getItem('token'); // Use sessionStorage
   const location = useLocation();
 
-  // Debugging Logs
-  console.log("ProtectedRoute: Checking access...");
-  console.log("Token:", token);
-  console.log("User:", user);
+  // Safely parse user data from sessionStorage
+  let user = null;
+  try {
+    const userData = sessionStorage.getItem('user'); // Use sessionStorage
+    user = userData ? JSON.parse(userData) : null;
+  } catch (error) {
+    console.error("ProtectedRoute: Failed to parse user data from sessionStorage.", error);
+    user = null;
+  }
 
+  console.log(`ProtectedRoute: Checking access for location: ${location.pathname}`);
+
+  // Redirect to login if the token is missing
   if (!token) {
     console.warn("ProtectedRoute: No token found. Redirecting to /login...");
-    // Redirect to login if no token
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
+  // Check role mismatch and redirect
   if (requiredRole && user?.role !== requiredRole) {
     console.warn(
-      `ProtectedRoute: Role mismatch. Expected '${requiredRole}', got '${user?.role}'. Redirecting to /unauthorized...`
+      `ProtectedRoute: Role mismatch. Expected '${requiredRole}', got '${user?.role}'. Redirecting to /error404...`
     );
-    // Redirect to unauthorized if role doesn't match
-    return <Navigate to="/unauthorized" replace />;
+    return <Navigate to="/error404" replace />;
   }
 
-  console.log("ProtectedRoute: Access granted.");
-  return children; // Render the protected component
-};
+  console.log(`ProtectedRoute: Access granted for role: ${user?.role || "No role specified"}`);
+  return children;
+});
 
 export default ProtectedRoute;
 

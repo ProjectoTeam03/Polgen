@@ -33,19 +33,28 @@ const User = sequelize.define('User', {
   },
   role: {
     type: DataTypes.STRING,
+    allowNull: false,
     defaultValue: 'user',
+    validate: {
+      isIn: [['user', 'admin']], // Limit role values to 'user' and 'admin'
+    },
   },
-  resetToken: {
+  refreshToken: {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  resetTokenExpiry: {
+  refreshTokenExpiry: {
     type: DataTypes.DATE,
     allowNull: true,
+  },
+  sessionId: {
+    type: DataTypes.STRING,
+    allowNull: true, // or false if you want to require it
   },
 }, {
   timestamps: true, // Automatically adds createdAt and updatedAt fields
 });
 
+// Export User model
 export default User;
 
