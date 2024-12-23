@@ -1,0 +1,229 @@
+/* Light and Dark Mode Variables */
+:root {
+  /* Light Mode Colors */
+  --primary-bg-color: #f8f9fa;
+  --primary-text-color: #495057;
+  --accent-color: #007ad9;
+  --secondary-bg-color: #ffffff;
+  --border-color: #dee2e6;
+  --secondary-text-color: #6c757d;
+
+  --success-color: #4caf50;
+  --success-color-dark: #388e3c;
+  --error-color: #f44336;
+  --error-color-dark: #d32f2f;
+  --disabled-bg-color: #e0e0e0;
+  --disabled-text-color: #9e9e9e;
+  --hover-color: #0056b3;
+}
+
+[data-theme="dark"] {
+  --primary-bg-color: #343a40;
+  --primary-text-color: #f8f9fa;
+  --accent-color: #66b2ff;
+  --secondary-bg-color: #495057;
+  --border-color: #6c757d;
+  --secondary-text-color: #ced4da;
+
+  --success-color: #81c784;
+  --success-color-dark: #66bb6a;
+  --error-color: #ef5350;
+  --error-color-dark: #e53935;
+  --disabled-bg-color: #5f6368;
+  --disabled-text-color: #bdbdbd;
+  --hover-color: #3388ff;
+}
+
+/* Global Styles */
+body {
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+  transition: background-color 0.3s, color 0.3s;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  color: var(--primary-text-color);
+}
+
+p {
+  line-height: 1.6;
+  margin: 0 0 1em;
+  color: var(--secondary-text-color);
+}
+
+/* Utility Classes */
+.margin-sm {
+  margin: 8px;
+}
+.margin-md {
+  margin: 16px;
+}
+.margin-lg {
+  margin: 32px;
+}
+
+.padding-sm {
+  padding: 8px;
+}
+.padding-md {
+  padding: 16px;
+}
+.padding-lg {
+  padding: 32px;
+}
+
+.flex {
+  display: flex;
+  gap: 15px;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Buttons */
+button {
+  background-color: var(--accent-color);
+  color: var(--primary-bg-color);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--hover-color);
+  color: var(--primary-bg-color);
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 122, 217, 0.5);
+}
+
+button:disabled {
+  background-color: var(--disabled-bg-color);
+  color: var(--disabled-text-color);
+  cursor: not-allowed;
+}
+
+button.secondary {
+  background-color: var(--secondary-bg-color);
+  color: var(--accent-color);
+  border: 1px solid var(--accent-color);
+}
+
+button.secondary:hover {
+  background-color: var(--accent-color);
+  color: var(--primary-bg-color);
+}
+
+button.outline {
+  background: none;
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+}
+
+button.outline:hover {
+  background-color: var(--accent-color);
+  color: var(--primary-bg-color);
+}
+
+/* Links */
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--primary-text-color);
+}
+
+/* Borders */
+.border {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 15px;
+}
+
+/* Navbar */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  z-index: 1000;
+}
+
+.navbar .logo img {
+  height: 40px;
+}
+
+.navbar ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar a {
+  color: var(--primary-text-color);
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.navbar a:hover {
+  color: var(--accent-color);
+}
+
+/* Light/Dark Toggle */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border-color);
+  padding: 10px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--primary-text-color);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background-color: var(--secondary-bg-color);
+}
+
+/* Responsive Images */
+img {
+  max-width: 100%;
+  height: auto;
+}

@@ -1,0 +1,338 @@
+/* Main container for the AddProduct form */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: var(--secondary-bg-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.container:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Header */
+.header {
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* Form styling */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  flex-wrap: wrap; /* Allow for wrapping in smaller screens */
+  justify-content: space-between;
+}
+
+/* Left side - Category and Quantity */
+.leftside {
+  flex: 1;
+  min-width: 300px;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Right side - Submit button, total price */
+.rightside {
+  flex: 1;
+  min-width: 300px;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Category and quantity selection section */
+.categorySelection,
+.quantitySelection {
+  margin-bottom: 20px;
+}
+
+.categorySelection select,
+.quantitySelection input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+.categorySelection select:focus,
+.quantitySelection input:focus {
+  border-color: #4caf50;
+  outline: none;
+}
+
+/* Flexbox layout for product component rendering */
+.productList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+/* Order Section with add button and total price */
+.orderSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: var(--secondary-bg-color);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  margin-top: 2rem;
+}
+
+/* Add product button styling */
+button {
+  padding: 12px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 48%;
+  text-align: center;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Total price styling */
+.totalPrice {
+  font-size: 1.25rem;
+  color: var(--accent-color);
+  font-weight: 600;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Submit button styling */
+.submitButton {
+  padding: 14px 20px;
+  font-size: 1.2rem;
+  color: white;
+  background-color: #28a745;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 25px;
+  width: 100%;
+}
+
+.submitButton:disabled {
+  background-color: #d6d6d6;
+  cursor: not-allowed;
+}
+
+.submitButton:hover {
+  background-color: #218838;
+}
+
+/* ProductComponent item layout */
+.productComponent {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.productComponent:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.productComponent label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.productComponent select,
+.productComponent input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+.productComponent select:focus,
+.productComponent input[type="text"]:focus {
+  border-color: #4caf50;
+  outline: none;
+}
+
+.productComponent input[type="checkbox"] {
+  margin-right: 12px;
+  width: auto;
+  display: inline-block;
+}
+
+.productComponent .totalPrice {
+  margin-top: 15px;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 700;
+}
+
+.productComponent button {
+  margin-top: 20px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #dc3545;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.productComponent button:hover {
+  background-color: #c82333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  /* Main container styling */
+  .container {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .form {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Left and right sides should stack vertically on small screens */
+  .leftside,
+  .rightside {
+    max-width: 100%;
+    min-width: 100%;
+  }
+
+  /* ProductComponent layout on small screens */
+  .productComponent {
+    padding: 15px;
+  }
+
+  /* Adjust button widths and margins on small screens */
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .submitButton {
+    width: 100%;
+  }
+
+  .totalPrice {
+    font-size: 1.1rem;
+  }
+
+  .productList {
+    grid-template-columns: 1fr;
+  }
+
+  .orderSection {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  /* Adjust layout for medium screens */
+  .container {
+    padding: 40px;
+  }
+
+  .productComponent {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px 30px;
+  }
+
+  .productComponent label {
+    font-size: 1rem;
+  }
+
+  .productComponent select,
+  .productComponent input[type="text"] {
+    width: 48%;
+    margin-top: 8px;
+  }
+
+  .productComponent .totalPrice {
+    font-size: 1.1rem;
+    margin-top: 15px;
+  }
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: 500;
+  color: var(--primary-text-color);
+  font-size: 1rem;
+}
+
+.input,
+.select {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+  transition: all 0.3s ease;
+}
+
+.input:focus,
+.select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(0, 122, 217, 0.1);
+}
+
+.addButton {
+  background-color: var(--success-color);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.addButton:hover {
+  background-color: var(--success-color-dark);
+  transform: translateY(-1px);
+}
