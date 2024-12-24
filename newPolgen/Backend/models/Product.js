@@ -1,8 +1,8 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../config/database.js';
+import { DataTypes } from "sequelize";
+import sequelize from "../config/database.js";
 
 const Product = sequelize.define(
-  'Product',
+  "Product",
   {
     category: {
       type: DataTypes.STRING,
@@ -32,6 +32,14 @@ const Product = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
     },
+    sekans: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    uzunluk: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -39,7 +47,7 @@ const Product = sequelize.define(
     },
     isOrder: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false, // Defaults to false, becomes true when ordered
+      defaultValue: true, // Defaults to false, becomes true when ordered
     },
     isApproved: {
       type: DataTypes.BOOLEAN,
@@ -60,4 +68,3 @@ const Product = sequelize.define(
 );
 
 export default Product;
-

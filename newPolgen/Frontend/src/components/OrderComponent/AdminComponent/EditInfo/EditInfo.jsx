@@ -1,22 +1,52 @@
 import React, { useState } from "react";
 import styles from "./EditInfo.module.css";
+import { updateProduct } from "../../../../api/product"; // Ensure this is correctly imported
 
 const EditInfo = ({ product, onClose, onSave }) => {
-  const [formData, setFormData] = useState({ ...product });
+  // Initialize state with correct product data
+  const [formData, setFormData] = useState({
+    id: product.id, // Product ID for backend updates
+    userId: product.userId || "Unknown", // Display userId only
+    category: product.category || "N/A", // Default category
+    oligoAdi: product.oligoAdi || "",
+    scale: product.scale || "",
+    modification5: product.modifications?.fivePrime || "",
+    modification3: product.modifications?.threePrime || "",
+    quantity: product.quantity || 0,
+    totalPrice: product.totalPrice || 0,
+  });
 
+  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Submit updated data to the backend
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Send updated data to the backend
-      await updateProduct(formData.id, formData);
+      // Structure data to match the backend format
+      const updatedProduct = {
+        id: formData.id, // Pass product ID explicitly
+        category: formData.category,
+        oligoAdi: formData.oligoAdi,
+        scale: formData.scale,
+        modifications: {
+          fivePrime: formData.modification5 || "",
+          threePrime: formData.modification3 || "",
+        },
+        quantity: formData.quantity,
+        totalPrice: formData.totalPrice,
+      };
 
-      // Call the onSave function to update the table
-      onSave(formData);
+      console.log("Updating Product:", updatedProduct);
+
+      // Call the backend update function
+      await updateProduct(formData.id, updatedProduct);
+
+      // Notify parent component with updated product
+      onSave({ ...updatedProduct, id: formData.id, userId: formData.userId });
     } catch (error) {
       console.error("Failed to update product:", error);
     }
@@ -27,15 +57,20 @@ const EditInfo = ({ product, onClose, onSave }) => {
       <div className={styles.modal}>
         <h2>Edit Product</h2>
         <form onSubmit={handleSubmit}>
+          {/* Category Selection */}
           <div className={styles.formGroup}>
             <label>Category</label>
-            <input
-              type="text"
+            <select
               name="category"
               value={formData.category}
               onChange={handleChange}
-            />
+            >
+              <option value="Prime">Prime</option>
+              <option value="prop">prop</option>
+            </select>
           </div>
+
+          {/* Oligo Name */}
           <div className={styles.formGroup}>
             <label>Oligo Name</label>
             <input
@@ -45,6 +80,8 @@ const EditInfo = ({ product, onClose, onSave }) => {
               onChange={handleChange}
             />
           </div>
+
+          {/* Scale */}
           <div className={styles.formGroup}>
             <label>Scale</label>
             <input
@@ -54,6 +91,30 @@ const EditInfo = ({ product, onClose, onSave }) => {
               onChange={handleChange}
             />
           </div>
+
+          {/* 5' Modification */}
+          <div className={styles.formGroup}>
+            <label>5' Modification</label>
+            <input
+              type="text"
+              name="modification5"
+              value={formData.modification5}
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* 3' Modification */}
+          <div className={styles.formGroup}>
+            <label>3' Modification</label>
+            <input
+              type="text"
+              name="modification3"
+              value={formData.modification3}
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* Quantity */}
           <div className={styles.formGroup}>
             <label>Quantity</label>
             <input
@@ -63,6 +124,8 @@ const EditInfo = ({ product, onClose, onSave }) => {
               onChange={handleChange}
             />
           </div>
+
+          {/* Total Price */}
           <div className={styles.formGroup}>
             <label>Total Price</label>
             <input
@@ -72,11 +135,17 @@ const EditInfo = ({ product, onClose, onSave }) => {
               onChange={handleChange}
             />
           </div>
+
+          {/* Submit and Cancel Buttons */}
           <div className={styles.buttons}>
             <button type="submit" className={styles.saveBtn}>
               Save
             </button>
-            <button type="button" className={styles.cancelBtn} onClick={onClose}>
+            <button
+              type="button"
+              className={styles.cancelBtn}
+              onClick={onClose}
+            >
               Cancel
             </button>
           </div>
@@ -87,4 +156,3 @@ const EditInfo = ({ product, onClose, onSave }) => {
 };
 
 export default EditInfo;
-

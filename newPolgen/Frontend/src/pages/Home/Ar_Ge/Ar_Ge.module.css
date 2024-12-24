@@ -3,7 +3,7 @@
   padding: 20px;
   background-color: var(--primary-bg-color);
   color: var(--primary-text-color);
-      margin-top:90px ;
+  margin-top: 90px;
 }
 
 /* Header Section */
@@ -100,4 +100,3 @@
     font-size: 0.85rem;
   }
 }
-

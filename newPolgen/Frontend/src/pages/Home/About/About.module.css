@@ -2,7 +2,7 @@
   padding: 20px;
   background-color: var(--primary-bg-color);
   color: var(--primary-text-color);
-        margin-top:90px ;
+  margin-top: 90px;
 }
 
 .section {
@@ -30,6 +30,7 @@
 .imageContent {
   flex: 1;
   text-align: center;
+  margin-left: -300px;
 }
 
 .imageContent img {
@@ -44,4 +45,3 @@
     flex-direction: column;
   }
 }
-

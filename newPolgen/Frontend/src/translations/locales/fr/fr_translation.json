@@ -40,12 +40,12 @@
       {
         "title": "Kit de Test Coronavirus",
         "description": "Le Kit de Test Coronavirus POLGEN utilise une technologie qPCR avancée pour une détection rapide et précise du SARS-CoV-2, garantissant des résultats fiables pour les professionnels de santé.",
-        "imgSrc": "/images/covid-test-kit.jpg"
+        "imgSrc": "/Polgen.jpg"
       },
       {
         "title": "Solutions Big Data",
         "description": "POLGEN fournit des services d'analyse big data innovants, incluant l'assemblage de novo du génome, l'analyse RNASeq et le profilage d'ontologie des gènes pour accélérer la recherche et le développement.",
-        "imgSrc": "/images/big-data.jpg"
+        "imgSrc": "/BigData.jpg"
       }
     ]
   },

@@ -1,15 +1,36 @@
-import Excel from 'exceljs';
-import path from 'path';
-import fs from 'fs';
+import Excel from "exceljs";
+import path from "path";
+import fs from "fs";
 
-export const generateExcelTemplate = async (templateid, rows, res) => {
+export const generateExcelTemplate = async (
+  templateid,
+  rows,
+  res,
+  mode = null
+) => {
   try {
-    const templatePath = path.resolve('src/files/siparis_template.xlsx'); // Adjust template file path
-    console.log('Loading template from:', templatePath);
+    let templatePath;
+    let fileName;
+
+    if (mode) {
+      // Use specific template based on mode
+      templatePath = path.resolve(
+        mode === "primer"
+          ? "files/Sentebiolab-Primer-siparis-formu.xlsx"
+          : "files/Sentebiolab-Prob-siparis-formu.xlsx"
+      );
+      fileName = path.basename(templatePath); // Get the original file name
+      console.log("Loading specific template from:", templatePath);
+    } else {
+      // Default template
+      templatePath = path.resolve("files/siparis_template.xlsx");
+      fileName = path.basename(templatePath); // Get the original file name
+      console.log("Loading template from:", templatePath);
+    }
 
     if (!fs.existsSync(templatePath)) {
-      console.error('Template file not found:', templatePath);
-      throw new Error('Template file not found');
+      console.error("Template file not found:", templatePath);
+      throw new Error("Template file not found");
     }
 
     const workbook = new Excel.Workbook();
@@ -17,7 +38,7 @@ export const generateExcelTemplate = async (templateid, rows, res) => {
 
     const sheet = workbook.getWorksheet(1);
     if (!sheet) {
-      throw new Error('Worksheet not found');
+      throw new Error("Worksheet not found");
     }
 
     // Populate rows if provided
@@ -31,12 +52,14 @@ export const generateExcelTemplate = async (templateid, rows, res) => {
       });
     }
 
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', 'attachment; filename="siparis_template.xlsx"');
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
     await workbook.xlsx.write(res);
   } catch (error) {
-    console.error('Error in generateExcelTemplate:', error.message);
+    console.error("Error in generateExcelTemplate:", error.message);
     throw error;
   }
 };
-

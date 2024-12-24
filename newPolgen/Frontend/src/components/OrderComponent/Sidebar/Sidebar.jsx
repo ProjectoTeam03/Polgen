@@ -1,17 +1,19 @@
 import React from "react";
-import GradingIcon from '@mui/icons-material/Grading';
-import ScienceIcon from '@mui/icons-material/Science';
-import { useNavigate, useParams } from "react-router-dom";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate, useParams, useLocation } from "react-router-dom"; // Added useLocation
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import AddIcon from "@mui/icons-material/Add"; // Icon for Add Product
+import AddIcon from "@mui/icons-material/Add";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import CloseIcon from "@mui/icons-material/Close";
+import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
+import GradingIcon from "@mui/icons-material/Grading";
+import ScienceIcon from "@mui/icons-material/Science";
 import styles from "./Sidebar.module.css";
 
 const Sidebar = ({ userType, isSidebarOpen, toggleSidebar, onSignOut }) => {
   const navigate = useNavigate();
   const { username } = useParams();
+  const location = useLocation(); // Get the current route
 
   // Define nav items for user and admin separately
   const USER_NAV_ITEMS = [
@@ -44,27 +46,25 @@ const Sidebar = ({ userType, isSidebarOpen, toggleSidebar, onSignOut }) => {
       path: `/admin/${username}/dashboard`,
     },
     {
-      title: "Reports",
-      icon: <CloseIcon />,
-      path: `/admin/${username}/reports`,
-    },
-    {
       title: "Orders",
       icon: <ShoppingCartIcon />,
       path: `/admin/${username}/orders`,
     },
-     {
-      title: "approvedOrders",
+    {
+      title: "Approved Orders",
       icon: <GradingIcon />,
       path: `/admin/${username}/approvedOrders`,
     },
-         {
-      title: "synthingOrders",
+    {
+      title: "Synth Orders",
       icon: <ScienceIcon />,
       path: `/admin/${username}/synthingOrders`,
     },
-
-
+    {
+      title: "Approve Mails",
+      icon: <MarkEmailReadIcon />,
+      path: `/admin/${username}/approveMails`,
+    },
   ];
 
   // Determine which nav items to display based on userType
@@ -78,7 +78,9 @@ const Sidebar = ({ userType, isSidebarOpen, toggleSidebar, onSignOut }) => {
           {NAV_ITEMS.map((item, index) => (
             <li key={index} className={styles.navItem}>
               <div
-                className={styles.navLink}
+                className={`${styles.navLink} ${
+                  location.pathname === item.path ? styles.selected : ""
+                }`}
                 onClick={() => navigate(item.path)}
               >
                 <span className={styles.icon}>{item.icon}</span>
@@ -101,4 +103,3 @@ const Sidebar = ({ userType, isSidebarOpen, toggleSidebar, onSignOut }) => {
 };
 
 export default Sidebar;
-

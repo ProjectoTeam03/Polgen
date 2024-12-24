@@ -8,7 +8,7 @@ const Covid_19 = () => {
     <div className={styles.container}>
       {/* Image Section */}
       <div className={styles.imageContainer}>
-        <img src="covid-19-image.jpg" alt={t('covid_19.title')} className={styles.image} />
+        <img src="/covid_19.jpg" alt={t('covid_19.title')} className={styles.image} />
       </div>
 
       {/* Content Section */}
@@ -35,4 +35,3 @@ const Covid_19 = () => {
 };
 
 export default Covid_19;
-

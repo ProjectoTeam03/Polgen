@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import AdminTables from "../../../../components/OrderComponent/AdminComponent/AdminTables/AdminTables";
+import styles from "./AdminSynthingOrders.module.css";
 
 const AdminSynthingOrders = () => {
   const [categoryFilter, setCategoryFilter] = useState("all");
@@ -8,24 +9,47 @@ const AdminSynthingOrders = () => {
   const filterCondition = (row) => {
     const isWorkingOnOnly = row.isWorkingOn && !row.isFinished; // Only "working on" and not finished
     const matchesCategory =
-      categoryFilter === "all" || row.category?.toLowerCase() === categoryFilter.toLowerCase();
+      categoryFilter === "all" ||
+      row.category?.toLowerCase() === categoryFilter.toLowerCase();
     return isWorkingOnOnly && matchesCategory;
   };
 
   return (
-    <div>
-      <h1>Synthing Orders</h1>
+    <div className={styles.container}>
+      <h1 className={styles.header}>Synthing Orders</h1>
       {/* Filter Buttons */}
-      <div style={{ marginBottom: "20px" }}>
-        <button onClick={() => setCategoryFilter("all")}>All</button>
-        <button onClick={() => setCategoryFilter("prime")}>Primer</button>
-        <button onClick={() => setCategoryFilter("prop")}>Prop</button>
+      <div className={styles.filterButtons}>
+        <button
+          className={`${styles.button} ${
+            categoryFilter === "all" ? styles.active : ""
+          }`}
+          onClick={() => setCategoryFilter("all")}
+        >
+          All
+        </button>
+        <button
+          className={`${styles.button} ${
+            categoryFilter === "prime" ? styles.active : ""
+          }`}
+          onClick={() => setCategoryFilter("prime")}
+        >
+          Primer
+        </button>
+        <button
+          className={`${styles.button} ${
+            categoryFilter === "prop" ? styles.active : ""
+          }`}
+          onClick={() => setCategoryFilter("prop")}
+        >
+          Prop
+        </button>
       </div>
       {/* Pass filterCondition as a prop */}
-      <AdminTables filterCondition={filterCondition} />
+      <div className={styles.tableContainer}>
+        <AdminTables filterCondition={filterCondition} />
+      </div>
     </div>
   );
 };
 
 export default AdminSynthingOrders;
-

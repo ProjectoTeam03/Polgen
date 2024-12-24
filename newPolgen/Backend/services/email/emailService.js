@@ -5,7 +5,23 @@ import contactTemplate from './templates/contactTemplate.js';
 import approvedTemplate from './templates/approvedTemplate.js';
 import workingOnTemplate from './templates/workingOnTemplate.js';
 import finishedTemplate from './templates/finishedTemplate.js';
-
+import approvedFromAdminTemplate from "./templates/approvedFromAdminTemplate.js";
+export const ApprovedEmailFromAdmin = async (email, username, status) => {
+    try {
+        const subject = status === 'approved' ? 'Account Approved!' : 'Account Approval Revoked';
+        const mailOptions = {
+          from: `"Polgen Notification" <${process.env.SMTP_USER}>`,
+          to: email,
+          subject,
+          html: approvedFromAdminTemplate(username, email, status),
+        };
+        await transporter.sendMail(mailOptions);
+        console.log(`${status === 'approved' ? 'Approval' : 'Revocation'} email sent to ${email}`);
+      } catch (error) {
+        console.error(`Error sending ${status} email:`, error.message);
+        throw error;
+      }
+    };
 export const sendApprovedEmail = async (email, username, productName) => {
   try {
     const mailOptions = {
@@ -102,4 +118,3 @@ export const sendContactEmail = async (name, userEmail, message) => {
     throw error;
   }
 };
-

@@ -1,31 +1,34 @@
-import API from './api';  // Reuse the API instance created earlier
+import API from "./api"; // Reuse the API instance created earlier
 
 // Utility to get the token
-const getAuthToken = () => localStorage.getItem("authToken") || localStorage.getItem("token");
+const getAuthToken = () =>
+  localStorage.getItem("authToken") || localStorage.getItem("token");
 
 // Add a new product
 export const addProduct = async (productData) => {
   try {
     const payload = {
-      products: productData.map(product => ({
-        category: product.category || 'defaultcategory', // Ensure a valid category
+      products: productData.map((product) => ({
+        category: product.category || "defaultcategory", // Ensure a valid category
         modifications: {
-          fivePrime: product.modifications?.fivePrime || '', // Properly serialize
-          threePrime: product.modifications?.threePrime || ''
+          fivePrime: product.modifications?.fivePrime || "", // Properly serialize
+          threePrime: product.modifications?.threePrime || "",
         },
-        saflaştırma: product.saflaştırma || '', // Ensure naming matches backend
-        scale: product.scale || 'nmol',
+        saflaştırma: product.saflaştırma || "", // Ensure naming matches backend
+        uzunluk: product.uzunluk || 0,
+        sekans: product.sekans || " ",
+        scale: product.scale || "nmol",
         totalPrice: product.totalPrice || 0,
-        oligoAdi: product.oligoAdi || 'Unnamed Product',
-        userId: product.userId || '', // Validate this field
-        quantity: product.quantity || 1
-      }))
+        oligoAdi: product.oligoAdi || "Unnamed Product",
+        userId: product.userId || "", // Validate this field
+        quantity: product.quantity || 1,
+      })),
     };
 
-    const token = getAuthToken();  // Get token from storage
-    if (!token) throw new Error('Authentication token is missing');
-    
-    const response = await API.post('/products', JSON.stringify(payload), {
+    const token = getAuthToken(); // Get token from storage
+    if (!token) throw new Error("Authentication token is missing");
+
+    const response = await API.post("/products", JSON.stringify(payload), {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -33,7 +36,10 @@ export const addProduct = async (productData) => {
     });
     return response.data;
   } catch (error) {
-    console.error('Error adding product:', error.response?.data || error.message);
+    console.error(
+      "Error adding product:",
+      error.response?.data || error.message
+    );
     throw error; // Let the calling component handle it
   }
 };
@@ -43,9 +49,9 @@ export const addProduct = async (productData) => {
 export const getProducts = async (userRole, userId, isSpecificUser = false) => {
   try {
     const token = getAuthToken();
-    if (!token) throw new Error('Token is missing');
+    if (!token) throw new Error("Token is missing");
 
-    const response = await API.get('/products', {
+    const response = await API.get("/products", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -57,7 +63,10 @@ export const getProducts = async (userRole, userId, isSpecificUser = false) => {
 
     return response.data; // List of products
   } catch (error) {
-    console.error('Error fetching products:', error.response?.data || error.message);
+    console.error(
+      "Error fetching products:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
@@ -66,21 +75,30 @@ export const getProducts = async (userRole, userId, isSpecificUser = false) => {
 export const getProductById = async (id) => {
   try {
     const response = await API.get(`/products/${id}`);
-    return response.data;  // Return the product details for the specified ID
+    return response.data; // Return the product details for the specified ID
   } catch (error) {
-    console.error(`Error fetching product with ID ${id}:`, error.response?.data || error.message);
-    throw error;  // Rethrow error for handling in the calling component
+    console.error(
+      `Error fetching product with ID ${id}:`,
+      error.response?.data || error.message
+    );
+    throw error; // Rethrow error for handling in the calling component
   }
 };
 
 // Update an existing product by ID
 export const updateProduct = async (id, updatedData) => {
   try {
+    console.log("Updating product with ID:", id); // Debugging log
+    console.log("Updated Data:", updatedData); // Debugging log
+
     const response = await API.put(`/products/${id}`, updatedData);
-    return response.data;  // Return the updated product data
+    return response.data;
   } catch (error) {
-    console.error(`Error updating product with ID ${id}:`, error.response?.data || error.message);
-    throw error;  // Rethrow error for handling in the calling component
+    console.error(
+      `Error updating product with ID ${id}:`,
+      error.response?.data || error.message
+    );
+    throw error;
   }
 };
 
@@ -88,10 +106,12 @@ export const updateProduct = async (id, updatedData) => {
 export const deleteProduct = async (id) => {
   try {
     const response = await API.delete(`/products/${id}`);
-    return response.data;  // Return the response from the delete request
+    return response.data; // Return the response from the delete request
   } catch (error) {
-    console.error(`Error deleting product with ID ${id}:`, error.response?.data || error.message);
-    throw error;  // Rethrow error for handling in the calling component
+    console.error(
+      `Error deleting product with ID ${id}:`,
+      error.response?.data || error.message
+    );
+    throw error; // Rethrow error for handling in the calling component
   }
 };
-

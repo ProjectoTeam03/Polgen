@@ -1,11 +1,11 @@
 import Slider from "../../../components/HomeComponent/Slider/Slider.jsx";
-import styles from './Main.module.css';
-import { useTranslation } from 'react-i18next';
+import styles from "./Main.module.css";
+import { useTranslation } from "react-i18next";
 
 const Main = () => {
   const { t } = useTranslation();
 
-  const sections = t('main.sections', { returnObjects: true });
+  const sections = t("main.sections", { returnObjects: true });
 
   return (
     <>
@@ -18,7 +18,7 @@ const Main = () => {
           <div key={index} className={styles.section}>
             <div className={styles.imageContent}>
               <img
-                src={section.imgSrc}
+                src={t(`main.sections.${index}.imgSrc`)}
                 alt={section.title}
                 className={styles.image}
               />
@@ -35,4 +35,3 @@ const Main = () => {
 };
 
 export default Main;
-

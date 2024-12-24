@@ -1,6 +1,7 @@
 // Generate Excel template
 import API from "./api";
-const getAuthToken = () => localStorage.getItem("authToken") || localStorage.getItem("token");
+const getAuthToken = () =>
+  localStorage.getItem("authToken") || localStorage.getItem("token");
 export const generateExcelTemplate = async (data) => {
   try {
     const token = getAuthToken(); // Ensure token is included in requests
@@ -20,11 +21,13 @@ export const generateExcelTemplate = async (data) => {
     link.download = "template.xlsx"; // File name for the download
     link.click();
   } catch (error) {
-    console.error("Error generating Excel template:", error.response?.data || error.message);
+    console.error(
+      "Error generating Excel template:",
+      error.response?.data || error.message
+    );
     throw error; // Rethrow error to the frontend
   }
 };
-
 
 // Import Excel File
 export const importExcelFile = async (file) => {
@@ -39,12 +42,15 @@ export const importExcelFile = async (file) => {
         Authorization: `Bearer ${token}`, // Include token for secure API access
       },
     });
+    console.log("data ----------------");
+    console.log(response.data);
 
     return response.data; // Return the imported data from the server
   } catch (error) {
-    console.error("Error importing Excel file:", error.response?.data || error.message);
+    console.error(
+      "Error importing Excel file:",
+      error.response?.data || error.message
+    );
     throw error; // Rethrow error for handling in the calling component
   }
 };
-
-

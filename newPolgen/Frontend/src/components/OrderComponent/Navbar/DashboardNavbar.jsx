@@ -19,4 +19,3 @@ const Navbar = ({ isSidebarOpen, toggleSidebar }) => {
 };
 
 export default Navbar;
-

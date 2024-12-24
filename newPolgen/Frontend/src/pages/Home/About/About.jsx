@@ -7,16 +7,7 @@ const About = () => {
 
   return (
     <div className={styles.aboutContainer}>
-      {/* Company Profile Section */}
-      <section className={styles.section}>
-        <div className={styles.textContent}>
-          <h2>{t('about_company.title')}</h2>
-          <p>{t('about_company.description')}</p>
-        </div>
-        <div className={styles.imageContent}>
-          <img src="/path/to/company_image.jpg" alt={t('about_company.title')} />
-        </div>
-      </section>
+      
 
       {/* Mission & Vision Section */}
       <section className={styles.section}>
@@ -25,7 +16,7 @@ const About = () => {
           <p>{t('mission_vision.description')}</p>
         </div>
         <div className={styles.imageContent}>
-          <img src="/path/to/mission_image.jpg" alt={t('mission_vision.title')} />
+          <img src="/public/VisionMision.jpg" alt={t('mission_vision.title')} />
         </div>
       </section>
     </div>
@@ -33,4 +24,3 @@ const About = () => {
 };
 
 export default About;
-

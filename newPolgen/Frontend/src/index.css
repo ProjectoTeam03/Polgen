@@ -1,85 +1,89 @@
 /* Light and Dark Mode Variables */
 :root {
   /* Light Mode Colors */
-  --primary-bg-color: #ffffff; /* Pure white background */
-  --primary-text-color: #000000; /* Black for high contrast text */
-  --accent-color: #1976d2; /* Material UI primary blue */
-  --secondary-bg-color: #f5f5f5; /* Light gray for secondary sections */
-  --border-color: #e0e0e0; /* Material UI light border gray */
-  --secondary-text-color: #757575; /* Subtle gray for less prominent text */
+  --primary-bg-color: #f8f9fa;
+  --primary-text-color: #495057;
+  --accent-color: #007ad9;
+  --secondary-bg-color: #ffffff;
+  --border-color: #dee2e6;
+  --secondary-text-color: #6c757d;
+
+  --success-color: #4caf50;
+  --success-color-dark: #388e3c;
+  --error-color: #f44336;
+  --error-color-dark: #d32f2f;
+  --disabled-bg-color: #e0e0e0;
+  --disabled-text-color: #9e9e9e;
+  --hover-color: #0056b3;
 }
 
 [data-theme="dark"] {
-  /* Dark Mode Colors */
-  --primary-bg-color: #121212; /* Material UI deep dark background */
-  --primary-text-color: #ffffff; /* White for readability on dark background */
-  --accent-color: #90caf9; /* Light blue for accent */
-  --secondary-bg-color: #1e1e1e; /* Slightly lighter gray for secondary sections */
-  --border-color: #424242; /* Dark gray for borders */
-  --secondary-text-color: #bdbdbd; /* Gray for less prominent text */
+  --primary-bg-color: #343a40;
+  --primary-text-color: #f8f9fa;
+  --accent-color: #66b2ff;
+  --secondary-bg-color: #495057;
+  --border-color: #6c757d;
+  --secondary-text-color: #ced4da;
+
+  --success-color: #81c784;
+  --success-color-dark: #66bb6a;
+  --error-color: #ef5350;
+  --error-color-dark: #e53935;
+  --disabled-bg-color: #5f6368;
+  --disabled-text-color: #bdbdbd;
+  --hover-color: #3388ff;
 }
 
 /* Global Styles */
 body {
-  /* margin-top: 90px; */
   padding: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background-color: var(--primary-bg-color);
   color: var(--primary-text-color);
   transition: background-color 0.3s, color 0.3s;
-
-  /* Enable scrolling but hide the scrollbar */
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
-/* Hide scrollbar for webkit (Chrome, Safari) */
-body::-webkit-scrollbar {
-  width: 0; /* Set scrollbar width to 0 */
-  height: 0; /* For horizontal scrollbar, if any */
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  color: var(--primary-text-color);
 }
 
-/* Hide scrollbar for Firefox */
-body {
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
+p {
+  line-height: 1.6;
+  margin: 0 0 1em;
+  color: var(--secondary-text-color);
 }
 
-/* Optional: Scrollable section-specific styles */
-.scrollable-section {
-  overflow-y: auto;
-  scrollbar-width: none; /* Firefox-specific hiding */
+/* Utility Classes */
+.margin-sm {
+  margin: 8px;
+}
+.margin-md {
+  margin: 16px;
+}
+.margin-lg {
+  margin: 32px;
 }
 
-/* Other Styles */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0;
+.padding-sm {
+  padding: 8px;
+}
+.padding-md {
+  padding: 16px;
+}
+.padding-lg {
+  padding: 32px;
 }
 
-/* Buttons */
-button {
-  background-color: var(--accent-color);
-  color: var(--primary-bg-color);
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-button:hover {
-  background-color: var(--secondary-bg-color);
-  color: var(--accent-color);
-}
-
-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--accent-color);
-}
-
-/* Responsive Utility Classes */
 .flex {
   display: flex;
   gap: 15px;
@@ -95,11 +99,57 @@ button:focus {
   text-align: center;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
+/* Buttons */
+button {
+  background-color: var(--accent-color);
+  color: var(--primary-bg-color);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+button:hover {
+  background-color: var(--hover-color);
+  color: var(--primary-bg-color);
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 122, 217, 0.5);
+}
+
+button:disabled {
+  background-color: var(--disabled-bg-color);
+  color: var(--disabled-text-color);
+  cursor: not-allowed;
+}
+
+button.secondary {
+  background-color: var(--secondary-bg-color);
+  color: var(--accent-color);
+  border: 1px solid var(--accent-color);
+}
+
+button.secondary:hover {
+  background-color: var(--accent-color);
+  color: var(--primary-bg-color);
+}
+
+button.outline {
+  background: none;
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+}
+
+button.outline:hover {
+  background-color: var(--accent-color);
+  color: var(--primary-bg-color);
+}
+
+/* Links */
 a {
   color: var(--accent-color);
   text-decoration: none;
@@ -117,7 +167,7 @@ a:hover {
   padding: 15px;
 }
 
-/* Navbar Adjustments */
+/* Navbar */
 .navbar {
   position: fixed;
   top: 0;
@@ -154,11 +204,6 @@ a:hover {
   color: var(--accent-color);
 }
 
-.navbar .icons {
-  display: flex;
-  gap: 15px;
-}
-
 /* Light/Dark Toggle */
 .theme-toggle {
   background: none;
@@ -177,3 +222,8 @@ a:hover {
   background-color: var(--secondary-bg-color);
 }
 
+/* Responsive Images */
+img {
+  max-width: 100%;
+  height: auto;
+}

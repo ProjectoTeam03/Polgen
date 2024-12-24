@@ -20,12 +20,12 @@ import ResetPassword from "../components/HomeComponent/Reset_Password/ResetPassw
 // New imports for added pages
 import AddProduct from "../pages/Order/User/AddProduct/AddProduct.jsx";
 // import AdminTables from "../pages/Order/Admin/"
-import Reports from "../pages/Order/Admin/Reports/Reports.jsx";
 import Orders from "../pages/Order/Admin/AdminOrders/AdminOrders.jsx";
 import UserOrder from "../pages/Order/User/UserOrder/UserOrder.jsx";
 import UserProfile from "../pages/Order/User/UserProfile/UserProfile.jsx";
 import AdminApprovedOrders from "../pages/Order/Admin/AdminApprovedOrders/AdminApprovedOrders.jsx";
 import AdminSynthingOrders from "../pages/Order/Admin/AdminSynthingOrders/AdminSynthingOrders.jsx";
+import AdminApproveEmail from "../pages/Order/Admin/AdminApproveEmail/AdminApproveEmail.jsx";
 
 const router = createBrowserRouter([
   {
@@ -73,13 +73,12 @@ const router = createBrowserRouter([
       { index: true, element: <AdminDashboard /> },
       { path: "dashboard", element: <AdminDashboard /> },
       // { path: "manage-products", element: <AdminTables /> },
-      { path: "reports", element: <Reports /> },
       { path: "orders", element: <Orders /> },
       { path: "approvedOrders", element: <AdminApprovedOrders/>},
-            { path: "synthingOrders", element: <AdminSynthingOrders/>},
+      { path: "synthingOrders", element: <AdminSynthingOrders/>},
+      { path: "approveMails", element: <AdminApproveEmail/>},
     ],
   },
 ]);
 
 export default router;
-

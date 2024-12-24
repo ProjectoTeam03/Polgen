@@ -1,24 +1,50 @@
 /* UserProfile Styles */
 .profileContainer {
-  padding: 20px;
+  padding: 2.5rem;
   max-width: 800px;
-  margin: 0 auto;
+  margin: 2rem auto;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: 12px;
   background-color: var(--secondary-bg-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profileContainer:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .profileContainer h2 {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-size: 2.25rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
   color: var(--primary-text-color);
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.profileContainer h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background-color: var(--accent-color);
+  border-radius: 2px;
 }
 
 .profileInfo {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 2rem;
+  padding: 1.5rem;
+  background-color: var(--primary-bg-color);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
 }
 
 .profileInfo p {
@@ -55,24 +81,24 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.profileInfo button[type='submit'] {
+.profileInfo button[type="submit"] {
   background-color: var(--accent-color);
   color: var(--primary-bg-color);
   border: none;
 }
 
-.profileInfo button[type='button'] {
+.profileInfo button[type="button"] {
   background-color: transparent;
   color: var(--primary-text-color);
   border: 1px solid var(--accent-color);
 }
 
-.profileInfo button[type='submit']:hover {
+.profileInfo button[type="submit"]:hover {
   background-color: var(--secondary-bg-color);
   color: var(--accent-color);
 }
 
-.profileInfo button[type='button']:hover {
+.profileInfo button[type="button"]:hover {
   background-color: var(--secondary-bg-color);
   color: var(--accent-color);
 }
@@ -96,14 +122,64 @@
   color: var(--primary-text-color);
 }
 
+.section {
+  padding: 1.5rem;
+  background-color: var(--secondary-bg-color);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease;
+}
+
+.section:hover {
+  transform: translateX(5px);
+}
+
+.label {
+  font-weight: 600;
+  color: var(--secondary-text-color);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.value {
+  color: var(--primary-text-color);
+  font-size: 1.2rem;
+}
+
+.editButton {
+  margin-top: 2rem;
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.editButton:hover {
+  background-color: var(--hover-color);
+  transform: translateY(-1px);
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   .profileContainer {
-    padding: 15px;
+    padding: 1.5rem;
+    margin: 1rem;
   }
 
   .profileContainer h2 {
-    font-size: 1.6rem;
+    font-size: 1.75rem;
+  }
+
+  .profileInfo {
+    padding: 1rem;
+  }
+
+  .section {
+    padding: 1rem;
   }
 
   .profileInfo input,
@@ -111,4 +187,3 @@
     font-size: 0.9rem;
   }
 }
-

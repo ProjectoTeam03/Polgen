@@ -19,9 +19,8 @@ const Login = () => {
     try {
       const response = await login({ email, password }, navigate); // Pass navigate here
 
- sessionStorage.setItem('token', response.token);
+      sessionStorage.setItem('token', response.token);
       sessionStorage.setItem('user', JSON.stringify(response.user));
-
 
       if (response.user.role === 'admin') {
         navigate(`/admin/${response.user.username}/dashboard`);
@@ -29,10 +28,17 @@ const Login = () => {
         navigate(`/user/${response.user.username}/dashboard`);
       }
     } catch (err) {
-      const errorMessage = err.response?.data?.error || t('login.error_message');
-      setError(errorMessage);
+      const errorMessage =
+        err.response?.data?.error || t('login.error_message');
+
+      if (err.response?.status === 403) {
+        setError('Your account has not been approved by the admin.');
+      } else {
+        setError(errorMessage);
+      }
     }
   };
+
 
   return (
     <div className={styles.loginContainer}>
@@ -72,4 +78,3 @@ const Login = () => {
 };
 
 export default Login;
-

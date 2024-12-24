@@ -1,14 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { primerData, propData } from "../../../../data/ProductData";
 
-const ProductComponent = ({ index, category, productData, onRemove, onUpdate }) => {
+/* 
+
+Prob-hem 5, hem 3
+Primer-ya 5, ya 3, ya da hicbiri, no saflastirma, no skala
+uzunluk- otomatik length
+
+
+
+*/
+const ProductComponent = ({
+  index,
+  category,
+  productData,
+  onRemove,
+  onUpdate,
+}) => {
   const [data, setData] = useState({ ...productData });
 
   const getPrice = (category, type, key) => {
     const productInfo = category === "prime" ? primerData : propData;
-    if (type === "synthesisScales") return productInfo.synthesisScales[key]?.[data.scale] || 0;
-    if (type === "fivePrimeModifications") return productInfo.fivePrimeModifications[key]?.price || 0;
-    if (type === "threePrimeModifications") return productInfo.threePrimeModifications[key]?.price || 0;
+    if (type === "synthesisScales")
+      return productInfo.synthesisScales[key]?.[data.scale] || 0;
+    if (type === "fivePrimeModifications")
+      return productInfo.fivePrimeModifications[key]?.price || 0;
+    if (type === "threePrimeModifications")
+      return productInfo.threePrimeModifications[key]?.price || 0;
     return 0;
   };
 
@@ -18,10 +36,18 @@ const ProductComponent = ({ index, category, productData, onRemove, onUpdate }) 
       price += getPrice(category, "synthesisScales", data.saflaştırma);
     }
     if (data.modifications.fivePrime) {
-      price += getPrice(category, "fivePrimeModifications", data.modifications.fivePrime);
+      price += getPrice(
+        category,
+        "fivePrimeModifications",
+        data.modifications.fivePrime
+      );
     }
     if (data.modifications.threePrime) {
-      price += getPrice(category, "threePrimeModifications", data.modifications.threePrime);
+      price += getPrice(
+        category,
+        "threePrimeModifications",
+        data.modifications.threePrime
+      );
     }
     return price;
   };
@@ -33,7 +59,14 @@ const ProductComponent = ({ index, category, productData, onRemove, onUpdate }) 
       setData(updatedData);
       onUpdate(updatedData, index);
     }
-  }, [data.modifications, data.saflaştırma, data.scale, data.oligoAdi]);
+  }, [
+    data.modifications,
+    data.saflaştırma,
+    data.scale,
+    data.oligoAdi,
+    data.sekans,
+    data.uzunluk,
+  ]);
 
   return (
     <div className="productComponent">
@@ -62,7 +95,11 @@ const ProductComponent = ({ index, category, productData, onRemove, onUpdate }) 
         }
       >
         <option value="">Select</option>
-        {Object.keys(category === "prime" ? primerData.fivePrimeModifications : propData.fivePrimeModifications).map((option) => (
+        {Object.keys(
+          category === "prime"
+            ? primerData.fivePrimeModifications
+            : propData.fivePrimeModifications
+        ).map((option) => (
           <option key={option} value={option}>
             {option}
           </option>
@@ -75,12 +112,19 @@ const ProductComponent = ({ index, category, productData, onRemove, onUpdate }) 
         onChange={(e) =>
           setData((prev) => ({
             ...prev,
-            modifications: { ...prev.modifications, threePrime: e.target.value },
+            modifications: {
+              ...prev.modifications,
+              threePrime: e.target.value,
+            },
           }))
         }
       >
         <option value="">Select</option>
-        {Object.keys(category === "prime" ? primerData.threePrimeModifications : propData.threePrimeModifications).map((option) => (
+        {Object.keys(
+          category === "prime"
+            ? primerData.threePrimeModifications
+            : propData.threePrimeModifications
+        ).map((option) => (
           <option key={option} value={option}>
             {option}
           </option>
@@ -136,6 +180,28 @@ const ProductComponent = ({ index, category, productData, onRemove, onUpdate }) 
         }}
       />
 
+      <label>Sekans:</label>
+      <input
+        type="text"
+        value={data.sekans || ""}
+        onChange={(e) => {
+          const updatedData = { ...data, sekans: e.target.value };
+          setData(updatedData);
+          onUpdate(updatedData, index);
+        }}
+      />
+
+      <label>Uzunluk:</label>
+      <input
+        type="number"
+        value={data.uzunluk || 0}
+        onChange={(e) => {
+          const updatedData = { ...data, uzunluk: e.target.value };
+          setData(updatedData);
+          onUpdate(updatedData, index);
+        }}
+      />
+
       <button type="button" onClick={() => onRemove(index)}>
         Remove
       </button>
@@ -146,4 +212,3 @@ const ProductComponent = ({ index, category, productData, onRemove, onUpdate }) 
 };
 
 export default ProductComponent;
-

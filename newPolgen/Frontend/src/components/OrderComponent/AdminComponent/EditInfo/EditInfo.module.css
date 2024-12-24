@@ -1,65 +1,237 @@
 .overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6); /* Increased opacity for a darker overlay */
+  backdrop-filter: blur(5px); /* Adds a subtle blur effect for modern feel */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out; /* Adds a fade-in animation */
 }
 
 .modal {
   background: #fff;
-  padding: 20px;
-  border-radius: 10px;
+  padding: 25px; /* Slightly increased padding for better spacing */
+  border-radius: 12px; /* Slightly more rounded corners */
   width: 400px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  max-width: 90%; /* Ensures responsiveness for smaller screens */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); /* Softer and more modern shadow */
+  animation: slideIn 0.4s ease-in-out; /* Adds a slide-in effect */
+  position: relative;
+}
+
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--primary-bg-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 h2 {
   margin-top: 0;
+  font-size: 1.5rem;
+  color: var(--primary-text-color);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.5rem;
 }
 
 .formGroup {
-  margin-bottom: 15px;
+  margin-bottom: 20px; /* Increased spacing for better visual separation */
 }
 
 label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px; /* Increased spacing for clarity */
   font-weight: bold;
+  color: #555; /* Softer gray for label text */
+  font-size: 0.9rem; /* Adjusted for consistency */
+}
+
+.form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 input {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 10px;
+  border: 1px solid #ccc; /* Softer border color */
+  border-radius: 6px; /* Slightly more rounded corners */
+  font-size: 1rem;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Adds hover focus effect */
+}
+
+.input {
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #007ad9; /* Accent color */
+  box-shadow: 0 0 4px rgba(0, 122, 217, 0.5); /* Subtle glow */
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.1);
 }
 
 .buttons {
   display: flex;
   justify-content: space-between;
+  gap: 10px; /* Adds space between buttons */
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: flex-end;
+}
+
+.saveBtn,
+.cancelBtn {
+  flex: 1; /* Equal button sizes */
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px; /* Consistent with input */
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.2s ease; /* Smooth hover effect */
+}
+
+.saveBtn,
+.cancelBtn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .saveBtn {
-  background: #4caf50;
+  background: #4caf50; /* Success green */
   color: #fff;
-  padding: 8px 15px;
+}
+
+.saveBtn {
+  background: var(--accent-color);
+  color: white;
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
+}
+
+.saveBtn:hover {
+  background: #388e3c; /* Darker green for hover state */
+  transform: translateY(-2px); /* Adds subtle lift effect */
+}
+
+.saveBtn:hover {
+  background: var(--accent-color-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--accent-color-rgb), 0.2);
 }
 
 .cancelBtn {
-  background: #f44336;
+  background: #f44336; /* Error red */
   color: #fff;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
+.cancelBtn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--primary-text-color);
+}
+
+.cancelBtn:hover {
+  background: #d32f2f; /* Darker red for hover state */
+  transform: translateY(-2px); /* Adds subtle lift effect */
+}
+
+.cancelBtn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modal {
+    padding: 20px;
+    width: 90%;
+  }
+
+  .container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  .saveBtn,
+  .cancelBtn {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+
+  .saveBtn,
+  .cancelBtn {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+  }
+}

@@ -40,13 +40,11 @@
       {
         "title": "Koronavirüs Test Kiti",
         "description": "POLGEN Koronavirüs Test Kiti, sağlık profesyonelleri için hızlı ve güvenilir sonuçlar sağlayan ileri qPCR teknolojisini kullanır.",
-        "imgSrc": "/images/covid-test-kit.jpg"
-      },
+        "imgSrc": "/Polgen.jpg"      },
       {
         "title": "Büyük Veri Çözümleri",
         "description": "POLGEN, araştırma ve geliştirmeyi hızlandırmak için de novo genom montajı, RNASeq analizi ve gen ontolojisi profillemesi gibi yenilikçi büyük veri analiz hizmetleri sunar.",
-        "imgSrc": "/images/big-data.jpg"
-      }
+        "imgSrc": "/BigData.jpg"      }
     ]
   },
   "services": {

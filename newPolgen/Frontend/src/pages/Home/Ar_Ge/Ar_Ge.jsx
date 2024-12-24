@@ -14,7 +14,7 @@ const Ar_Ge = () => {
       <section className={styles.projects}>
         <div className={styles.project}>
           <div className={styles.project_img}>
-            <img src="/path/to/genome_editing.jpg" alt={t('ar_ge.project_1_title')} />
+            <img src="/crispr1.jpeg" alt={t('ar_ge.project_1_title')} />
           </div>
           <div className={styles.project_text}>
             <h3>{t('ar_ge.project_1_title')}</h3>
@@ -24,7 +24,7 @@ const Ar_Ge = () => {
 
         <div className={styles.project}>
           <div className={styles.project_img}>
-            <img src="/path/to/crispr_solutions.jpg" alt={t('ar_ge.project_2_title')} />
+            <img src="/crispr2.png" alt={t('ar_ge.project_2_title')} />
           </div>
           <div className={styles.project_text}>
             <h3>{t('ar_ge.project_2_title')}</h3>
@@ -34,7 +34,7 @@ const Ar_Ge = () => {
 
         <div className={styles.project}>
           <div className={styles.project_img}>
-            <img src="/path/to/microbiome_analysis.jpg" alt={t('ar_ge.project_3_title')} />
+            <img src="/crispr3.jpg" alt={t('ar_ge.project_3_title')} />
           </div>
           <div className={styles.project_text}>
             <h3>{t('ar_ge.project_3_title')}</h3>
@@ -47,4 +47,3 @@ const Ar_Ge = () => {
 };
 
 export default Ar_Ge;
-

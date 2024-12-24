@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { getUserById } from '../../../../api/auth';
-import UserTables from '../../UserComponent/UserTables/UserTables.jsx';
-import styles from './ShowUserInfo.module.css';
+import React, { useState, useEffect } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import { getUserById } from "../../../../api/auth";
+import UserTables from "../../UserComponent/UserTables/UserTables.jsx";
+import styles from "./ShowUserInfo.module.css";
 
 const ShowUserInfo = ({ userId, onClose }) => {
   const [user, setUser] = useState(null);
@@ -15,10 +16,10 @@ const ShowUserInfo = ({ userId, onClose }) => {
         if (response && response.user) {
           setUser(response.user);
         } else {
-          setError('User not found');
+          setError("User not found");
         }
       } catch (err) {
-        setError('Failed to load user data');
+        setError("Failed to load user data");
         console.error(err);
       } finally {
         setLoading(false);
@@ -42,7 +43,8 @@ const ShowUserInfo = ({ userId, onClose }) => {
         <div className={styles.popupHeader}>
           <h2>User Information</h2>
           <button className={styles.closeButton} onClick={onClose}>
-            &times;
+            {/* &times; */}
+            <CloseIcon />
           </button>
         </div>
         {loading ? (
@@ -53,16 +55,16 @@ const ShowUserInfo = ({ userId, onClose }) => {
           <>
             <div className={styles.popupContent}>
               <p>
-                <strong>Name:</strong> {user.username || 'N/A'}
+                <strong>Name:</strong> {user.username || "N/A"}
               </p>
               <p>
-                <strong>Email:</strong> {user.email || 'N/A'}
+                <strong>Email:</strong> {user.email || "N/A"}
               </p>
               <p>
-                <strong>Phone:</strong> {user.phone || 'N/A'}
+                <strong>Phone:</strong> {user.phone || "N/A"}
               </p>
               <p>
-                <strong>Address:</strong> {user.address || 'N/A'}
+                <strong>Address:</strong> {user.address || "N/A"}
               </p>
             </div>
             <div className={styles.userOrders}>
@@ -77,4 +79,3 @@ const ShowUserInfo = ({ userId, onClose }) => {
 };
 
 export default ShowUserInfo;
-

@@ -4,7 +4,7 @@ INSERT INTO users (id, username, email, password, phone, address, role, resetTok
 VALUES (
     gen_random_uuid(), -- Assuming 'id' is a UUID, generated dynamically
     'username', 
-    'email@gmail.com',', 
+    'email@gmail.com', 
     'password', -- Plain password, which will be hashed by the backend
     'phone', 
     'address', 
