@@ -280,10 +280,6 @@ const AddProduct = () => {
             className={styles.submitButton}
             type="submit"
             disabled={products.every((p) => !p.selected)}
-<<<<<<< HEAD
-            
-=======
->>>>>>> c69fb24997d77609c54cde772ffc568a6896a601
           >
             Submit
           </button>

@@ -1,18 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { primerData, propData } from "../../../../data/ProductData";
 
-<<<<<<< HEAD
-/* 
-
-Prob-hem 5, hem 3
-Primer-ya 5, ya 3, ya da hicbiri, no saflastirma, no skala
-uzunluk- otomatik length
-
-
-
-*/
-=======
->>>>>>> c69fb24997d77609c54cde772ffc568a6896a601
 const ProductComponent = ({
   index,
   category,
