@@ -480,12 +480,14 @@ const AdminTables = ({ filterCondition }) => {
             setShowDeleteModal(false); // Close the modal on cancel
             setProductToDelete(null); // Clear the selected product
           }}
+          message="are you sure u want to  delete this selected one?"
         />
       )}
       {showBulkDeleteModal && (
         <AreYouSureMsg
           onConfirm={confirmBulkDelete}
           onCancel={() => setShowBulkDeleteModal(false)}
+          message="are you sure u want to  delete all?"
         />
       )}
 

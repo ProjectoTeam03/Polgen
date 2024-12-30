@@ -142,10 +142,12 @@ const AdminMailTables = () => {
                 <TableCell className={styles.tableCell}>
                   {row.isApprovedFromAdmin ? (
                     <CheckCircleIcon
+                      fontSize="large"
                       className={`${styles.statusIcon} ${styles.approved}`}
                     />
                   ) : (
                     <CheckCircleIcon
+                      fontSize="large"
                       className={`${styles.statusIcon} ${styles.pending}`}
                     />
                   )}

@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "./AreYouSureMessg.module.css";
 
-const AreYouSureMsg = ({ onConfirm, onCancel }) => {
+const AreYouSureMsg = ({ onConfirm, onCancel, message }) => {
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
-        <h3>Are you sure you want to sign out?</h3>
+        <h3>{message}</h3>
         <div className={styles.buttons}>
           <button className={styles.confirmBtn} onClick={onConfirm}>
             Yes
@@ -20,4 +20,3 @@ const AreYouSureMsg = ({ onConfirm, onCancel }) => {
 };
 
 export default AreYouSureMsg;
-

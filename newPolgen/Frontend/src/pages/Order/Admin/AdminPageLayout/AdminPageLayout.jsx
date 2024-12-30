@@ -44,7 +44,10 @@ const AdminPageLayout = () => {
     fetchAdminProfile();
 
     channel.onmessage = (message) => {
-      if (message.data.type === "logout" && message.data.sessionId === sessionId) {
+      if (
+        message.data.type === "logout" &&
+        message.data.sessionId === sessionId
+      ) {
         sessionStorage.removeItem(`auth_${sessionId}`);
         sessionStorage.removeItem("sessionId");
         navigate("/login");
@@ -105,11 +108,14 @@ const AdminPageLayout = () => {
         <Outlet context={{ adminProfile, setAdminProfile }} />
       </main>
       {showSignOutModal && (
-        <AreYouSureMsg onConfirm={confirmSignOut} onCancel={cancelSignOut} />
+        <AreYouSureMsg
+          onConfirm={confirmSignOut}
+          onCancel={cancelSignOut}
+          message="are you sure u want to sign out?"
+        />
       )}
     </div>
   );
 };
 
 export default AdminPageLayout;
-

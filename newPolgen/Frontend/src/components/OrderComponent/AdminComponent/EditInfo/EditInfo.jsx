@@ -10,10 +10,14 @@ const EditInfo = ({ product, onClose, onSave }) => {
     category: product.category || "N/A", // Default category
     oligoAdi: product.oligoAdi || "",
     scale: product.scale || "",
+    uzunluk: product.uzunluk || 0,
+    saflaştırma: product.saflaştırma || "", // Ensure naming matches backend
+    sekans: product.sekans || " ",
     modification5: product.modifications?.fivePrime || "",
     modification3: product.modifications?.threePrime || "",
     quantity: product.quantity || 0,
     totalPrice: product.totalPrice || 0,
+    quantity: product.quantity || 1,
   });
 
   // Handle form field changes
@@ -32,12 +36,15 @@ const EditInfo = ({ product, onClose, onSave }) => {
         category: formData.category,
         oligoAdi: formData.oligoAdi,
         scale: formData.scale,
+        saflaştırma: formData.saflaştırma,
         modifications: {
           fivePrime: formData.modification5 || "",
           threePrime: formData.modification3 || "",
         },
         quantity: formData.quantity,
         totalPrice: formData.totalPrice,
+        uzunluk: formData.uzunluk || 0,
+        sekans: formData.sekans || " ",
       };
 
       console.log("Updating Product:", updatedProduct);

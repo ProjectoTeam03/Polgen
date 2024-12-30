@@ -1,13 +1,11 @@
-import AdminMailTables from "../../../../components/OrderComponent/AdminComponent/AdminMailTables/AdminMailTables"
+import AdminMailTables from "../../../../components/OrderComponent/AdminComponent/AdminMailTables/AdminMailTables";
 
 const AdminApproveEmail = () => {
   return (
-  <div>
-  <h1>asdasd</h1>
-<AdminMailTables/>
+    <div>
+      <AdminMailTables />
+    </div>
+  );
+};
 
-  </div>
-  )
-}
-
-export default AdminApproveEmail
+export default AdminApproveEmail;
