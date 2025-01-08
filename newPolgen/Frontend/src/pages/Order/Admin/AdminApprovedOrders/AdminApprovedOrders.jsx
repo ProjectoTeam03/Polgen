@@ -44,7 +44,11 @@ const AdminApprovedOrders = () => {
         </button>
       </div>
       <div className={styles.tableContainer}>
-        <AdminTables filterCondition={filterCondition} />
+        <AdminTables
+          filterCondition={filterCondition}
+          AdminPageName="AdminApprovedOrders"
+          nosearch=""
+        />
       </div>
     </div>
   );

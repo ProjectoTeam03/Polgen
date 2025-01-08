@@ -46,7 +46,11 @@ const AdminSynthingOrders = () => {
       </div>
       {/* Pass filterCondition as a prop */}
       <div className={styles.tableContainer}>
-        <AdminTables filterCondition={filterCondition} />
+        <AdminTables
+          filterCondition={filterCondition}
+          AdminPageName="AdminSynthingOrders"
+          nosearch=""
+        />
       </div>
     </div>
   );

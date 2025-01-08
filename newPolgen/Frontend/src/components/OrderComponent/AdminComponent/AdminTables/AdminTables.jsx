@@ -1,4 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
+import Stack from "@mui/material/Stack";
+import MailIcon from "@mui/icons-material/Mail";
+import styles from "./AdminTables.module.css"; // Import the CSS module
+
 import {
   Table,
   TableBody,
@@ -31,8 +35,10 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 import ShowUserInfo from "../ShowUserInfo/ShowUserInfo";
 import AreYouSureMsg from "../../AreYouSureMessg/AreYouSureMessg";
+import AdminSynthisGroup from "../AdminSynthisGroup/AdminSynthisGroup";
 
-const AdminTables = ({ filterCondition }) => {
+// const nosearch = false;
+const AdminTables = ({ filterCondition, AdminPageName, nosearch }) => {
   const [rows, setRows] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
@@ -52,8 +58,11 @@ const AdminTables = ({ filterCondition }) => {
   const [processing, setProcessing] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [showEditModal, setShowEditModal] = useState(false);
-  const [productToEdit, setProductToEdit] = useState(null);
+  // هنا هغير الشو سينتس
+  const [showSynthisGroup, setshowSynthisGroup] = useState(false);
 
+  const [productToEdit, setProductToEdit] = useState(null);
+  const noSearch = false;
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -140,6 +149,9 @@ const AdminTables = ({ filterCondition }) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const handleAdminSynthisGroup = () => {
+    setshowSynthisGroup(true);
+  };
   const handleEditProduct = (product) => {
     if (!product.id) {
       console.error("Product ID is missing:", product);
@@ -177,6 +189,43 @@ const AdminTables = ({ filterCondition }) => {
     }
   };
 
+  // -----------------------------
+
+  const handleBulkIsWorkingOn = async () => {
+    const bulkWorkingOnIds = selectedProducts.filter(
+      (id) => !rows.find((row) => row.id === id)?.isWorkingOn
+    );
+
+    if (bulkWorkingOnIds.length === 0) {
+      return;
+    }
+
+    setProcessing((prev) => [...prev, ...bulkWorkingOnIds]);
+
+    try {
+      // Send bulk approval request to the backend
+      const response = await updateProduct("all", {
+        productIds: bulkWorkingOnIds,
+        isWorkingOn: true, // This is the status being updated
+      });
+
+      // Update the UI with the backend response
+      const updatedRows = rows.map((row) =>
+        bulkWorkingOnIds.includes(row.id) ? { ...row, isWorkingOn: true } : row
+      );
+      setRows(updatedRows);
+      setFilteredData(updatedRows);
+
+      setSelectedProducts([]); // Clear selected products
+    } catch (error) {
+      setError("Failed to approve selected products. Please try again.");
+    } finally {
+      setProcessing((prev) =>
+        prev.filter((id) => !bulkWorkingOnIds.includes(id))
+      );
+    }
+  };
+  //----------------------
   const handleBulkApprove = async () => {
     const bulkApproveIds = selectedProducts.filter(
       (id) => !rows.find((row) => row.id === id)?.isApproved
@@ -309,47 +358,106 @@ const AdminTables = ({ filterCondition }) => {
 
   return (
     <TableContainer component={Paper} sx={{ padding: "20px" }}>
+      {/* from  here copilat */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
+
           alignItems: "center",
-          mb: 2,
+          gap: 2,
         }}
       >
-        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          Admin Product List
-        </Typography>
-        <Box>
-          <TextField
-            label="Search"
-            variant="outlined"
-            size="small"
-            value={searchQuery}
-            onChange={handleSearch}
-            sx={{ marginRight: 2 }}
-          />
+        <div>
+          {/* Conditionally render the title based on AdminPageName */}
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            {AdminPageName || "Admin Products"}
+          </Typography>
+        </div>
+        {/* ------------------- */}
+        {AdminPageName === "AdminApprovedOrders" ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
 
-          {/*============================*/}
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleBulkApprove}
-            disabled={selectedProducts.length === 0}
-            sx={{ marginRight: 2 }}
+              alignItems: "center",
+              gap: 2,
+            }}
           >
-            Approve Selected
-          </Button>
+            <div>
+              <Button
+                variant="contained"
+                onClick={handleBulkIsWorkingOn}
+                className={styles["table-bulk-approve"]} // Apply the CSS class
+                disabled={selectedProducts.length === 0}
+              >
+                Synthing All
+              </Button>
+            </div>
 
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => setShowBulkDeleteModal(true)} // Open confirmation modal
-            disabled={selectedProducts.length === 0}
+            <div>
+              <Button
+                variant="contained"
+                onClick={handleAdminSynthisGroup}
+                className={styles["table-bulk-SynthisGroup"]} // Apply the CSS class
+
+                //---Aliyev bu  asagaidaki kismi uncomment edersen (ANCA BIR YA DA COK  URURU SECTIGINDE DUGUME CALISACAGK ACILACAK)
+
+                // disabled={selectedProducts.length === 0}
+              >
+                Synthing Group
+              </Button>
+            </div>
+          </Box>
+        ) : (
+          " "
+        )}
+        {AdminPageName === "Orders" ? (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+            }}
           >
-            Delete Selected
-          </Button>
-        </Box>
+            <Box>
+              <TextField
+                label="Search"
+                variant="outlined"
+                size="small"
+                value={searchQuery}
+                onChange={handleSearch}
+                sx={{ marginRight: 2 }}
+              />
+            </Box>
+
+            <div>
+              <Button
+                variant="contained"
+                onClick={handleBulkApprove}
+                className={styles["table-bulk-approve"]} // Apply the CSS class
+                disabled={selectedProducts.length === 0}
+              >
+                Approve All
+              </Button>
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                className={styles["table-bulk-delete"]} // Apply the CSS class
+                onClick={() => setShowBulkDeleteModal(true)} // Open confirmation modal
+                disabled={selectedProducts.length === 0}
+              >
+                Delete All
+              </Button>
+            </div>
+          </Box>
+        ) : (
+          ""
+        )}
+
+        {/* ------------------- */}
       </Box>
       <Table>
         <TableHead>
@@ -452,6 +560,11 @@ const AdminTables = ({ filterCondition }) => {
                 >
                   <DeleteIcon color="error" />
                 </IconButton>
+                {/* the mail part */}
+                {/* </IconButton>
+                <IconButton onClick={() => handleEmail(ro)}>
+                  <MailIcon />
+                </IconButton> */}
               </TableCell>
             </TableRow>
           ))}
@@ -490,7 +603,11 @@ const AdminTables = ({ filterCondition }) => {
           message="are you sure u want to  delete all?"
         />
       )}
-
+      {showSynthisGroup && (
+        <AdminSynthisGroup
+          onClose={() => setshowSynthisGroup(false)} // Close the modal
+        />
+      )}
       {showEditModal && (
         <EditInfo
           product={productToEdit} // Pass the selected product

@@ -8,6 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
 import GradingIcon from "@mui/icons-material/Grading";
 import ScienceIcon from "@mui/icons-material/Science";
+import SummarizeIcon from "@mui/icons-material/Summarize";
 import styles from "./Sidebar.module.css";
 
 const Sidebar = ({ userType, isSidebarOpen, toggleSidebar, onSignOut }) => {
@@ -32,6 +33,7 @@ const Sidebar = ({ userType, isSidebarOpen, toggleSidebar, onSignOut }) => {
       icon: <AddIcon />,
       path: `/user/${username}/add-product`,
     },
+
     {
       title: "Profile",
       icon: <AccountCircleIcon />,
@@ -59,6 +61,11 @@ const Sidebar = ({ userType, isSidebarOpen, toggleSidebar, onSignOut }) => {
       title: "Synth Orders",
       icon: <ScienceIcon />,
       path: `/admin/${username}/synthingOrders`,
+    },
+    {
+      title: "Synth Raports",
+      icon: <SummarizeIcon />,
+      path: `/admin/${username}/synthingRaports`,
     },
     {
       title: "Approve Mails",

@@ -8,10 +8,10 @@ const AdminOrders = () => {
   return (
     <div>
       <h1>Welcome, {adminProfile?.username}</h1>
-      <AdminTables /> {/* Admin-specific orders or data */}
+      <AdminTables AdminPageName="Orders" />
+      {/* Admin-specific orders or data */}
     </div>
   );
 };
 
 export default AdminOrders;
-

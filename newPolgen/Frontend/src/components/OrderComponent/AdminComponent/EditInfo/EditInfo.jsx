@@ -15,7 +15,6 @@ const EditInfo = ({ product, onClose, onSave }) => {
     sekans: product.sekans || " ",
     modification5: product.modifications?.fivePrime || "",
     modification3: product.modifications?.threePrime || "",
-    quantity: product.quantity || 0,
     totalPrice: product.totalPrice || 0,
     quantity: product.quantity || 1,
   });
