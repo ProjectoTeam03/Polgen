@@ -33,7 +33,12 @@ const UserProfile = () => {
     e.preventDefault();
     setError(null);
 
-    if (!formData.username || !formData.email || !formData.phone || !formData.address) {
+    if (
+      !formData.username ||
+      !formData.email ||
+      !formData.phone ||
+      !formData.address
+    ) {
       setError("All fields are required.");
       return;
     }
@@ -54,23 +59,25 @@ const UserProfile = () => {
       // Call the API to update the profile
       const updatedProfile = await updateUserProfile(formData);
 
-      console.log("Updated Profile:", updatedProfile);
+      // console.log("Updated Profile:", updatedProfile);
 
       // Update the context with the new profile data
       setEditMode(false);
       setUserProfile(updatedProfile);
-navigate(`/user/${updatedProfile.username}/profile`);
+      navigate(`/user/${updatedProfile.username}/profile`);
 
-
-      setTimeout(()=>{
-
-
-
+      setTimeout(() => {
         toast.success("Profile updated successfully!");
-      },3000);
+      }, 3000);
     } catch (error) {
-      console.error("Error updating profile:", error.response?.data || error.message);
-      setError(error.response?.data?.error || "Error updating profile. Please try again.");
+      console.error(
+        "Error updating profile:",
+        error.response?.data || error.message
+      );
+      setError(
+        error.response?.data?.error ||
+          "Error updating profile. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -152,4 +159,3 @@ navigate(`/user/${updatedProfile.username}/profile`);
 };
 
 export default UserProfile;
-

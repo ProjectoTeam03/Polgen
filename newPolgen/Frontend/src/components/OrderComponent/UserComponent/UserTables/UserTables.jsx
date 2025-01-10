@@ -118,7 +118,15 @@ const UserTables = ({ userRole, userId }) => {
   }
 
   return (
-    <TableContainer component={Paper} sx={{ padding: "20px" }}>
+    <TableContainer
+      component={Paper}
+      sx={{
+        padding: "20px",
+        backgroundColor: "var(--secondary-bg-color)",
+        color: "var(--primary-text-color)",
+        marginTop: "20px",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -150,30 +158,142 @@ const UserTables = ({ userRole, userId }) => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Category</TableCell>
-            <TableCell>Oligo Name</TableCell>
-            <TableCell>sekans</TableCell>
-            <TableCell>uzunluk</TableCell>
-            <TableCell>saflaştırma</TableCell>
-            <TableCell>Scale</TableCell>
-            <TableCell>5' Modification</TableCell>
-            <TableCell>3' Modification</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell>Progress</TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              Category
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              Oligo Name
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              sekans
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              uzunluk
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              saflaştırma
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              Scale
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              5' Modification
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              3' Modification
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              Status
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              Progress
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {visibleRows.map((row) => (
             <TableRow key={row.id}>
-              <TableCell>{row.category}</TableCell>
-              <TableCell>{row.oligoAdi}</TableCell>
-              <TableCell>{row.sekans}</TableCell>
-              <TableCell>{row.uzunluk}</TableCell>
-              <TableCell>{row.saflaştırma}</TableCell>
-              <TableCell>{row.scale}</TableCell>
-              <TableCell>{row.modifications?.fivePrime || "N/A"}</TableCell>
-              <TableCell>{row.modifications?.threePrime || "N/A"}</TableCell>
-              <TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.category}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.oligoAdi}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.sekans}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.uzunluk}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.saflaştırma}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.scale}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.modifications?.fivePrime || "N/A"}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.modifications?.threePrime || "N/A"}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
                 {row.isFinished
                   ? "Finished"
                   : row.isWorkingOn
@@ -182,7 +302,11 @@ const UserTables = ({ userRole, userId }) => {
                   ? "Approved"
                   : "Ordered"}
               </TableCell>
-              <TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
                 <LinearProgress
                   variant="determinate"
                   value={getProgress(row)}

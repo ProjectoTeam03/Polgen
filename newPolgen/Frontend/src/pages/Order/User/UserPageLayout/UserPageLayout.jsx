@@ -28,7 +28,7 @@ const UserPageLayout = () => {
     const fetchUserProfile = async () => {
       try {
         const profile = await getUserProfile(username, navigate);
-        console.log("Fetched profile:", profile);
+        // console.log("Fetched profile:", profile);
 
         if (profile.username.toLowerCase() !== username.toLowerCase()) {
           console.warn(

@@ -6,6 +6,7 @@ import approvedTemplate from './templates/approvedTemplate.js';
 import workingOnTemplate from './templates/workingOnTemplate.js';
 import finishedTemplate from './templates/finishedTemplate.js';
 import approvedFromAdminTemplate from "./templates/approvedFromAdminTemplate.js";
+
 export const ApprovedEmailFromAdmin = async (email, username, status) => {
     try {
         const subject = status === 'approved' ? 'Account Approved!' : 'Account Approval Revoked';

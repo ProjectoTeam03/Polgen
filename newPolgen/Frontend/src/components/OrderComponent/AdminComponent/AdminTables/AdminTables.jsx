@@ -35,10 +35,11 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 import ShowUserInfo from "../ShowUserInfo/ShowUserInfo";
 import AreYouSureMsg from "../../AreYouSureMessg/AreYouSureMessg";
-import AdminSynthisGroup from "../AdminSynthisGroup/AdminSynthisGroup";
+import { getUserById } from "../../../../api/auth";
+import AdminSendingMail from "../AdminSendingMail/AdminSendingMail";
 
 // const nosearch = false;
-const AdminTables = ({ filterCondition, AdminPageName, nosearch }) => {
+const AdminTables = ({ filterCondition, AdminPageName }) => {
   const [rows, setRows] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
@@ -59,10 +60,10 @@ const AdminTables = ({ filterCondition, AdminPageName, nosearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showEditModal, setShowEditModal] = useState(false);
   // هنا هغير الشو سينتس
-  const [showSynthisGroup, setshowSynthisGroup] = useState(false);
+  const [showMail, setShowMail] = useState(false);
+  const [addData, setAddData] = useState([]);
 
   const [productToEdit, setProductToEdit] = useState(null);
-  const noSearch = false;
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -100,6 +101,15 @@ const AdminTables = ({ filterCondition, AdminPageName, nosearch }) => {
 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value.toLowerCase());
+  };
+  const handleEmail = (row) => {
+    console.log(row.userId);
+    setShowMail(true);
+
+    getUserById(row.userId).then((res) => {
+      console.log(res);
+      setAddData(res.user);
+    });
   };
 
   const filteredRows = useMemo(() => {
@@ -149,8 +159,8 @@ const AdminTables = ({ filterCondition, AdminPageName, nosearch }) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const handleAdminSynthisGroup = () => {
-    setshowSynthisGroup(true);
+  const handleAdminShowMail = () => {
+    setShowMail(true);
   };
   const handleEditProduct = (product) => {
     if (!product.id) {
@@ -357,30 +367,33 @@ const AdminTables = ({ filterCondition, AdminPageName, nosearch }) => {
   }
 
   return (
-    <TableContainer component={Paper} sx={{ padding: "20px" }}>
-      {/* from  here copilat */}
+    <TableContainer
+      component={Paper}
+      sx={{
+        padding: "20px",
+        backgroundColor: "var(--secondary-bg-color)",
+        color: "var(--primary-text-color)",
+        marginTop: "20px",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
-
           alignItems: "center",
           gap: 2,
         }}
       >
         <div>
-          {/* Conditionally render the title based on AdminPageName */}
           <Typography variant="h6" sx={{ fontWeight: "bold" }}>
             {AdminPageName || "Admin Products"}
           </Typography>
         </div>
-        {/* ------------------- */}
         {AdminPageName === "AdminApprovedOrders" ? (
           <Box
             sx={{
               display: "flex",
               justifyContent: "space-between",
-
               alignItems: "center",
               gap: 2,
             }}
@@ -389,24 +402,10 @@ const AdminTables = ({ filterCondition, AdminPageName, nosearch }) => {
               <Button
                 variant="contained"
                 onClick={handleBulkIsWorkingOn}
-                className={styles["table-bulk-approve"]} // Apply the CSS class
+                className={styles["table-bulk-approve"]}
                 disabled={selectedProducts.length === 0}
               >
                 Synthing All
-              </Button>
-            </div>
-
-            <div>
-              <Button
-                variant="contained"
-                onClick={handleAdminSynthisGroup}
-                className={styles["table-bulk-SynthisGroup"]} // Apply the CSS class
-
-                //---Aliyev bu  asagaidaki kismi uncomment edersen (ANCA BIR YA DA COK  URURU SECTIGINDE DUGUME CALISACAGK ACILACAK)
-
-                // disabled={selectedProducts.length === 0}
-              >
-                Synthing Group
               </Button>
             </div>
           </Box>
@@ -436,7 +435,7 @@ const AdminTables = ({ filterCondition, AdminPageName, nosearch }) => {
               <Button
                 variant="contained"
                 onClick={handleBulkApprove}
-                className={styles["table-bulk-approve"]} // Apply the CSS class
+                className={styles["table-bulk-approve"]}
                 disabled={selectedProducts.length === 0}
               >
                 Approve All
@@ -445,8 +444,8 @@ const AdminTables = ({ filterCondition, AdminPageName, nosearch }) => {
             <div>
               <Button
                 variant="contained"
-                className={styles["table-bulk-delete"]} // Apply the CSS class
-                onClick={() => setShowBulkDeleteModal(true)} // Open confirmation modal
+                className={styles["table-bulk-delete"]}
+                onClick={() => setShowBulkDeleteModal(true)}
                 disabled={selectedProducts.length === 0}
               >
                 Delete All
@@ -456,10 +455,13 @@ const AdminTables = ({ filterCondition, AdminPageName, nosearch }) => {
         ) : (
           ""
         )}
-
-        {/* ------------------- */}
       </Box>
-      <Table>
+      <Table
+        sx={{
+          backgroundcolor: "var(--primary-bg-color)",
+          color: "var(--primary-text-color)",
+        }}
+      >
         <TableHead>
           <TableRow>
             <TableCell>
@@ -472,44 +474,195 @@ const AdminTables = ({ filterCondition, AdminPageName, nosearch }) => {
                 }
               />
             </TableCell>
-            <TableCell>Category</TableCell>
-            <TableCell>UserId</TableCell>
-            <TableCell>Oligo Name</TableCell>
-            <TableCell>sekans</TableCell>
-            <TableCell> uzunluk</TableCell>
-            <TableCell>saflaştırma</TableCell>
-            <TableCell>Scale</TableCell>
-            <TableCell>5' Modification</TableCell>
-            <TableCell>3' Modification</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell>Total Price</TableCell> {/* Add this */}
-            <TableCell>Progress</TableCell>
-            <TableCell>Actions</TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              Category
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              UserId
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              Oligo Name
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              sekans
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              uzunluk
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              saflaştırma
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              Scale
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              5' Modification
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              3' Modification
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              Status
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              Total Price
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              Progress
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "var(--primary-text-color)",
+              }}
+            >
+              Actions
+            </TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody
+          sx={{
+            backgroundcolor: "var(--primary-bg-color)",
+          }}
+        >
           {visibleRows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>
+            <TableRow
+              key={row.id}
+              sx={{
+                backgroundColor: "var(--secondary-bg-color)",
+                color: "var(--primary-text-color)",
+              }}
+            >
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
                 <Checkbox
                   checked={selectedProducts.includes(row.id)}
                   onChange={() => handleCheckboxChange(row.id)}
                 />
               </TableCell>
-              <TableCell>{row.category}</TableCell>
-              <TableCell>
-                <Button onClick={() => setSelectedUser(row.userId)}>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.category}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                <Button
+                  style={{ color: "var(--accent-color)" }}
+                  onClick={() => setSelectedUser(row.userId)}
+                >
                   {row.userId ? row.userId.split("-")[0] : "Unknown"}
                 </Button>
               </TableCell>
-              <TableCell>{row.oligoAdi}</TableCell>
-              <TableCell>{row.sekans}</TableCell>
-              <TableCell>{row.uzunluk}</TableCell>
-              <TableCell>{row.saflaştırma}</TableCell>
-              <TableCell>{row.scale}</TableCell>
-              <TableCell>{row.modifications?.fivePrime || "N/A"}</TableCell>
-              <TableCell>{row.modifications?.threePrime || "N/A"}</TableCell>
-              <TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.oligoAdi}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.sekans}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.uzunluk}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.saflaştırma}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.scale}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.modifications?.fivePrime || "N/A"}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.modifications?.threePrime || "N/A"}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
                 {row.isFinished
                   ? "Finished"
                   : row.isWorkingOn
@@ -518,11 +671,23 @@ const AdminTables = ({ filterCondition, AdminPageName, nosearch }) => {
                   ? "Approved"
                   : "Ordered"}
               </TableCell>
-              <TableCell>{row.totalPrice || "N/A"}</TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+              >
+                {row.totalPrice || "N/A"}
+              </TableCell>
               <TableCell>
                 <LinearProgress
                   variant="determinate"
                   value={getProgress(row)}
+                  sx={{
+                    backgroundColor: "var(--disabled-bg-color)",
+                    "& .MuiLinearProgress-bar": {
+                      backgroundColor: "var(--accent-color)",
+                    },
+                  }}
                 />
               </TableCell>
               <TableCell>
@@ -554,17 +719,17 @@ const AdminTables = ({ filterCondition, AdminPageName, nosearch }) => {
 
                 <IconButton
                   onClick={() => {
-                    setProductToDelete(row.id); // Set the selected product
-                    setShowDeleteModal(true); // Show the confirmation modal
+                    setProductToDelete(row.id);
+                    setShowDeleteModal(true);
                   }}
                 >
                   <DeleteIcon color="error" />
                 </IconButton>
-                {/* the mail part */}
-                {/* </IconButton>
-                <IconButton onClick={() => handleEmail(ro)}>
-                  <MailIcon />
-                </IconButton> */}
+                <IconButton>
+                  <IconButton onClick={() => handleEmail(row)}>
+                    <MailIcon color="primary" />
+                  </IconButton>
+                </IconButton>
               </TableCell>
             </TableRow>
           ))}
@@ -588,38 +753,35 @@ const AdminTables = ({ filterCondition, AdminPageName, nosearch }) => {
 
       {showDeleteModal && (
         <AreYouSureMsg
-          onConfirm={confirmDeleteProduct} // Call the delete function on confirmation
+          onConfirm={confirmDeleteProduct}
           onCancel={() => {
-            setShowDeleteModal(false); // Close the modal on cancel
-            setProductToDelete(null); // Clear the selected product
+            setShowDeleteModal(false);
+            setProductToDelete(null);
           }}
-          message="are you sure u want to  delete this selected one?"
+          message="Are you sure you want to delete this selected one?"
         />
       )}
       {showBulkDeleteModal && (
         <AreYouSureMsg
           onConfirm={confirmBulkDelete}
           onCancel={() => setShowBulkDeleteModal(false)}
-          message="are you sure u want to  delete all?"
+          message="Are you sure you want to delete all?"
         />
       )}
-      {showSynthisGroup && (
-        <AdminSynthisGroup
-          onClose={() => setshowSynthisGroup(false)} // Close the modal
-        />
+      {showMail && (
+        <AdminSendingMail data={addData} onClose={() => setShowMail(false)} />
       )}
       {showEditModal && (
         <EditInfo
-          product={productToEdit} // Pass the selected product
-          onClose={() => setShowEditModal(false)} // Close the modal
+          product={productToEdit}
+          onClose={() => setShowEditModal(false)}
           onSave={(updatedProduct) => {
-            // Update the product in the table after saving
             const updatedRows = rows.map((row) =>
               row.id === updatedProduct.id ? updatedProduct : row
             );
             setRows(updatedRows);
             setFilteredData(updatedRows);
-            setShowEditModal(false); // Close the modal
+            setShowEditModal(false);
           }}
         />
       )}

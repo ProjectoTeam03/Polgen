@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./EditInfo.module.css";
 import { updateProduct } from "../../../../api/product"; // Ensure this is correctly imported
 
@@ -17,7 +17,24 @@ const EditInfo = ({ product, onClose, onSave }) => {
     modification3: product.modifications?.threePrime || "",
     totalPrice: product.totalPrice || 0,
     quantity: product.quantity || 1,
+    isOrder: product.isOrder || true,
+    isApproved: product.isApproved,
+    isWorkingOn: product.isWorkingOn,
+    isFinished: product.isFinished,
   });
+
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  useEffect(() => {
+    const handleThemeChange = () => {
+      setTheme(localStorage.getItem("theme") || "light");
+    };
+
+    window.addEventListener("storage", handleThemeChange);
+    return () => {
+      window.removeEventListener("storage", handleThemeChange);
+    };
+  }, []);
 
   // Handle form field changes
   const handleChange = (e) => {
@@ -44,6 +61,10 @@ const EditInfo = ({ product, onClose, onSave }) => {
         totalPrice: formData.totalPrice,
         uzunluk: formData.uzunluk || 0,
         sekans: formData.sekans || " ",
+        isOrder: formData.isOrder || true,
+        isApproved: formData.isApproved,
+        isWorkingOn: formData.isWorkingOn,
+        isFinished: formData.isFinished,
       };
 
       console.log("Updating Product:", updatedProduct);
@@ -59,101 +80,108 @@ const EditInfo = ({ product, onClose, onSave }) => {
   };
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
-        <h2>Edit Product</h2>
+    <div className={styles.popupOverlay}>
+      <div className={styles.popupContainer}>
+        <div className={styles.popupHeader}>
+          <h2>Edit Product</h2>
+          <button className={styles.closeButton} onClick={onClose}>
+            {/* Close icon can be added here if needed */}
+          </button>
+        </div>
         <form onSubmit={handleSubmit}>
-          {/* Category Selection */}
-          <div className={styles.formGroup}>
-            <label>Category</label>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-            >
-              <option value="Prime">Prime</option>
-              <option value="prop">prop</option>
-            </select>
-          </div>
+          <div className={styles.popupContent}>
+            {/* Category Selection */}
+            <div className={styles.formGroup}>
+              <label>Category</label>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+              >
+                <option value="Prime">Prime</option>
+                <option value="prop">prop</option>
+              </select>
+            </div>
 
-          {/* Oligo Name */}
-          <div className={styles.formGroup}>
-            <label>Oligo Name</label>
-            <input
-              type="text"
-              name="oligoAdi"
-              value={formData.oligoAdi}
-              onChange={handleChange}
-            />
-          </div>
+            {/* Oligo Name */}
+            <div className={styles.formGroup}>
+              <label>Oligo Name</label>
+              <input
+                type="text"
+                name="oligoAdi"
+                value={formData.oligoAdi}
+                onChange={handleChange}
+              />
+            </div>
 
-          {/* Scale */}
-          <div className={styles.formGroup}>
-            <label>Scale</label>
-            <input
-              type="text"
-              name="scale"
-              value={formData.scale}
-              onChange={handleChange}
-            />
-          </div>
+            {/* Scale */}
+            <div className={styles.formGroup}>
+              <label>Scale</label>
+              <input
+                type="text"
+                name="scale"
+                value={formData.scale}
+                onChange={handleChange}
+              />
+            </div>
 
-          {/* 5' Modification */}
-          <div className={styles.formGroup}>
-            <label>5' Modification</label>
-            <input
-              type="text"
-              name="modification5"
-              value={formData.modification5}
-              onChange={handleChange}
-            />
-          </div>
+            {/* 5' Modification */}
+            <div className={styles.formGroup}>
+              <label>5' Modification</label>
+              <input
+                type="text"
+                name="modification5"
+                value={formData.modification5}
+                onChange={handleChange}
+              />
+            </div>
 
-          {/* 3' Modification */}
-          <div className={styles.formGroup}>
-            <label>3' Modification</label>
-            <input
-              type="text"
-              name="modification3"
-              value={formData.modification3}
-              onChange={handleChange}
-            />
-          </div>
+            {/* 3' Modification */}
+            <div className={styles.formGroup}>
+              <label>3' Modification</label>
+              <input
+                type="text"
+                name="modification3"
+                value={formData.modification3}
+                onChange={handleChange}
+              />
+            </div>
 
-          {/* Quantity */}
-          <div className={styles.formGroup}>
-            <label>Quantity</label>
-            <input
-              type="number"
-              name="quantity"
-              value={formData.quantity}
-              onChange={handleChange}
-            />
-          </div>
+            {/* Quantity */}
+            <div className={styles.formGroup}>
+              <label>Quantity</label>
+              <input
+                type="number"
+                name="quantity"
+                value={formData.quantity}
+                onChange={handleChange}
+              />
+            </div>
 
-          {/* Total Price */}
-          <div className={styles.formGroup}>
-            <label>Total Price</label>
-            <input
-              type="number"
-              name="totalPrice"
-              value={formData.totalPrice}
-              onChange={handleChange}
-            />
-          </div>
+            {/* Total Price */}
+            <div className={styles.formGroup}>
+              <label>Total Price</label>
+              <input
+                type="number"
+                name="totalPrice"
+                value={formData.totalPrice}
+                onChange={handleChange}
+              />
+            </div>
 
-          {/* Submit and Cancel Buttons */}
-          <div className={styles.buttons}>
-            <button type="submit" className={styles.saveBtn}>
-              Save
-            </button>
-            <button
-              type="button"
-              className={styles.cancelBtn}
-              onClick={onClose}
-            >
-              Cancel
-            </button>
+            {/* Submit and Cancel Buttons */}
+            <div className={styles.buttonGroup}>
+              <button type="submit" className={styles.sendButton}>
+                Save
+              </button>
+              <button
+                type="button"
+                className={styles.cancelButton}
+                onClick={onClose}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </form>
       </div>

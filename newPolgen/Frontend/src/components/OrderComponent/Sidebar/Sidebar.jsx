@@ -62,11 +62,11 @@ const Sidebar = ({ userType, isSidebarOpen, toggleSidebar, onSignOut }) => {
       icon: <ScienceIcon />,
       path: `/admin/${username}/synthingOrders`,
     },
-    {
-      title: "Synth Raports",
-      icon: <SummarizeIcon />,
-      path: `/admin/${username}/synthingRaports`,
-    },
+    // {
+    //   title: "Synth Raports",
+    //   icon: <SummarizeIcon />,
+    //   path: `/admin/${username}/synthingRaports`,
+    // },
     {
       title: "Approve Mails",
       icon: <MarkEmailReadIcon />,

@@ -1,3 +1,4 @@
+/* Overlay Background */
 .popupOverlay {
   position: absolute;
   top: 0;
@@ -5,7 +6,7 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.65); /* Overlay background */
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px); /* Smooth blur effect */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,6 +14,7 @@
   animation: fadeIn 0.4s ease-out;
 }
 
+/* Popup Container */
 .popupContainer {
   background: var(--secondary-bg-color); /* Background using global variable */
   border-radius: 16px;
@@ -26,6 +28,7 @@
   border: 1px solid var(--border-color); /* Border color from global variable */
 }
 
+/* Popup Header */
 .popupHeader {
   display: flex;
   justify-content: space-between;
@@ -42,6 +45,7 @@
   font-weight: bold;
 }
 
+/* Close Button */
 .closeButton {
   position: absolute;
   top: 1rem;
@@ -61,14 +65,18 @@
 
 .closeButton:hover {
   background: var(--error-color-dark); /* Error color for hover */
-  /* transform: rotate(90deg); */
   color: var(--secondary-bg-color);
 }
 
+/* Popup Content */
 .popupContent {
   font-size: 1rem;
   color: var(--primary-text-color);
   line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem; /* Add space between elements */
 }
 
 .popupContent p {
@@ -80,21 +88,60 @@
   color: var(--primary-text-color);
 }
 
-.userOrders {
-  margin-top: 30px;
-  background-color: var(--primary-bg-color); /* Subtle section background */
+/* Subject Input */
+.subjectInput {
+  width: 100%;
+  padding: 1rem;
   border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+  background-color: var(--secondary-bg-color);
+  color: var(--primary-text-color);
+  font-size: 1rem;
+  margin-bottom: 1rem; /* Space between subject and message */
+  transition: border-color 0.2s ease;
 }
 
-.userOrders h3 {
-  margin-bottom: 15px;
-  font-size: 1.3rem;
+.subjectInput:focus {
+  border-color: var(--primary-color); /* Highlight border on focus */
+  outline: none;
+}
+
+/* Textarea for Message */
+.messageInput {
+  width: 100%;
+  height: 120px;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--secondary-bg-color);
   color: var(--primary-text-color);
-  font-weight: bold;
-  border-bottom: 2px solid var(--border-color);
-  padding-bottom: 5px;
+  font-size: 1rem;
+  line-height: 1.6;
+  resize: none;
+  transition: border-color 0.2s ease;
+}
+
+.messageInput:focus {
+  border-color: var(--primary-color); /* Highlight border on focus */
+  outline: none;
+}
+
+/* Send Button */
+.sendButton {
+  background-color: var(--accent-color);
+  color: var(--secondary-bg-color);
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block; /* Ensure button behaves like an inline-block */
+  margin-top: 10px; /* Add spacing above the button */
+}
+
+.sendButton:hover {
+  background-color: var(--success-color); /* Change color on hover */
 }
 
 /* Scrollbar Customization */
@@ -111,47 +158,12 @@
   background: var(--secondary-text-color);
 }
 
-.header {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid var(--border-color);
-}
-
-.content {
-  display: grid;
-  gap: 1.5rem;
-  margin: 1rem 0;
-}
-
-.section {
-  background: rgba(255, 255, 255, 0.8);
-  padding: 1.25rem;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  transition: transform 0.2s ease;
-}
-
-.section:hover {
-  transform: translateY(-2px);
-}
-
 /* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
   to {
-    opacity: 1;
-  }
-}
-
-@keyframes popIn {
-  from {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
     opacity: 1;
   }
 }
@@ -167,6 +179,7 @@
   }
 }
 
+/* Responsive Styles */
 @media (max-width: 768px) {
   .popupContainer {
     width: 95%;
@@ -174,7 +187,11 @@
     margin: 1rem;
   }
 
-  .section {
-    padding: 1rem;
+  .messageInput {
+    height: 100px; /* Reduce textarea height on small screens */
+  }
+
+  .sendButton {
+    font-size: 1rem; /* Adjust font size for smaller screens */
   }
 }

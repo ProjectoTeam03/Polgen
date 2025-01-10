@@ -1,180 +1,222 @@
-.overlay {
+/* Overlay Background */
+.popupOverlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6); /* Increased opacity for a darker overlay */
-  backdrop-filter: blur(5px); /* Adds a subtle blur effect for modern feel */
+  background-color: rgba(0, 0, 0, 0.65); /* Overlay background */
+  backdrop-filter: blur(5px); /* Smooth blur effect */
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   z-index: 1000;
-  animation: fadeIn 0.3s ease-in-out; /* Adds a fade-in animation */
+  animation: fadeIn 0.4s ease-out;
 }
 
-.modal {
-  background: #fff;
-  padding: 25px; /* Slightly increased padding for better spacing */
-  border-radius: 12px; /* Slightly more rounded corners */
-  width: 400px;
-  max-width: 90%; /* Ensures responsiveness for smaller screens */
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); /* Softer and more modern shadow */
-  animation: slideIn 0.4s ease-in-out; /* Adds a slide-in effect */
-  position: relative;
-}
-
-.container {
-  max-width: 800px;
-  margin: 2rem auto;
+/* Popup Container */
+.popupContainer {
+  background: var(--secondary-bg-color); /* Background using global variable */
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  width: 70%;
+  height: 600px;
+  max-width: 950px;
   padding: 2rem;
-  background: var(--primary-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.5s ease-out;
+  position: absolute;
+  overflow: hidden;
+  border: 1px solid var(--border-color); /* Border color from global variable */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Disable horizontal scrolling */
 }
 
-.header {
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+.popupContainer:hover {
+  transform: scale(1.02);
 }
 
-h2 {
-  margin-top: 0;
-  font-size: 1.5rem;
-  color: var(--primary-text-color);
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
-
-.formGroup {
-  margin-bottom: 20px; /* Increased spacing for better visual separation */
-}
-
-label {
-  display: block;
-  margin-bottom: 8px; /* Increased spacing for clarity */
-  font-weight: bold;
-  color: #555; /* Softer gray for label text */
-  font-size: 0.9rem; /* Adjusted for consistency */
-}
-
-.form {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.inputGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc; /* Softer border color */
-  border-radius: 6px; /* Slightly more rounded corners */
-  font-size: 1rem;
-  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Adds hover focus effect */
-}
-
-.input {
-  padding: 0.75rem;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-input:focus {
-  outline: none;
-  border-color: #007ad9; /* Accent color */
-  box-shadow: 0 0 4px rgba(0, 122, 217, 0.5); /* Subtle glow */
-}
-
-.input:focus {
-  outline: none;
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.1);
-}
-
-.buttons {
+/* Popup Header */
+.popupHeader {
   display: flex;
   justify-content: space-between;
-  gap: 10px; /* Adds space between buttons */
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-.buttonGroup {
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-  justify-content: flex-end;
-}
-
-.saveBtn,
-.cancelBtn {
-  flex: 1; /* Equal button sizes */
-  padding: 10px 15px;
-  border: none;
-  border-radius: 6px; /* Consistent with input */
-  font-size: 1rem;
+.popupHeader h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--primary-text-color); /* Primary text color */
   font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease-in-out, transform 0.2s ease; /* Smooth hover effect */
 }
 
-.saveBtn,
-.cancelBtn {
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.saveBtn {
-  background: #4caf50; /* Success green */
-  color: #fff;
-}
-
-.saveBtn {
-  background: var(--accent-color);
-  color: white;
+/* Close Button */
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.1);
   border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  color: var(--primary-text-color); /* Consistent text color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.saveBtn:hover {
-  background: #388e3c; /* Darker green for hover state */
-  transform: translateY(-2px); /* Adds subtle lift effect */
-}
-
-.saveBtn:hover {
-  background: var(--accent-color-dark);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(var(--accent-color-rgb), 0.2);
-}
-
-.cancelBtn {
-  background: #f44336; /* Error red */
-  color: #fff;
-}
-
-.cancelBtn {
-  background: transparent;
-  border: 1px solid var(--border-color);
+.closeButton::before {
+  content: "✕"; /* Display "X" inside the button */
+  font-size: 1.2rem;
   color: var(--primary-text-color);
 }
 
-.cancelBtn:hover {
-  background: #d32f2f; /* Darker red for hover state */
-  transform: translateY(-2px); /* Adds subtle lift effect */
+.closeButton:hover {
+  background: var(--error-color-dark); /* Error color for hover */
+  color: var(--secondary-bg-color);
+  transform: rotate(90deg);
 }
 
-.cancelBtn:hover {
-  background: rgba(0, 0, 0, 0.05);
-  transform: translateY(-1px);
+/* Popup Content */
+.popupContent {
+  font-size: 1rem;
+  color: var(--primary-text-color);
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem; /* Add space between elements */
+}
+
+.popupContent p {
+  margin-bottom: 10px;
+}
+
+.popupContent strong {
+  font-weight: bold;
+  color: var(--primary-text-color);
+}
+
+/* Subject Input */
+.subjectInput {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--secondary-bg-color);
+  color: var(--primary-text-color);
+  font-size: 1rem;
+  margin-bottom: 1rem; /* Space between subject and message */
+  transition: border-color 0.2s ease;
+}
+
+.subjectInput:focus {
+  border-color: var(--primary-color); /* Highlight border on focus */
+  outline: none;
+}
+
+/* Textarea for Message */
+.messageInput {
+  width: 100%;
+  height: 120px;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--secondary-bg-color);
+  color: var(--primary-text-color);
+  font-size: 1rem;
+  line-height: 1.6;
+  resize: none;
+  transition: border-color 0.2s ease;
+}
+
+.messageInput:focus {
+  border-color: var(--primary-color); /* Highlight border on focus */
+  outline: none;
+}
+/* Input Fields inside EditInfo */
+.popupContent input[type="text"],
+.popupContent input[type="number"],
+.popupContent select {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--secondary-bg-color);
+  color: var(--primary-text-color);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.popupContent input[type="text"]:focus,
+.popupContent input[type="number"]:focus,
+.popupContent select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px var(--primary-color);
+  outline: none;
+}
+/* Send Button */
+.sendButton {
+  background-color: var(--accent-color);
+  color: var(--secondary-bg-color);
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease,
+    box-shadow 0.3s ease;
+  display: inline-block; /* Ensure button behaves like an inline-block */
+  margin-top: 10px; /* Add spacing above the button */
+}
+
+.sendButton:hover {
+  background-color: var(--success-color); /* Change color on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Cancel Button */
+.cancelButton {
+  background-color: var(--error-color);
+  color: var(--secondary-bg-color);
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease,
+    box-shadow 0.3s ease;
+  display: inline-block;
+  margin-top: 10px;
+  margin-left: 10px; /* Add spacing between buttons */
+}
+
+.cancelButton:hover {
+  background-color: var(--error-color-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Scrollbar Customization */
+.popupContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.popupContainer::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+.popupContainer::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-text-color);
 }
 
 /* Animations */
@@ -198,40 +240,57 @@ input:focus {
   }
 }
 
-/* Responsive Design */
+/* Responsive Styles */
 @media (max-width: 768px) {
-  .modal {
-    padding: 20px;
-    width: 90%;
-  }
-
-  .container {
-    margin: 1rem;
+  .popupContainer {
+    width: 95%;
     padding: 1.5rem;
+    margin: 1rem;
   }
 
-  h2 {
-    font-size: 1.2rem;
+  .messageInput {
+    height: 100px; /* Reduce textarea height on small screens */
   }
 
-  h2 {
-    font-size: 1.3rem;
+  .sendButton {
+    font-size: 1rem; /* Adjust font size for smaller screens */
   }
+}
 
-  .saveBtn,
-  .cancelBtn {
-    font-size: 0.9rem;
-    padding: 8px;
-  }
+/* Button Group */
+.buttonGroup {
+  display: flex;
+  justify-content: center; /* Center the buttons horizontally */
+  align-items: center; /* Center the buttons vertically */
+  gap: 10px; /* Space between buttons */
+  margin-top: 20px; /* Space above the button group */
+}
 
-  .buttonGroup {
-    flex-direction: column;
-  }
+.buttonGroup button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
 
-  .saveBtn,
-  .cancelBtn {
-    width: 100%;
-    padding: 0.8rem;
-    font-size: 1rem;
-  }
+.buttonGroup .approveButton {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.buttonGroup .approveButton:hover {
+  background-color: var(--success-color-dark);
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.buttonGroup .deleteButton {
+  background-color: var(--error-color);
+  color: white;
+}
+
+.buttonGroup .deleteButton:hover {
+  background-color: var(--error-color-dark);
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
 }

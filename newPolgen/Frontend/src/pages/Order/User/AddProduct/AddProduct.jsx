@@ -195,14 +195,18 @@ const AddProduct = () => {
         <button
           type="button"
           onClick={() => setMode("primer")}
-          className={mode === "primer" ? styles.activeButton : styles.button}
+          className={`${styles.button} ${
+            mode === "primer" ? styles.activeButton : ""
+          }`}
         >
           Primer
         </button>
         <button
           type="button"
           onClick={() => setMode("probe")}
-          className={mode === "probe" ? styles.activeButton : styles.button}
+          className={`${styles.button} ${
+            mode === "probe" ? styles.activeButton : ""
+          }`}
         >
           Probe
         </button>
@@ -218,64 +222,70 @@ const AddProduct = () => {
       </button>
 
       {/* Import Excel Section */}
-      <div>
+      <div className={styles.importSection}>
+        <label htmlFor="fileInput" className={styles.fileInputLabel}>
+          Choose Excel File:
+        </label>
         <input
           type="file"
+          id="fileInput"
           accept=".xlsx, .xls"
           onChange={handleFileChange}
-          style={{ marginTop: "10px" }}
+          className={styles.fileInput}
         />
         <button
           type="button"
           onClick={handleImportExcel}
           disabled={!file}
-          style={{ marginTop: "10px" }}
-          className={styles.button}
+          className={styles.importButton}
         >
           Import Excel
         </button>
       </div>
 
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.leftside}>
-          <div className={styles.categorySelection}>
-            <label htmlFor="category">Choose Category:</label>
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label htmlFor="category" className={styles.label}>
+              Choose Category:
+            </label>
             <select
               id="category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
+              className={styles.select}
             >
               <option value="prime">Prime</option>
               <option value="prop">Prop</option>
             </select>
           </div>
-          <div>
-            <label htmlFor="numberOfProducts">Number of Products:</label>
+          <div className={styles.formGroup}>
+            <label htmlFor="numberOfProducts" className={styles.label}>
+              Number of Products:
+            </label>
             <input
               id="numberOfProducts"
               type="number"
               min="1"
               value={numberOfProducts}
               onChange={(e) => setNumberOfProducts(Number(e.target.value))}
+              className={styles.input}
             />
           </div>
           <div className={styles.orderSection}>
-            <button type="button" onClick={handleAddProduct}>
+            <label htmlFor="numberOfProducts" className={styles.label}>
+              Add Product(s):
+            </label>
+            <button
+              type="button"
+              onClick={handleAddProduct}
+              className={styles.addButton}
+            >
               Add Product(s)
             </button>
           </div>
-          {products.map((product, index) => (
-            <ProductComponent
-              key={product.id}
-              index={index}
-              category={product.category}
-              productData={product}
-              onRemove={handleRemoveProduct}
-              onUpdate={handleProductUpdate}
-            />
-          ))}
         </div>
-        <div className={styles.rightside}>
+        <div className={styles.formRow}>
           <button
             className={styles.submitButton}
             type="submit"
@@ -286,6 +296,19 @@ const AddProduct = () => {
           <div className={styles.totalPrice}>
             Total Price: {totalPrice.toFixed(2)} €
           </div>
+        </div>
+
+        <div className={styles.productList}>
+          {products.map((product, index) => (
+            <ProductComponent
+              key={product.id}
+              index={index}
+              category={product.category}
+              productData={product}
+              onRemove={handleRemoveProduct}
+              onUpdate={handleProductUpdate}
+            />
+          ))}
         </div>
       </form>
       <ToastContainer />

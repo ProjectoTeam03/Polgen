@@ -12,7 +12,7 @@ import Error404 from "../components/shared/Error404/Error404.jsx";
 import UserPageLayout from "../pages/Order/User/UserPageLayout/UserPageLayout.jsx";
 import UserDashboard from "../pages/Order/User/UserDashboard/UserDashboard.jsx";
 import AdminPageLayout from "../pages/Order/Admin/AdminPageLayout/AdminPageLayout.jsx";
-import AdminDashboard from "../pages/Order/Admin/AdminDashboard/AdminDashboard.jsx";
+// import AdminDashboard from "../pages/Order/Admin/AdminDashboard/AdminDashboard.jsx";
 import ProtectedRoute from "../components/shared/ProtectedRoute/ProtectedRoute.jsx";
 import ForgotPassword from "../components/HomeComponent/Forgot_password/ForgotPassword.jsx";
 import ResetPassword from "../components/HomeComponent/Reset_Password/ResetPassword.jsx";
@@ -24,7 +24,7 @@ import Orders from "../pages/Order/Admin/AdminOrders/AdminOrders.jsx";
 import UserOrder from "../pages/Order/User/UserOrder/UserOrder.jsx";
 import UserProfile from "../pages/Order/User/UserProfile/UserProfile.jsx";
 import AdminApprovedOrders from "../pages/Order/Admin/AdminApprovedOrders/AdminApprovedOrders.jsx";
-import AdminSynthingReports from "../pages/Order/Admin/AdminSynthingReports/AdminSynthingReports.jsx";
+// import AdminSynthingReports from "../pages/Order/Admin/AdminSynthingReports/AdminSynthingReports.jsx";
 import AdminSynthingOrders from "../pages/Order/Admin/AdminSynthingOrders/AdminSynthingOrders.jsx";
 import AdminApproveEmail from "../pages/Order/Admin/AdminApproveEmail/AdminApproveEmail.jsx";
 
@@ -71,12 +71,12 @@ const router = createBrowserRouter([
     ),
     errorElement: <Error404 />, // This will handle all unknown routes
     children: [
-      { index: true, element: <AdminDashboard /> },
-      { path: "dashboard", element: <AdminDashboard /> },
+      { index: true, element: <Orders /> },
+      // { path: "dashboard", element: <AdminDashboard /> },
       // { path: "manage-products", element: <AdminTables /> },
       { path: "orders", element: <Orders /> },
       { path: "approvedOrders", element: <AdminApprovedOrders /> },
-      { path: "synthingRaports", element: <AdminSynthingReports /> },
+      // { path: "synthingRaports", element: <AdminSynthingReports /> },
       { path: "synthingOrders", element: <AdminSynthingOrders /> },
       { path: "approveMails", element: <AdminApproveEmail /> },
     ],

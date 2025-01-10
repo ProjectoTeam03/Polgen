@@ -118,28 +118,93 @@ const AdminMailTables = () => {
         />
       </div>
 
-      <TableContainer component={Paper} className={styles.tableWrapper}>
+      <TableContainer
+        component={Paper}
+        sx={{
+          padding: "20px",
+          backgroundColor: "var(--secondary-bg-color)",
+          color: "var(--primary-text-color)",
+          marginTop: "20px",
+        }}
+      >
         <Table>
           <TableHead>
             <TableRow className={styles.tableRow}>
-              <TableCell className={styles.tableCellHead}>ID</TableCell>
-              <TableCell className={styles.tableCellHead}>Email</TableCell>
-              <TableCell className={styles.tableCellHead}>Name</TableCell>
-              <TableCell className={styles.tableCellHead}>Status</TableCell>
-              <TableCell className={styles.tableCellHead}>Actions</TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+                className={styles.tableCellHead}
+              >
+                ID
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+                className={styles.tableCellHead}
+              >
+                Email
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+                className={styles.tableCellHead}
+              >
+                Name
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+                className={styles.tableCellHead}
+              >
+                Status
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "var(--primary-text-color)",
+                }}
+                className={styles.tableCellHead}
+              >
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {visibleRows.map((row) => (
               <TableRow key={row.id} className={styles.tableRow}>
-                <TableCell className={styles.tableCell}>
+                <TableCell
+                  sx={{
+                    color: "var(--primary-text-color)",
+                  }}
+                  className={styles.tableCell}
+                >
                   {row.id.split("-")[0]}
                 </TableCell>
-                <TableCell className={styles.tableCell}>{row.email}</TableCell>
-                <TableCell className={styles.tableCell}>
+                <TableCell
+                  sx={{
+                    color: "var(--primary-text-color)",
+                  }}
+                  className={styles.tableCell}
+                >
+                  {row.email}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    color: "var(--primary-text-color)",
+                  }}
+                  className={styles.tableCell}
+                >
                   {row.username}
                 </TableCell>
-                <TableCell className={styles.tableCell}>
+                <TableCell
+                  sx={{
+                    color: "var(--primary-text-color)",
+                  }}
+                  className={styles.tableCell}
+                >
                   {row.isApprovedFromAdmin ? (
                     <CheckCircleIcon
                       fontSize="large"
@@ -152,7 +217,12 @@ const AdminMailTables = () => {
                     />
                   )}
                 </TableCell>
-                <TableCell className={styles.tableCell}>
+                <TableCell
+                  sx={{
+                    color: "var(--primary-text-color)",
+                  }}
+                  className={styles.tableCell}
+                >
                   <Button
                     className={`${styles.actionButton} ${
                       row.isApprovedFromAdmin
@@ -177,7 +247,6 @@ const AdminMailTables = () => {
             ))}
           </TableBody>
         </Table>
-
         <TablePagination
           className={styles.tablePagination}
           rowsPerPageOptions={[5, 10, 25]}

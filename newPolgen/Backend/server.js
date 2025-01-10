@@ -5,6 +5,7 @@ import { sequelize } from "./models/index.js"; // Correct Sequelize instance imp
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js"; // Import product routes
 import excelRoutes from "./routes/excelRoutes.js";
+import specificmailRoutes from "./routes/specificmailRoutes.js"; // Import mail routes
 
 // Load environment variables
 dotenv.config();
@@ -40,6 +41,7 @@ app.use(
 app.use("/api/auth", authRoutes); // Authentication routes
 app.use("/api/products", productRoutes); // Product routes
 app.use("/api/excel", excelRoutes);
+app.use("/api/mail", specificmailRoutes); // Mail routes
 
 // Start the Server
 app.listen(PORT, () => {

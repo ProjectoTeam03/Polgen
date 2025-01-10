@@ -1,113 +1,218 @@
+/* Product Component Container */
 .productComponent {
-  background-color: var(--secondary-bg-color);
-  padding: 1.5rem;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
+  max-width: 700px; /* Ensure the form doesn't go beyond the red part */
+  height: auto; /* Allow height to adjust based on content */
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--secondary-bg-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  overflow: hidden; /* Prevent overflow if content is too large */
+  margin: 0 auto; /* Centering the container */
 }
 
+/* Hover effect on product component */
 .productComponent:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transform: translateY(-4px);
 }
 
+/* Header Section */
 .header {
-  text-align: center;
-  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* gap: 0.5rem; */
+  font-size: 1.2rem;
+  padding-left: 10px;
+  /* margin-bottom: 1rem; */
 }
 
 .title {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
   color: var(--primary-text-color);
-  margin-bottom: 0.5rem;
+  letter-spacing: 0.5px;
+  text-transform: capitalize;
 }
 
-.formGroup {
+.productForm {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.label {
-  font-size: 0.95rem;
-  color: var(--secondary-text-color);
-  font-weight: 500;
-}
-
-.select,
-.input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  background-color: var(--primary-bg-color);
-  color: var(--primary-text-color);
-  transition: all 0.3s ease;
-}
-
-.select:focus,
-.input:focus {
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(0, 122, 217, 0.1);
-}
-
-.checkbox {
-  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  /* flex-direction: column; */
+  /* gap: 1rem; */
+}
+/* Form Group for aligning label and input next to each other */
+.formGroup {
+  display: grid;
+  /* grid-template-columns: 1fr 3fr; 1:3 ratio for label and input */
+
+  flex-direction: row;
+  /* align-items: center; */
+  /* gap: 0.8rem; Reduced gap for closeness */
+  margin-bottom: 1rem;
+  width: 100%; /* Ensure form group takes full width */
 }
 
-.checkbox input {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--accent-color);
+/* Label Styling */
+.label {
+  font-size: 1rem;
+  color: var(--secondary-text-color);
+  font-weight: 600;
+  width: 100%; /* Ensure the label takes up 40% of the width */
+  text-align: right; /* Align labels to the right */
+  padding-right: 10px; /* Add some space between label and input */
+  transition: color 0.3s ease;
 }
 
+/* Input and Select Fields */
+select,
+input[type="text"],
+input[type="number"] {
+  /* padding: 12px; */
+  border: 1px solid var(--border-color);
+  padding: 0.8rem;
+  margin: 0.2rem;
+  border-radius: 8px;
+  background-color: var(--input-bg-color);
+  color: var(--primary-text-color);
+  font-size: 1rem;
+  width: 95%; /* Ensure input fields take 60% of the width */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+.productHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Centers vertically */
+  width: 100%;
+}
+
+.productHeader .centerContent {
+  margin: auto; /* Centers the element horizontally */
+}
+
+/* Focus state for select and input fields */
+select:focus,
+input[type="text"]:focus,
+input[type="number"]:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+/* Remove Button Styling */
+.removeButton {
+  position: absolute;
+  background-color: var(--error-color);
+  bottom: 10%;
+
+  left: 50%;
+
+  color: white;
+  padding: 0.8rem !important;
+  width: 250px;
+  /* width: 150px; */
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.removeButton:hover {
+  /* background-color: var(--error-dark-color); */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Total Price Section */
 .totalPrice {
   font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--accent-color);
+  font-weight: bold;
+  color: var(--primary-text-color);
   text-align: center;
-  padding: 0.5rem;
-  border-top: 1px solid var(--border-color);
-  margin-top: 1rem;
+  padding: 0.7rem;
+  border-bottom: 1px solid var(--border-color);
+  /* margin-top: 1rem; */
+  background-color: var(--secondary-bg-color);
+  /* border-radius: 8px; */
 }
 
+.formGroupUp {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 1:3 ratio for label and input */
+  margin-bottom: 1rem;
+  width: 100%; /* Ensure form group takes full width */
+}
+.formGroupDown {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 1:3 ratio for label and input */
+  margin-bottom: 1rem;
+  width: 100%; /* Ensure form group takes full width */
+}
+/* Button Styling */
 .button {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   background-color: var(--accent-color);
   color: white;
   border: none;
-  border-radius: 6px;
-  font-weight: 500;
+  border-radius: 8px;
+  font-weight: 600;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
+/* Button Hover Effect */
 .button:hover {
   background-color: var(--hover-color);
-  transform: translateY(-1px);
+  transform: translateY(-3px);
 }
 
+/* Button Active State */
 .button:active {
   transform: translateY(0);
 }
 
+/* Media Queries for Responsive Design */
 @media (min-width: 768px) {
   .productComponent {
     padding: 2rem;
   }
 
   .title {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
   }
 
-  .select,
-  .input {
-    padding: 12px;
+  select,
+  input[type="text"],
+  input[type="number"] {
+    /* padding: 14px; */
+  }
+
+  .button {
+    padding: 16px;
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .productComponent {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .button {
+    font-size: 1.2rem;
   }
 }

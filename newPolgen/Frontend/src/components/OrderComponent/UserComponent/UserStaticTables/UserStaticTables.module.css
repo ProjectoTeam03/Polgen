@@ -1,5 +1,5 @@
 /* Table Container */
-.table-container {
+.table_container {
   display: flex;
   justify-content: space-between;
   gap: 2rem;
@@ -11,7 +11,7 @@
 
 /* Table Header */
 .table-header {
-  background-color: var(--accent-color); /* Dark blue-gray for header */
+  background-color: var(--primary-bg-color); /* Dark blue-gray for header */
   color: var(--primary-bg-color); /* Light text color */
   font-weight: 600;
   text-align: center;
@@ -72,18 +72,6 @@
   margin-bottom: 20px;
 }
 
-<<<<<<< HEAD
-/*
-burada yazsana
-
-np
-ok calsiyo o zaman eyw
-nasıl çıkılıyor 
-
-
-*/
-=======
->>>>>>> c69fb24997d77609c54cde772ffc568a6896a601
 /* Responsive Design for Smaller Screens */
 @media (max-width: 768px) {
   .table-container {

@@ -38,6 +38,7 @@
   color: var(--primary-text-color);
   text-align: left;
   border-bottom: 1px solid var(--primary-border-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .table-cell-head {
@@ -75,21 +76,21 @@
   background-color: var(--success-color);
   color: white;
 }
-button.table-bulk-SynthisGroup {
+
+button.table-bulk-showMail {
   background-color: var(--accent-color);
   color: white;
   white-space: nowrap; /* Prevent text wrapping */
-
   width: auto;
   border: none;
   font-size: 0.875rem;
   padding: 8px 16px;
 }
+
 button.table-bulk-approve {
   background-color: var(--success-color);
   color: white;
   white-space: nowrap; /* Prevent text wrapping */
-
   width: auto;
   border: none;
   font-size: 0.875rem;
@@ -100,7 +101,6 @@ button.table-bulk-approve {
 button.table-bulk-delete {
   background-color: var(--error-color);
   color: white;
-
   width: auto;
   white-space: nowrap; /* Prevent text wrapping */
   border: none;
@@ -108,6 +108,7 @@ button.table-bulk-delete {
   text-transform: uppercase;
   padding: 8px 16px;
 }
+
 .table-button-approve:hover {
   background-color: var(--success-color-dark);
   transform: translateY(-2px);
@@ -217,4 +218,104 @@ button.table-bulk-delete {
   font-size: 1.25rem;
   color: var(--primary-text-color);
   text-transform: capitalize;
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .table-container {
+    padding: 15px;
+  }
+
+  .table-header {
+    font-size: 0.9rem;
+  }
+
+  .table-cell,
+  .table-cell-head {
+    font-size: 0.85rem;
+  }
+
+  .table-pagination {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .table-search-input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .table-button {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .table-container {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  .table-header {
+    font-size: 0.85rem;
+  }
+
+  .table-cell,
+  .table-cell-head {
+    font-size: 0.8rem;
+  }
+
+  .table-button {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+
+  .table-button-approve {
+    font-size: 0.8rem;
+    padding: 8px 14px;
+  }
+
+  .table-search-input {
+    width: 100%;
+    font-size: 0.8rem;
+  }
+
+  .table-pagination {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-container {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+
+  .table-header {
+    font-size: 0.8rem;
+  }
+
+  .table-cell,
+  .table-cell-head {
+    font-size: 0.75rem;
+  }
+
+  .table-button {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+
+  .table-button-approve {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+
+  .table-search-input {
+    width: 100%;
+    font-size: 0.75rem;
+  }
+
+  .table-pagination {
+    justify-content: center;
+  }
 }

@@ -33,12 +33,31 @@
 
     }
   },
-  "covid_19": {
-    "title": "POLGEN Coronavirus Detection/Test Kit",
-    "description": "This kit is developed for the detection of SARS-CoV-2 from RNA samples obtained from human specimens. The reaction time is about 1 hour and varies slightly based on the qPCR device used."
-  },
+  
+    "covid_19": {
+      "title": "POLGEN Advanced SARS-CoV-2 Detection and Diagnostic Kit",
+      "description": "Engineered for the precise identification of SARS-CoV-2 RNA sequences extracted from human biological specimens, this diagnostic kit leverages cutting-edge qPCR technology to deliver results in approximately one hour, with minor variations contingent upon the specific qPCR instrumentation employed.",
+      "stat1": {
+        "value": "98.5%",
+        "label": "Analytical Sensitivity",
+        "description": "This high analytical sensitivity of 98.5% ensures accurate detection of even trace amounts of SARS-CoV-2 RNA, reducing the likelihood of false negatives."
+      },
+      "stat2": {
+        "value": "99.2%",
+        "label": "Analytical Specificity",
+        "description": "With an impressive specificity rate of 99.2%, this kit effectively minimizes false positives, even in the presence of genetic variations or other coronaviruses."
+      },
+      "stat3": {
+        "value": "98.8%",
+        "label": "Overall Diagnostic Accuracy",
+        "description": "The kit's overall diagnostic accuracy of 98.8% provides reliable results, ensuring swift and accurate diagnosis of SARS-CoV-2 infections, aiding in effective decision-making in healthcare settings."
+      }
+    }
+  
+ , 
+
  "main": {
-    "slider_1":"NEXT-GENERATION SEQUENCING3",
+    "slider_1":"NEXT-GENERATION SEQUENCING",
     "slider_2":"CORONAVIRUS DETECTION KIT",
     "slider_3":"BIOINFORMATICS ANALYSES",
   "sections": [
