@@ -240,7 +240,7 @@ export const getUserById = async (userId) => {
 
     // Make the fetch call with the Authorization header
     const response = await fetch(
-      `http://localhost:5000/api/auth/users/${userId}`,
+      `http://localhost:93.127.162.95/api/auth/users/${userId}`,
       {
         headers: {
           Authorization: `Bearer ${userData.token}`, // Pass the token in the header
