@@ -1,0 +1,8 @@
+POST https://pol-gen.com/api/auth/login
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFmMjZiM2RlLTU5NDQtNGI3My04ZjY0LWY5ZjVjZjNmMzNlYiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczNzAwMzQyMX0.JMVvCZAmgnWdPh_0VKDzvrFY-jUfsrDFWrSJ6yXX6vk
+
+{
+  "email": "john.12312o@qa.com",
+  "password": "securePassword123"
+}

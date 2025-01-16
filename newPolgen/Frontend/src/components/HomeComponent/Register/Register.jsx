@@ -41,7 +41,7 @@ const Register = () => {
       phone: inputPhone,
       address: inputAddress,
     };
-
+u
     try {
       const response = await axios.post("https://pol-gen.com/api/auth/register", formData);
       setSuccess(t("register.success_message"));

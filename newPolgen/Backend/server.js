@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173", // Frontend URL
+    origin: process.env.FRONTEND_URL,
     methods: "GET,POST,PUT,PATCH,DELETE",
     credentials: true,
   })
@@ -45,5 +45,5 @@ app.use("/api/mail", specificmailRoutes); // Mail routes
 
 // Start the Server
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running at running on the server vps in port ${PORT}`);
 });

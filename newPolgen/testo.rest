@@ -1,0 +1,13 @@
+POST https://pol-gen.com/api/auth/register
+Content-Type: application/json
+# Authorization: Bearer <your_token>
+
+{
+  "username": "medo",
+  "email": "john.12312o@qa.com",
+  "password": "securePassword123",
+  "phone": "123-456-7890",
+  "address": "123 Main St, Anytown, USA",
+  "role": "admin",
+  "isApprovedFromAdmin":true
+}

@@ -1,10 +1,30 @@
 import API from "./api"; // Reuse the API instance created earlier
 
-// Utility to get the token
-const getAuthToken = () =>
-  localStorage.getItem("authToken") || localStorage.getItem("token");
+// // Utility to get the token
+// const getAuthToken = () =>
+//   localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+// // Add a new product
 
-// Add a new product
+// Utility to get the token
+const getAuthToken = () => {
+  const sessionId = sessionStorage.getItem("sessionId"); // Get the session ID
+  if (!sessionId) {
+    console.error("Session ID is missing.");
+    return null;
+  }
+
+  const authKey = `auth_${sessionId}`; // Generate the session-specific key
+  const userData = JSON.parse(sessionStorage.getItem(authKey)); // Retrieve user-specific data
+  if (!userData || !userData.token) {
+    console.error("Token is missing for session:", sessionId);
+    return null;
+  }
+
+  return userData.token; // Return the token
+};
+
+
+
 export const addProduct = async (productData) => {
   try {
     const payload = {
