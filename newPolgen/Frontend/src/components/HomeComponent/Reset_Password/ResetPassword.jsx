@@ -29,7 +29,7 @@ const ResetPassword = () => {
 
     try {
       console.log('Token being sent:', token); // Debugging
-      const response = await axios.post('http://localhost:5000/api/auth/reset-password', {
+      const response = await axios.post('https://pol-gen.com/api/auth/reset-password', {
         token,
         newPassword: password,
       });

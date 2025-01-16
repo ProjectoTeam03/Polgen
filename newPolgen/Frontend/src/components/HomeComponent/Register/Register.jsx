@@ -43,7 +43,7 @@ const Register = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/register", formData);
+      const response = await axios.post("https://pol-gen.com/api/auth/register", formData);
       setSuccess(t("register.success_message"));
       setError("");
       setInputUsername('');

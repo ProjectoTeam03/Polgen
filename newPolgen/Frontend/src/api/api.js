@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://93.127.162.95:5000/api", // Your API base URL
+  baseURL: "https://pol-gen.com/api", // Use HTTPS
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 10000, // Timeout after 10 seconds
+  // timeout: 10000, // Timeout agfter 10 seconds
 });
 
 // Add request interceptor to include token
